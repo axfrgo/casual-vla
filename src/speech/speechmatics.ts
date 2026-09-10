@@ -15,7 +15,7 @@ export async function transcribe(audio:Blob,key:string,request:typeof fetch=fetc
       return {text:text.trim(),jobId:created.id,latencyMs:performance.now()-started,source:'speechmatics'};
     }
     if(['rejected','deleted','expired','failed'].includes(status.job?.status??''))throw new Error(`Speechmatics job ${status.job?.status}`);
-    await new Promise(resolve=>setTimeout(resolve,1000));
+    await new Promise(resolve=>setTimeout(resolve,attempt<5?350:700));
   }
   throw new Error('Speechmatics processing timed out; the lesson was not applied');
 }
