@@ -1,4 +1,6 @@
 import { transcribe } from '../../../src/speech/speechmatics';
+export const runtime = 'nodejs';
+export const maxDuration = 60;
 export async function GET() { return Response.json({configured:!!process.env.SPEECHMATICS_API_KEY,mode:'Speechmatics batch, real audio; no browser speech substitution'}); }
 export async function POST(request:Request) {
   if(request.headers.get('origin')!==new URL(request.url).origin) return Response.json({error:'Origin not allowed'},{status:403});

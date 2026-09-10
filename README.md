@@ -30,6 +30,20 @@ pnpm install
 pnpm dev
 ```
 
+## Deploy to Vercel
+
+Import this repository in Vercel and use the detected Next.js settings. No
+custom build or output-directory override is required. Add
+`SPEECHMATICS_API_KEY` in the Vercel project environment if voice transcription
+should be enabled; text teaching works without it.
+
+To verify the same production build locally:
+
+```powershell
+pnpm build
+pnpm start
+```
+
 Runtime skill libraries and evaluation reports are written to the ignored
 `data/` and `results/` directories. Re-run `pnpm evaluate` to generate fresh
 symbolic-testbed evidence; generated outputs are not committed as source.
