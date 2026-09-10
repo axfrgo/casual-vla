@@ -1,4 +1,5 @@
 'use client';
+/* oxlint-disable react/react-compiler -- The imperative simulation controller and skill store intentionally live in refs; revision state snapshots their mutations into React renders. */
 import { useEffect, useRef, useState } from 'react';
 import { Shield, Play, Pause, RotateCcw, Mic, ArrowUpRight, Download, BookOpen, GitBranch, Activity, Check, X, ChevronRight, Square, FlaskConical, Settings2, Volume2, VolumeX } from 'lucide-react';
 import { Controller } from '../src/execution/controller';
@@ -12,7 +13,8 @@ const color=(s:string)=>s==='CLEAN'?'#72e4bd':s==='CONTAMINATED'?'#ff785e':s==='
 function save(name:string,data:string){const url=URL.createObjectURL(new Blob([data],{type:'application/json'}));const a=document.createElement('a');a.href=url;a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);}
 function Scene({world}:{world:World}) {
   const objects=Object.values(world.entities);
-  return <svg viewBox="0 0 760 460" role="img" aria-label="Symbolic contact scene showing observed object positions and inferred contamination states">
+  return <svg viewBox="0 0 760 460" aria-label="Symbolic contact scene showing observed object positions and inferred contamination states">
+    <title>Symbolic contact scene showing observed object positions and inferred contamination states</title>
     <defs><pattern id="grid" width="32" height="32" patternUnits="userSpaceOnUse"><path d="M 32 0 L 0 0 0 32" fill="none" stroke="#273442" strokeWidth=".6"/></pattern></defs>
     <rect x="0" y="0" width="760" height="460" fill="#101b25"/><rect x="24" y="24" width="712" height="412" fill="url(#grid)" stroke="#334452"/>
     <text x="40" y="48" className="svgmeta">CONTACT TESTBED / TOP VIEW</text><text x="40" y="419" className="svgmeta">RELATIVE COORDINATES · NO PHYSICS</text>

@@ -4,7 +4,7 @@ export async function transcribe(audio:Blob,key:string,request:typeof fetch=fetc
   if(audio.size===0||audio.size>10*1024*1024) throw new Error('Audio must be between 1 byte and 10 MB');
   const started=performance.now(); const endpoint='https://asr.api.speechmatics.com/v2/jobs';
   const form=new FormData(); form.append('data_file',audio,'teaching.webm'); form.append('config',JSON.stringify({type:'transcription',transcription_config:{language:'en'}}));
-  const call=async(url:string,init:RequestInit={})=>{const response=await request(url,{...init,headers:{...init.headers,Authorization:`Bearer ${key}`},signal:AbortSignal.timeout(20000)});if(!response.ok)throw new Error(`Speechmatics returned HTTP ${response.status}`);return response;};
+  const call=async(url:string,init:RequestInit={})=>{const headers=new Headers(init.headers);headers.set('Authorization',`Bearer ${key}`);const response=await request(url,{...init,headers,signal:AbortSignal.timeout(20000)});if(!response.ok)throw new Error(`Speechmatics returned HTTP ${response.status}`);return response;};
   const created=await(await call(endpoint,{method:'POST',body:form})).json() as {id?:unknown};
   if(typeof created.id!=='string'||!/^[a-zA-Z0-9_-]+$/.test(created.id))throw new Error('Speechmatics returned an invalid job identifier');
   for(let attempt=0;attempt<40;attempt++) {

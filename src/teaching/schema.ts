@@ -13,7 +13,7 @@ function keys(value: Record<string, unknown>, allowed: string[]) { ensure(Object
 function identifier(value: unknown) { ensure(typeof value === 'string' && /^[a-z][a-z0-9_]{0,63}$/.test(value), 'Invalid identifier'); }
 export function validateSelector(value: unknown): asserts value is Selector {
   record(value); keys(value, ['kind', 'state', 'protected', 'id']);
-  if (value.kind !== undefined) ensure(['gripper','object','zone','surface','tool'].includes(String(value.kind)), 'Unsupported entity kind');
+  if (value.kind !== undefined) ensure(typeof value.kind === 'string' && ['gripper','object','zone','surface','tool'].includes(value.kind), 'Unsupported entity kind');
   if (value.state !== undefined) ensure(STATES.includes(value.state as State), 'Unsupported state');
   if (value.protected !== undefined) ensure(typeof value.protected === 'boolean', 'Protection must be boolean');
   if (value.id !== undefined) identifier(value.id);

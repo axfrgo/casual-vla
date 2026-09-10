@@ -30,5 +30,9 @@ pnpm install
 pnpm dev
 ```
 
+Runtime skill libraries and evaluation reports are written to the ignored
+`data/` and `results/` directories. Re-run `pnpm evaluate` to generate fresh
+symbolic-testbed evidence; generated outputs are not committed as source.
+
 See [`docs/CHALLENGE_READINESS.md`](docs/CHALLENGE_READINESS.md) for the honest
 challenge gap analysis.
