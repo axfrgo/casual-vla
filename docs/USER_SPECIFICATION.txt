@@ -1,0 +1,2530 @@
+You are Astra, acting as lead AI researcher, robotics engineer, systems architect, simulation engineer, product engineer, evaluation engineer, and hackathon submission owner.
+
+Your task is to BUILD, TEST, DEBUG, EVALUATE, DOCUMENT, AND PACKAGE a complete competition-ready system:
+
+FORTIFIERS APPRENTICESHIP
+
+Tagline:
+
+TEACH MACHINES THE WAY YOU TEACH PEOPLE.
+
+First demonstrated apprentice:
+
+AEGIS
+Scientific Contamination-Control Apprentice
+
+Primary competition:
+AI Infra Summit Hackathon 2026
+
+Primary online track:
+Intel Bimanual VLA Manipulation with Multi-Modal Reasoning
+
+Secondary opportunity:
+Best Use of Speechmatics
+
+IMPORTANT:
+
+This is not an MVP assignment.
+
+Do not stop at:
+
+- planning
+- research
+- architecture
+- scaffolding
+- pseudocode
+- a UI mockup
+- one scripted trajectory
+- fake robotics
+- mocked voice
+- hard-coded outputs
+- a nonfunctional prototype
+
+You are expected to autonomously carry the engineering as far as the actual available challenge environment allows.
+
+Inspect first.
+
+Then build.
+
+Run it.
+
+Break it.
+
+Fix it.
+
+Measure it.
+
+Package it.
+
+==================================================
+0. CENTRAL RESEARCH THESIS
+==================================================
+
+Today's AI systems are usually:
+
+PROGRAMMED
+PROMPTED
+FINE-TUNED
+OR GIVEN FIXED POLICIES.
+
+Humans are frequently trained differently:
+
+EXPLAIN
+    ↓
+DEMONSTRATE
+    ↓
+LET THEM TRY
+    ↓
+OBSERVE FAILURE
+    ↓
+CORRECT THEM
+    ↓
+TRY AGAIN
+    ↓
+VERIFY
+    ↓
+REMEMBER THE LESSON
+    ↓
+APPLY IT IN A NEW SITUATION
+
+Fortifiers Apprenticeship attempts to give machines this same operational learning loop.
+
+The objective is NOT primarily neural-network training.
+
+The objective is:
+
+PERSISTENT OPERATIONAL TEACHING.
+
+A human should be able to teach an autonomous system:
+
+- goals
+- procedures
+- constraints
+- exceptions
+- prohibited behavior
+- success criteria
+- recovery rules
+- preferences
+
+through natural interaction.
+
+The system then:
+
+1. translates teaching into explicit machine-readable knowledge;
+2. attempts the task;
+3. observes what happened;
+4. evaluates success;
+5. accepts natural human correction;
+6. compiles the correction into persistent behavioral knowledge;
+7. retries;
+8. verifies;
+9. stores the learned skill;
+10. applies it later in a changed environment.
+
+The AI Infra robotics demonstration is the FIRST embodiment of a GENERAL teaching architecture.
+
+The architecture should therefore distinguish:
+
+TEACHING SYSTEM
+
+from:
+
+ROBOT EMBODIMENT.
+
+==================================================
+1. DEMONSTRATION DOMAIN
+==================================================
+
+The first apprentice is:
+
+AEGIS
+
+A contamination-control apprentice for autonomous manipulation in safety-sensitive environments.
+
+Potential long-term domains include:
+
+- high-containment laboratories
+- pharmaceutical research
+- radiological handling
+- CBRN defensive response
+- hazardous materials
+- forensic evidence handling
+- semiconductor cleanrooms
+- contamination-sensitive manufacturing
+- planetary sample handling
+- scientific laboratories
+
+DO NOT implement offensive military capabilities.
+
+This is defensive scientific/safety technology.
+
+The visual demonstration can use ordinary simulator objects such as:
+
+red container
+plates
+forks
+trays
+cups
+
+The physical objects are simple.
+
+The reasoning is the contribution.
+
+==================================================
+2. THE MONEY DEMO
+==================================================
+
+The demonstration should prove that the robot LEARNS a safety doctrine from a person rather than merely receiving a preprogrammed rule.
+
+INITIAL HUMAN INSTRUCTION:
+
+"Move the red container into quarantine and prepare the clean samples."
+
+Robot attempts task.
+
+During the first attempt, suppose:
+
+RIGHT GRIPPER
+touches
+RED CONTAINER
+
+then later attempts:
+
+RIGHT GRIPPER
+touches
+CLEAN TRAY.
+
+This should create a teaching moment.
+
+Human says:
+
+"No. Once an arm touches contaminated material, treat that arm as contaminated too. Don't let it touch clean material until it has been cleared."
+
+Speechmatics transcribes the correction.
+
+Fortifiers Apprenticeship compiles it into an explicit learned rule:
+
+RULE:
+
+IF:
+CONTACT(gripper, contaminated_entity)
+
+THEN:
+STATE(gripper) = CONTAMINATED
+
+AND:
+
+FORBID:
+CONTACT(contaminated_gripper, protected_clean_entity)
+
+The rule becomes persistent.
+
+The system:
+
+- records the correction;
+- updates its skill contract;
+- versions the skill;
+- replans;
+- retries;
+- succeeds.
+
+Then RESET OR SCRAMBLE THE SCENE.
+
+Different object locations.
+
+Potentially additional irrelevant objects.
+
+Human says:
+
+"Run the isolation procedure."
+
+The robot must apply the learned rule in the new scene.
+
+It must NOT replay fixed coordinates.
+
+This is the central proof:
+
+THE HUMAN TAUGHT A GENERAL BEHAVIORAL RULE.
+
+==================================================
+3. THE SECOND MONEY DEMO
+==================================================
+
+Show spoken modification of learned behavior.
+
+Human says:
+
+"From now on, keep the left arm clean whenever possible and use the right arm for contaminated handling."
+
+The system should compile something like:
+
+PREFERENCE:
+
+LEFT_GRIPPER
+PREFERRED_STATE = CLEAN
+
+RIGHT_GRIPPER
+PREFERRED_ROLE = CONTAMINATED_HANDLING
+
+Then:
+
+skill v1.1
+→
+skill v1.2
+
+Future planning incorporates the preference.
+
+This demonstrates:
+
+persistent verbal teaching
++
+versioning
++
+behavioral adaptation.
+
+==================================================
+4. UNIVERSAL ARCHITECTURE
+==================================================
+
+Build the system conceptually as:
+
+                    HUMAN TEACHER
+                          │
+        ┌─────────────────┼─────────────────┐
+        │                 │                 │
+      SPEECH          CORRECTION       DEMONSTRATION
+        │                 │                 │
+        └─────────────────┴─────────────────┘
+                          ↓
+                  TEACHING COMPILER
+                          ↓
+                     SKILL CONTRACT
+                          │
+       ┌──────────────────┼───────────────────┐
+       │                  │                   │
+     GOALS             RULES             VERIFIERS
+       │                  │                   │
+       └──────────────────┼───────────────────┘
+                          ↓
+                    SKILL LIBRARY
+                          ↓
+                   EMBODIMENT ADAPTER
+                          ↓
+                       ROBOTICS
+                          ↓
+                    PLAN / EXECUTE
+                          ↓
+                       OBSERVE
+                          ↓
+                       EVALUATE
+                     /           \
+                   PASS          FAIL
+                    │              │
+                  STORE         CORRECT
+                    │              │
+                    └───────┬──────┘
+                            ↓
+                         RETEST
+
+The architecture should make it possible to add future adapters for:
+
+ROBOT
+SOFTWARE AGENT
+COMPUTER-USE AGENT
+SCIENTIFIC AGENT
+DATA AGENT
+
+without redesigning the entire teaching engine.
+
+Do NOT implement every adapter now.
+
+Implement the abstraction cleanly.
+
+==================================================
+5. FIRST ACTION: AUDIT THE REAL ENVIRONMENT
+==================================================
+
+Before major coding:
+
+Inspect EVERYTHING available in the workspace.
+
+Read:
+
+- repository tree
+- README
+- competition docs
+- Intel challenge docs
+- simulator documentation
+- starter code
+- example agents
+- action APIs
+- observation APIs
+- VLA model APIs
+- robot representation
+- gripper APIs
+- available cameras
+- image observations
+- depth
+- segmentation
+- structured simulator state
+- collision/contact information
+- environment resets
+- scoring functions
+- sample tasks
+- baselines
+- evaluation scripts
+- Docker files
+- Python environments
+- package manifests
+- tests
+- Speechmatics examples
+- hackathon submission requirements
+
+Do not assume APIs.
+
+Do not invent:
+
+- robot controls
+- contact sensors
+- object metadata
+- scoring functions
+- simulation methods
+- Intel VLA calls
+
+Map the concept onto what is ACTUALLY available.
+
+After inspection:
+
+create a concise internal implementation plan.
+
+Do not wait for approval.
+
+Begin implementation.
+
+==================================================
+6. TEACHING COMPILER
+==================================================
+
+This is one of the core modules.
+
+Natural teaching must become structured operational knowledge.
+
+Inputs may include:
+
+- instruction
+- correction
+- preference
+- prohibition
+- clarification
+- success criterion
+- procedural explanation
+
+Example:
+
+"Once an arm touches contaminated material, consider that arm contaminated too."
+
+Must become something explicit.
+
+Conceptually:
+
+{
+  "rule_id": "contamination_transfer_gripper",
+  "type": "state_transition",
+  "when": {
+    "relation": "CONTACT",
+    "actor_type": "gripper",
+    "object_state": "CONTAMINATED"
+  },
+  "then": {
+    "set_actor_state": "CONTAMINATED"
+  }
+}
+
+Another:
+
+"Don't let contaminated arms touch clean samples."
+
+Becomes:
+
+{
+  "rule_id": "protect_clean_samples",
+  "type": "forbidden_interaction",
+  "actor_state": "CONTAMINATED",
+  "relation": "CONTACT",
+  "target_state": "CLEAN",
+  "target_class": "protected"
+}
+
+Use a schema appropriate to the actual implementation.
+
+The key requirement:
+
+DO NOT LEAVE LEARNED RULES ONLY AS NATURAL LANGUAGE.
+
+==================================================
+7. SKILL CONTRACT
+==================================================
+
+Every learned skill should become a persistent artifact.
+
+Conceptually:
+
+{
+  "skill_id": "isolation_procedure",
+  "version": "1.2",
+
+  "description": "...",
+
+  "goals": [...],
+
+  "preconditions": [...],
+
+  "rules": [...],
+
+  "hard_constraints": [...],
+
+  "preferences": [...],
+
+  "success_criteria": [...],
+
+  "recovery_rules": [...],
+
+  "teaching_history": [...],
+
+  "validation_history": [...]
+}
+
+A Skill Contract should be:
+
+- machine readable
+- versioned
+- auditable
+- executable through an adapter
+- testable
+- editable by future teaching
+
+==================================================
+8. SKILL VERSIONING
+==================================================
+
+Human corrections should not silently mutate unknown state.
+
+Create versions.
+
+Example:
+
+ISOLATION PROCEDURE
+
+v1.0
+Initial human procedure
+
+v1.1
+Added contamination transfer rule
+
+v1.2
+Prefer keeping left gripper clean
+
+v1.3
+Added suspect-object handling
+
+Record:
+
+- correction
+- previous version
+- new version
+- rule added/changed
+- timestamp
+- validation status
+
+Show this visually in the demo.
+
+==================================================
+9. TEACHING HISTORY
+==================================================
+
+Maintain a concise operational teaching history.
+
+Example:
+
+LESSON 001
+
+Teacher:
+"Once an arm touches contaminated material, treat it as contaminated too."
+
+Compiled into:
+contamination_transfer_gripper
+
+Reason:
+Previous execution caused prohibited clean contact.
+
+Validation:
+Passed 8/8 subsequent test episodes.
+
+Only publish measured validation results.
+
+==================================================
+10. ROBOT EMBODIMENT ADAPTER
+==================================================
+
+The universal teaching engine should not directly contain Intel-specific motor code.
+
+Use an adapter layer.
+
+Conceptually:
+
+class EmbodimentAdapter:
+
+    observe_world()
+
+    available_actions()
+
+    execute(action)
+
+    verify(predicate)
+
+    reset()
+
+Then:
+
+IntelBimanualAdapter
+
+implements the actual competition environment.
+
+Do not force this exact programming interface if the real SDK suggests something better.
+
+Preserve separation between:
+
+GENERAL LEARNED KNOWLEDGE
+
+and:
+
+INTEL ROBOT EXECUTION.
+
+==================================================
+11. AEGIS WORLD MODEL
+==================================================
+
+For the robotics demonstration, maintain explicit world state.
+
+Relevant entities:
+
+- robot arms
+- grippers
+- samples
+- containers
+- trays
+- tools
+- work surfaces
+- quarantine zones
+- clean zones
+
+Relevant attributes:
+
+- pose
+- identity
+- type
+- contact state
+- contamination state
+- protection status
+- reachability
+- held-by
+- confidence
+- zone
+
+Use structured simulator state where allowed.
+
+Do not use an LLM to infer deterministic information unnecessarily.
+
+==================================================
+12. PHYSICAL PROVENANCE
+==================================================
+
+Aegis must remember WHAT touched WHAT.
+
+Maintain a graph.
+
+Nodes:
+
+- objects
+- grippers
+- surfaces
+- tools
+- zones
+
+Edges:
+
+- CONTACT
+- GRASPED_BY
+- PLACED_ON
+- RELEASED_BY
+- ENTERED_ZONE
+- CLEANED_BY
+
+Example:
+
+RED SAMPLE
+      ↓ contact
+RIGHT GRIPPER
+      ↓ contact
+BLUE TRAY
+
+Store:
+
+- timestamp
+- action
+- state before
+- state after
+- source
+- confidence where relevant
+
+==================================================
+13. PROVENANCE STATE
+==================================================
+
+Support at minimum:
+
+CLEAN
+CONTAMINATED
+SUSPECT
+UNKNOWN
+QUARANTINED
+
+If a state is unknown, do not silently treat it as clean.
+
+Safety-sensitive reasoning should fail closed where appropriate.
+
+==================================================
+14. LEARNED CONTAMINATION PROPAGATION
+==================================================
+
+The important distinction is:
+
+The contamination propagation rule should be capable of being introduced through TEACHING.
+
+Before teaching:
+
+the apprentice may not know the rule.
+
+After correction:
+
+it becomes persistent operational knowledge.
+
+This creates a clear:
+
+BEFORE LEARNING
+vs
+AFTER LEARNING
+
+evaluation.
+
+==================================================
+15. COUNTERFACTUAL CONTACT PLANNING
+==================================================
+
+Once the system has learned a safety rule, it should apply it BEFORE actions occur.
+
+Example:
+
+RIGHT_GRIPPER = CONTAMINATED
+PLATE_A = CLEAN
+
+Candidate:
+
+RIGHT_GRIPPER → PICK PLATE_A
+
+Simulate:
+
+CONTACT(right_gripper, plate_A)
+
+Apply learned rule:
+
+CONTAMINATED(right_gripper)
++
+CONTACT(right_gripper, plate_A)
+
+→
+CONTAMINATED(plate_A)
+
+Apply safety rule:
+
+protected clean objects must remain clean
+
+Therefore:
+
+REJECT.
+
+Alternative:
+
+LEFT_GRIPPER → PICK PLATE_A
+
+LEFT_GRIPPER = CLEAN
+
+SAFE.
+
+Execute.
+
+This is:
+
+COUNTERFACTUAL CONTACT PLANNING.
+
+==================================================
+16. GENERAL RULE EXECUTION ENGINE
+==================================================
+
+Do not hard-code every learned rule in bespoke Python if avoidable.
+
+Build a constrained rule system capable of evaluating learned contracts.
+
+Potential rule types:
+
+STATE_TRANSITION
+
+FORBID_INTERACTION
+
+REQUIRE_PRECONDITION
+
+PREFER
+
+GOAL
+
+POSTCONDITION
+
+SUCCESS_CRITERION
+
+Rules should be:
+
+- explicit
+- validated
+- bounded
+- deterministic where possible
+
+Do not create arbitrary executable code from human speech.
+
+No eval().
+
+No generated shell commands.
+
+No unsafe arbitrary-code execution.
+
+==================================================
+17. RULE SAFETY
+==================================================
+
+Natural-language teaching cannot be blindly trusted.
+
+Before accepting a rule:
+
+validate:
+
+- schema
+- supported predicates
+- known entity classes
+- no arbitrary code
+- no impossible references
+- no direct contradiction where detectable
+
+If ambiguous:
+
+ask the teacher.
+
+Example:
+
+Human:
+
+"Keep contaminated things away from the clean stuff."
+
+System:
+
+"Should any contact between contaminated and clean objects be prohibited?"
+
+Human:
+
+"Yes."
+
+Then compile.
+
+This makes teaching conversational rather than reckless.
+
+==================================================
+18. SPEECHMATICS
+==================================================
+
+Integrate Speechmatics genuinely for the AI Infra version.
+
+Speech should support:
+
+INSTRUCTION:
+
+"Move the red sample into quarantine."
+
+TEACHING:
+
+"Anything that touches the red sample should be treated as contaminated."
+
+CORRECTION:
+
+"No. Don't use that arm on clean samples anymore."
+
+PREFERENCE:
+
+"Try to keep the left arm clean."
+
+MODIFICATION:
+
+"From now on, unknown objects should be treated as suspect."
+
+QUERY:
+
+"Why aren't you using the right arm?"
+
+STOP:
+
+"Stop."
+
+RESUME:
+
+"Continue."
+
+Speech must affect actual system state.
+
+Do not make Speechmatics decorative.
+
+==================================================
+19. NATURAL TEACHING DIALOGUE
+==================================================
+
+The human should not have to speak formal programming language.
+
+Accept ordinary explanations.
+
+Example:
+
+Teacher:
+
+"Once you've touched something dirty with a glove, that glove is dirty too."
+
+The Teaching Compiler should map:
+
+dirty
+→ domain state such as CONTAMINATED
+
+glove
+→ robot gripper in context
+
+But preserve uncertainty.
+
+If interpretation is ambiguous:
+
+ask one concise clarification.
+
+==================================================
+20. EXPLANATION ENGINE
+==================================================
+
+The apprentice should explain behavior using explicit learned rules and state.
+
+Human:
+
+"Why aren't you using the right arm?"
+
+Answer:
+
+"The right gripper previously contacted the contaminated container. You taught me not to let contaminated grippers touch protected clean objects, so I'm keeping that arm in the contaminated workflow."
+
+This explanation should be generated from:
+
+PROVENANCE
++
+LEARNED RULE
++
+PLANNER DECISION
+
+not fabricated model chain-of-thought.
+
+==================================================
+21. DO NOT EXPOSE PRIVATE CHAIN OF THOUGHT
+==================================================
+
+Expose:
+
+- facts
+- rules
+- skill contracts
+- plans
+- contact histories
+- state transitions
+- constraint violations
+- corrections
+- verification results
+- concise rationale
+
+Do not expose private internal model reasoning.
+
+==================================================
+22. BIMANUAL APPRENTICESHIP
+==================================================
+
+Make the two-arm nature scientifically meaningful.
+
+Initially the apprentice may use either arm normally.
+
+After learning contamination transfer:
+
+one arm may become contaminated.
+
+The planner then reasons:
+
+RIGHT ARM
+CONTAMINATED
+
+LEFT ARM
+CLEAN
+
+This affects task allocation.
+
+Potential policy:
+
+RIGHT:
+contaminated handling
+
+LEFT:
+clean handling
+
+This is not hard-coded forever.
+
+It should emerge from:
+
+world state
++
+learned rules
++
+planner optimization.
+
+==================================================
+23. BIMANUAL COST FUNCTION
+==================================================
+
+Candidate task assignment may consider:
+
+movement cost
+reachability
+gripper occupancy
+collision risk
+task dependencies
+contamination state
+cross-domain transfer risk
+estimated time
+decontamination cost
+parallelizability
+
+Conceptually:
+
+COST(arm, task) =
+
+movement
++
+reachability_penalty
++
+collision_risk
++
+safety_risk
++
+domain_transfer_penalty
++
+time
++
+dependency_penalty
+
+==================================================
+24. TASK PLANNING
+==================================================
+
+Separate:
+
+WHAT MUST BECOME TRUE
+
+from:
+
+HOW TO MOVE THE ROBOT.
+
+Use:
+
+- goal decomposition
+- HTN
+- symbolic planning
+- behavior trees
+- search
+- dependency graphs
+- hybrid planning
+
+depending on actual environment.
+
+Do not have an LLM blindly emit joint actions forever.
+
+==================================================
+25. VLA
+==================================================
+
+Use Intel's actual VLA/manipulation mechanism.
+
+High-level planner may produce semantic steps.
+
+Example:
+
+PICK(red_container)
+
+PLACE(red_container, quarantine_zone)
+
+PICK(plate_a)
+
+PLACE(plate_a, clean_area)
+
+Map them onto actual available APIs.
+
+Do not fake VLA execution.
+
+==================================================
+26. CLOSED-LOOP ACTION
+==================================================
+
+Never assume issued action = successful action.
+
+Required:
+
+PLAN
+↓
+ACT
+↓
+OBSERVE
+↓
+COMPARE
+↓
+UPDATE WORLD
+↓
+UPDATE PROVENANCE
+↓
+VERIFY
+↓
+CONTINUE / REPLAN
+
+==================================================
+27. PRACTICE MODE
+==================================================
+
+Fortifiers Apprenticeship needs an explicit PRACTICE loop.
+
+Teacher defines skill.
+
+System attempts.
+
+Evaluator checks:
+
+GOALS
+CONSTRAINTS
+LEARNED RULES
+SUCCESS CRITERIA.
+
+If failure:
+
+classify failure.
+
+Examples:
+
+EXECUTION FAILURE
+
+KNOWLEDGE FAILURE
+
+POLICY VIOLATION
+
+AMBIGUOUS INSTRUCTION
+
+PLANNING FAILURE
+
+The user can then teach/correct.
+
+==================================================
+28. AUTOMATIC FAILURE DIAGNOSIS
+==================================================
+
+When possible distinguish:
+
+ROBOTICS FAILURE:
+
+grasp failed
+
+from:
+
+TEACHING FAILURE:
+
+no rule existed preventing unsafe contact
+
+from:
+
+PLANNING FAILURE:
+
+correct knowledge existed but planner ignored it
+
+This is scientifically valuable.
+
+==================================================
+29. BEFORE VS AFTER LEARNING EVALUATION
+==================================================
+
+Create a controlled evaluation.
+
+Phase A:
+
+APPRENTICE WITHOUT TAUGHT RULE
+
+Run N randomized episodes.
+
+Measure:
+
+- mission success
+- safety violations
+- contamination events
+- action count
+
+Phase B:
+
+TEACH SAFETY RULE
+
+Run same or comparable environment distribution.
+
+Measure again.
+
+The project should demonstrate that a small amount of human teaching improves future autonomous behavior.
+
+Do not invent results.
+
+==================================================
+30. GENERALIZATION TEST
+==================================================
+
+A learned skill must be tested on scenes different from the teaching scene.
+
+Vary where possible:
+
+- object locations
+- irrelevant objects
+- which arm starts closer
+- container locations
+- number of clean objects
+- scene seed
+
+A successful learned skill should rely on relationships and rules rather than fixed coordinates.
+
+==================================================
+31. TRANSFER TEST
+==================================================
+
+If feasible:
+
+teach rule using one object.
+
+Example:
+
+red container.
+
+Then create a new contaminated object with another identity.
+
+If policy is defined at the class/state level:
+
+the rule should generalize.
+
+This demonstrates actual operational abstraction.
+
+==================================================
+32. SKILL LIBRARY
+==================================================
+
+Persist learned skills.
+
+UI should show:
+
+SKILLS
+
+Isolation Procedure
+v1.2
+VALIDATED
+
+Clean Handling
+v1.0
+DRAFT
+
+Hazard Transfer Rule
+v2.0
+VALIDATED
+
+Each skill should show:
+
+- version
+- last taught
+- validation status
+- success metrics
+- number of corrections
+
+==================================================
+33. UNIVERSALITY WITHOUT OVERCLAIMING
+==================================================
+
+Architect the system generically.
+
+Do NOT claim in the competition that we have already solved universal machine teaching.
+
+Say:
+
+"Fortifiers Apprenticeship explores a reusable teaching layer for autonomous systems. This submission demonstrates the architecture through bimanual scientific manipulation."
+
+The robotics demonstration is proof of concept for the GENERAL abstraction.
+
+==================================================
+34. FUTURE ADAPTER EXAMPLES
+==================================================
+
+Document, but do not necessarily build:
+
+SOFTWARE AGENT
+
+Human:
+"Anything downloaded from the untrusted environment stays isolated from production."
+
+Possible abstract mapping:
+
+CONTACT
+→ DATA_TRANSFER
+
+CONTAMINATED
+→ UNTRUSTED
+
+CLEAN
+→ TRUSTED
+
+SCIENTIFIC AI
+
+Human:
+"Never use test-set samples while fitting the model."
+
+Possible abstract mapping:
+
+FORBID_INTERACTION(
+training_process,
+test_dataset
+)
+
+COMPUTER USE
+
+Human:
+"Customer information should never be pasted into an unapproved website."
+
+These examples show the generality of the Skill Contract abstraction.
+
+==================================================
+35. USER INTERFACE
+==================================================
+
+Product:
+
+FORTIFIERS APPRENTICESHIP
+
+Headline:
+
+TEACH MACHINES THE WAY YOU TEACH PEOPLE.
+
+Demonstration label:
+
+AEGIS
+Scientific Safety Apprentice
+
+Suggested interface:
+
+LEFT:
+simulation
+
+CENTER:
+current mission / plan
+
+RIGHT:
+what the apprentice knows
+
+Tabs or sections:
+
+TEACH
+SKILL
+PROVENANCE
+EXECUTION
+HISTORY
+
+Show:
+
+WHAT I WAS TAUGHT
+
+WHAT I UNDERSTOOD
+
+WHAT I AM DOING
+
+WHAT HAPPENED
+
+WHAT I LEARNED
+
+==================================================
+36. VISUAL LEARNING MOMENT
+==================================================
+
+When a correction is received show:
+
+TEACHING RECEIVED
+
+"Don't let contaminated arms touch clean samples."
+
+↓
+
+RULE COMPILED
+
+IF:
+gripper.state == CONTAMINATED
+
+FORBID:
+CONTACT(gripper, protected_clean_object)
+
+↓
+
+SKILL UPDATED
+
+Isolation Procedure
+v1.0 → v1.1
+
+↓
+
+RETESTING
+
+This should be visually striking.
+
+==================================================
+37. KNOWLEDGE VISUALIZATION
+==================================================
+
+Show rules separately from transient state.
+
+KNOWLEDGE:
+
+Contamination transfers through contact.
+
+POLICY:
+
+Contaminated actors may not touch protected clean objects.
+
+PREFERENCE:
+
+Keep left arm clean when practical.
+
+CURRENT WORLD:
+
+Right arm contaminated.
+Left arm clean.
+
+This distinction matters.
+
+==================================================
+38. PROVENANCE GRAPH
+==================================================
+
+Display:
+
+RED CONTAINER
+CONTAMINATED
+     │
+     ▼
+RIGHT GRIPPER
+CONTAMINATED
+
+Then candidate:
+
+RIGHT GRIPPER
+      │
+      X
+  CLEAN PLATE
+
+BLOCKED
+
+Learned rule:
+protect_clean_objects
+
+==================================================
+39. PHYSICAL LEDGER
+==================================================
+
+Maintain an append-only operational record.
+
+Example:
+
+14:31:02
+Skill execution started.
+
+14:31:07
+Right gripper contacted red container.
+
+14:31:07
+Right gripper state:
+CLEAN → CONTAMINATED.
+
+14:31:12
+Candidate action:
+right gripper → clean tray.
+
+14:31:12
+Blocked by learned rule:
+protect_clean_objects.
+
+14:31:13
+Alternative plan selected:
+left gripper → clean tray.
+
+This makes behavior auditable.
+
+==================================================
+40. VERIFICATION
+==================================================
+
+Evaluate both:
+
+TASK GOALS
+
+and:
+
+LEARNED BEHAVIORAL RULES.
+
+Example:
+
+red container quarantined          PASS
+
+clean samples prepared             PASS
+
+protected objects remained clean   PASS
+
+learned contamination rule obeyed  PASS
+
+If policy violated:
+
+the skill execution is not fully successful.
+
+==================================================
+41. TEACHING VERIFICATION
+==================================================
+
+Do not assume a correction is useful because it compiled.
+
+After teaching:
+
+retest.
+
+Only mark a learned rule VALIDATED after it improves or passes intended tests.
+
+States:
+
+DRAFT
+TESTING
+VALIDATED
+FAILED
+CONFLICTED
+
+==================================================
+42. CONTRADICTORY TEACHING
+==================================================
+
+Support basic conflict detection.
+
+Existing:
+
+"Contaminated grippers cannot touch clean samples."
+
+New:
+
+"Use the contaminated gripper to move the clean sample."
+
+System should detect policy conflict.
+
+Ask:
+
+"This conflicts with the isolation rule you taught earlier. Should I temporarily override it, replace the old rule, or keep the existing safety rule?"
+
+For the hackathon, safety rule should normally win unless explicitly and legitimately changed.
+
+==================================================
+43. DO NOT CREATE UNSAFE GENERAL AGENT CODE
+==================================================
+
+Do not compile arbitrary speech into arbitrary executable code.
+
+The Teaching Compiler should target a constrained declarative representation.
+
+Allowed rule vocabulary should be explicit.
+
+Examples:
+
+states
+predicates
+constraints
+goals
+preferences
+transitions
+verification conditions
+
+No shell access from taught rules.
+
+No eval.
+
+No arbitrary Python execution.
+
+==================================================
+44. SCIENTIFIC APPLICATION
+==================================================
+
+Frame Aegis around scientific safety.
+
+Good examples:
+
+- contamination-sensitive biological workflows
+- radioactive sample isolation
+- forensic evidence segregation
+- cleanroom handling
+- hazardous sample manipulation
+- planetary sample protection
+
+Do not make dangerous real-world claims beyond what the simulation proves.
+
+==================================================
+45. ROBUSTNESS
+==================================================
+
+Handle:
+
+- failed grasp
+- dropped object
+- wrong object
+- unknown object state
+- unexpected contact
+- ambiguous speech
+- contradictory rule
+- Speechmatics failure
+- missing object
+- simulator reset
+- unreachable goal
+- malformed model output
+
+Use bounded retries.
+
+==================================================
+46. MODEL OUTPUT VALIDATION
+==================================================
+
+Anything produced by an LLM that affects persistent knowledge must pass schema validation.
+
+Use:
+
+Pydantic
+Zod
+JSON Schema
+or equivalent.
+
+Never trust arbitrary free-form generated JSON.
+
+==================================================
+47. DETERMINISTIC CORE
+==================================================
+
+Prefer deterministic mechanisms for:
+
+- skill storage
+- versioning
+- rule execution
+- state propagation
+- provenance
+- constraint checking
+- geometry
+- verification
+- event history
+
+Use learned models for:
+
+- natural-language interpretation
+- ambiguous instruction understanding
+- perception if necessary
+- VLA control
+- semantic planning where appropriate
+
+Architecture:
+
+LEARNED INTERPRETATION
++
+DETERMINISTIC KNOWLEDGE
++
+LEARNED PHYSICAL EXECUTION
++
+DETERMINISTIC VERIFICATION
+
+==================================================
+48. BENCHMARKS
+==================================================
+
+Measure actual:
+
+TASK SUCCESS
+
+SAFETY VIOLATIONS
+
+UNSAFE ACTIONS PREVENTED
+
+CORRECTION RETENTION
+
+TRANSFER SUCCESS
+
+GENERALIZATION SUCCESS
+
+NUMBER OF RETRIES
+
+PLANNING LATENCY
+
+SPEECH LATENCY
+
+ACTION COUNT
+
+TIME TO COMPLETION
+
+==================================================
+49. APPRENTICESHIP METRICS
+==================================================
+
+Add metrics specific to the research thesis.
+
+Teaching Efficiency:
+
+How many human corrections were required before success?
+
+Retention:
+
+Does the rule persist next run?
+
+Generalization:
+
+Does it work in changed scenes?
+
+Rule Utilization:
+
+How often did learned knowledge affect planning?
+
+Correction Effectiveness:
+
+Did the error rate decrease after teaching?
+
+==================================================
+50. ABLATIONS
+==================================================
+
+If feasible compare:
+
+BASELINE A:
+robot with no taught rule
+
+BASELINE B:
+natural-language command only
+
+APPRENTICESHIP:
+persistent compiled rule
+
+Measure whether Apprenticeship reduces repeated failures.
+
+This is extremely important if time permits.
+
+==================================================
+51. DEMO SEQUENCE
+==================================================
+
+Ideal final demo:
+
+PART 1
+
+"We're going to teach this robot a safety procedure."
+
+Human:
+
+"Move the red container into quarantine and prepare the clean samples."
+
+Robot begins.
+
+It makes or proposes unsafe interaction.
+
+PART 2
+
+Teacher:
+
+"No. Once an arm touches contaminated material, that arm is contaminated too. Don't use it on clean samples."
+
+Speechmatics transcript appears.
+
+RULE COMPILED appears.
+
+Skill:
+
+v1.0 → v1.1
+
+PART 3
+
+Robot replans.
+
+Right arm:
+contaminated handling.
+
+Left arm:
+clean handling.
+
+Mission completes.
+
+PART 4
+
+RESET SCENE.
+
+Objects scrambled.
+
+Human:
+
+"Run the isolation procedure."
+
+Robot successfully applies the remembered lesson.
+
+PART 5
+
+Human:
+
+"Why aren't you using the right arm?"
+
+Aegis:
+
+"The right gripper contacted the contaminated container. You taught me not to let contaminated grippers touch protected clean objects."
+
+PART 6
+
+End:
+
+"We didn't rewrite the robot.
+
+We taught it."
+
+==================================================
+52. PITCH
+==================================================
+
+Opening:
+
+"Most AI systems forget corrections as soon as the context disappears.
+
+People don't learn that way."
+
+Then:
+
+"When we train someone, we explain a task, watch them try it, correct what they get wrong, and expect them to remember the lesson next time."
+
+Then:
+
+"Fortifiers Apprenticeship brings that loop to autonomous machines."
+
+Then demo.
+
+Closing:
+
+"Today we're demonstrating it with a robot learning scientific contamination control.
+
+The broader idea is simple:
+
+Teach machines the way you teach people."
+
+==================================================
+53. PROJECT NAMES
+==================================================
+
+Main system:
+
+FORTIFIERS APPRENTICESHIP
+
+Technology:
+
+TEACHING COMPILER
+
+Persistent artifact:
+
+SKILL CONTRACT
+
+Robotic apprentice:
+
+AEGIS
+
+Robotics reasoning subsystem:
+
+PHYSICAL PROVENANCE ENGINE
+
+Safety planner:
+
+COUNTERFACTUAL CONTACT PLANNER
+
+==================================================
+54. README
+==================================================
+
+README must contain:
+
+# Fortifiers Apprenticeship
+
+## Teach Machines the Way You Teach People
+
+## Problem
+
+## Research Thesis
+
+## How Apprenticeship Works
+
+## Teaching Compiler
+
+## Skill Contracts
+
+## Persistent Corrections
+
+## Aegis Demonstration
+
+## Physical Provenance
+
+## Counterfactual Contact Planning
+
+## Intel Bimanual VLA Integration
+
+## Speechmatics Integration
+
+## Architecture
+
+## Demo
+
+## Evaluation
+
+## Results
+
+## Installation
+
+## Running
+
+## Tests
+
+## Limitations
+
+## Future Embodiments
+
+## Hackathon
+
+==================================================
+55. REPOSITORY STRUCTURE
+==================================================
+
+Adapt to actual starter repository, but conceptually:
+
+src/
+
+  teaching/
+    compiler
+    clarification
+    correction
+    schemas
+
+  skills/
+    contracts
+    versions
+    library
+    validation
+
+  embodiment/
+    base
+    intel_bimanual
+
+  aegis/
+    provenance
+    contact_graph
+    contamination
+    policies
+
+  planning/
+    task_planner
+    counterfactual
+    allocation
+
+  execution/
+    controller
+    observer
+    recovery
+
+  verification/
+
+  speech/
+    speechmatics
+
+  evaluation/
+
+  ledger/
+
+  ui/
+
+tests/
+
+docs/
+
+demo/
+
+scripts/
+
+==================================================
+56. ONE COMMAND RUN
+==================================================
+
+Create the simplest possible run path.
+
+Examples:
+
+make run
+
+or:
+
+python main.py
+
+or:
+
+docker compose up
+
+README should let a judge reproduce it.
+
+==================================================
+57. SECURITY
+==================================================
+
+No secrets in repo.
+
+Use:
+
+.env.example
+
+SPEECHMATICS_API_KEY=
+
+Any model credentials:
+
+environment variables.
+
+Run secret scanning before public publication.
+
+==================================================
+58. FORTIFIERS PROPRIETARY CODE
+==================================================
+
+If you are operating inside the private Fortifiers workspace:
+
+DO NOT blindly publish proprietary production code.
+
+This competition project should be isolated.
+
+Reuse knowledge and safe abstractions where appropriate.
+
+Do not expose:
+
+- production credentials
+- customer data
+- internal proprietary prompts
+- private business logic
+- unrelated Fortifiers infrastructure
+- private database schemas
+- secret APIs
+
+==================================================
+59. DON'T OVERCLAIM
+==================================================
+
+Do not say:
+
+"world's first"
+
+"true AGI teaching"
+
+"human-level learning"
+
+"the first robot that can learn from speech"
+
+unless independently proven.
+
+Use defensible language:
+
+"We explore persistent operational teaching for autonomous systems."
+
+"Fortifiers Apprenticeship converts natural corrections into explicit reusable skill contracts."
+
+"The Aegis demonstration tests whether spoken corrections can persist and influence future bimanual planning."
+
+==================================================
+60. WORK PRIORITY
+==================================================
+
+Dependency order:
+
+1. AUDIT OFFICIAL ENVIRONMENT
+
+2. RUN BASELINE SIMULATOR
+
+3. GET REAL BIMANUAL ACTION WORKING
+
+4. BUILD EMBODIMENT ADAPTER
+
+5. BUILD SKILL CONTRACT SCHEMA
+
+6. BUILD TEACHING COMPILER
+
+7. BUILD RULE ENGINE
+
+8. BUILD AEGIS WORLD MODEL
+
+9. BUILD PROVENANCE GRAPH
+
+10. BUILD COUNTERFACTUAL POLICY CHECKER
+
+11. CONNECT LEARNED RULES TO PLANNER
+
+12. IMPLEMENT BEFORE/AFTER TEACHING
+
+13. IMPLEMENT SKILL PERSISTENCE
+
+14. RESET SCENE AND TEST RETENTION
+
+15. TEST GENERALIZATION
+
+16. ADD SPEECHMATICS
+
+17. ADD VERBAL CORRECTIONS
+
+18. ADD WHY EXPLANATIONS
+
+19. BUILD UI
+
+20. BUILD EVALUATION HARNESS
+
+21. RUN ABLATIONS
+
+22. PACKAGE SUBMISSION
+
+Do not polish aesthetics while foundational robotics is broken.
+
+==================================================
+61. AUTONOMOUS ENGINEERING POLICY
+==================================================
+
+Do not repeatedly ask me what to do.
+
+You are authorized to:
+
+- inspect files
+- install appropriate dependencies
+- modify project files
+- run simulator
+- write tests
+- debug
+- refactor
+- generate docs
+- create evaluation scripts
+- create UI
+- package project
+
+If an approach fails:
+
+diagnose why.
+
+Try another sound approach.
+
+If external credentials are unavailable:
+
+build the integration around an environment variable and continue everything else.
+
+==================================================
+62. NO FAKE SUCCESS
+==================================================
+
+Never fabricate:
+
+- robot success
+- benchmark results
+- Speechmatics integration
+- learned behavior
+- generalization
+- evaluation numbers
+- contact events
+- scoring
+
+If something doesn't work:
+
+say it doesn't work.
+
+Fix what can be fixed.
+
+==================================================
+63. ACCEPTANCE CRITERIA
+==================================================
+
+Do not mark the project complete until, within the real challenge capabilities:
+
+CORE ROBOTICS
+
+[ ] Official environment runs.
+
+[ ] Real bimanual actions work.
+
+[ ] Environment can be reset.
+
+TEACHING
+
+[ ] Natural-language teaching becomes structured knowledge.
+
+[ ] Human correction can add or modify a rule.
+
+[ ] Rule passes schema validation.
+
+[ ] Skill contracts are persistent.
+
+[ ] Skill versions are visible.
+
+LEARNING LOOP
+
+[ ] Robot can make or propose a failure before teaching.
+
+[ ] Human can correct it.
+
+[ ] Correction changes future planning.
+
+[ ] Robot retries.
+
+[ ] Learned behavior persists after scene reset.
+
+[ ] Learned behavior is tested in a changed scene.
+
+AEGIS
+
+[ ] Physical provenance is tracked.
+
+[ ] Grippers can have different states.
+
+[ ] Contact propagation works.
+
+[ ] Learned contamination rule can affect state.
+
+[ ] Unsafe candidate action can be blocked.
+
+[ ] Alternative safe action can be selected.
+
+[ ] Final state is verified.
+
+VOICE
+
+[ ] Speechmatics processes real speech.
+
+[ ] Spoken teaching modifies the Skill Contract.
+
+[ ] Spoken correction persists.
+
+[ ] At least one "why" query works.
+
+EVALUATION
+
+[ ] Before-learning baseline measured.
+
+[ ] After-learning behavior measured.
+
+[ ] Retention measured.
+
+[ ] At least one generalization test performed.
+
+[ ] No metrics fabricated.
+
+PRODUCT
+
+[ ] UI clearly shows teaching.
+
+[ ] UI shows rule compilation.
+
+[ ] UI shows skill version update.
+
+[ ] UI shows robot execution.
+
+[ ] UI shows what the apprentice remembers.
+
+[ ] README complete.
+
+[ ] Architecture documented.
+
+[ ] Tests pass.
+
+[ ] Demo reproducible.
+
+==================================================
+64. STRETCH GOALS
+==================================================
+
+Only after core system is reliable:
+
+A. TEACH BY DEMONSTRATION
+
+If simulator supports a human demonstration or trajectory:
+
+allow the user to demonstrate a behavior.
+
+System extracts:
+
+goals
+relations
+procedure hints
+
+Then combines demonstration with verbal teaching.
+
+B. ACTIVE QUESTIONING
+
+Apprentice asks:
+
+"Should unknown containers be treated as contaminated or only suspect?"
+
+C. RULE COMPOSITION
+
+Learn multiple independent rules and combine them.
+
+D. TEMPORARY RULE
+
+Human:
+
+"For this run only, treat the blue tray as contaminated."
+
+Do not persist unless requested.
+
+E. ROLLBACK
+
+Revert:
+
+v1.3 → v1.2
+
+F. CROSS-SKILL KNOWLEDGE
+
+A validated general rule such as contamination transfer may optionally be reusable across compatible skills.
+
+Do this carefully.
+
+==================================================
+65. ARCHITECTURE DIAGRAM
+==================================================
+
+Create a polished architecture diagram resembling:
+
+Human Teacher
+      │
+      ▼
+Speechmatics
+      │
+      ▼
+Teaching Compiler
+      │
+      ▼
+Skill Contract ────────────► Skill Library
+      │                           │
+      ▼                           │
+Embodiment Adapter ◄──────────────┘
+      │
+      ▼
+Aegis World Model
+      │
+      ├──► Physical Provenance
+      │
+      ├──► Learned Rule Engine
+      │
+      └──► Counterfactual Planner
+                  │
+                  ▼
+          Bimanual Scheduler
+                  │
+                  ▼
+             Intel VLA
+                  │
+                  ▼
+              Simulator
+                  │
+                  ▼
+               Observe
+                  │
+                  ▼
+                Verify
+              /        \
+           PASS        FAIL
+             │           │
+          Remember     Correct
+                         │
+                         └────► Teaching Compiler
+
+==================================================
+66. SUBMISSION DESCRIPTION
+==================================================
+
+Prepare a concise description along these lines, but adapt it to actual results:
+
+"Fortifiers Apprenticeship explores a new interface for autonomous systems: teaching.
+
+Instead of programming every behavior or relying on ephemeral prompts, a human can explain a procedure, watch the machine attempt it, correct mistakes naturally, and have those corrections compiled into persistent, machine-checkable Skill Contracts.
+
+Our first apprentice, Aegis, learns contamination-control behavior for bimanual scientific manipulation.
+
+When a human teaches that contact with contaminated material contaminates a robot gripper, the system converts that correction into an explicit rule, updates its physical provenance model, replans future manipulation, and retains the lesson across new scenes.
+
+Speechmatics provides the natural teaching interface, while Intel's bimanual environment provides the physical embodiment.
+
+The goal is simple:
+
+Teach machines the way you teach people."
+
+==================================================
+67. VIDEO STORYBOARD
+==================================================
+
+Prepare a final video around:
+
+0:00-0:20
+Problem.
+
+0:20-0:40
+Fortifiers Apprenticeship thesis.
+
+0:40-1:00
+Initial robot task.
+
+1:00-1:30
+Failure.
+
+1:30-1:50
+Human verbal correction.
+
+1:50-2:10
+Show rule compilation.
+
+2:10-2:40
+Show successful replanning.
+
+2:40-3:00
+Reset/scramble scene.
+
+3:00-3:20
+"Run the isolation procedure."
+
+3:20-3:40
+Robot remembers and succeeds.
+
+3:40-3:55
+"Why aren't you using the right arm?"
+
+3:55-4:10
+Explanation.
+
+4:10-end
+Broader vision:
+
+Robotics today.
+
+Other autonomous systems tomorrow.
+
+==================================================
+68. MOST IMPORTANT DEMONSTRATION
+==================================================
+
+The strongest proof is NOT:
+
+the robot moved an object.
+
+It is:
+
+THE ROBOT FAILED.
+
+THE HUMAN CORRECTED IT IN NATURAL LANGUAGE.
+
+THE SYSTEM COMPILED THE CORRECTION.
+
+THE ROBOT RETRIED.
+
+THE ROBOT SUCCEEDED.
+
+THE SCENE CHANGED.
+
+THE ROBOT REMEMBERED.
+
+That is what must work.
+
+==================================================
+69. FINAL STANDARD
+==================================================
+
+Do not optimize the project merely to look impressive in screenshots.
+
+Optimize for the actual scientific claim:
+
+Can a human correction become explicit persistent operational knowledge that changes future autonomous behavior?
+
+Every major engineering decision should support proving or disproving that question.
+
+==================================================
+70. FINAL REPORT
+==================================================
+
+When engineering is complete, report:
+
+1. Repository/environment audited.
+2. Actual Intel interfaces discovered.
+3. Final architecture.
+4. Teaching Compiler implementation.
+5. Skill Contract schema.
+6. Versioning implementation.
+7. Rule engine implementation.
+8. Aegis provenance implementation.
+9. Counterfactual planning implementation.
+10. Intel VLA integration.
+11. Speechmatics integration.
+12. Before-learning results.
+13. After-learning results.
+14. Retention results.
+15. Generalization results.
+16. Actual simulation success rate.
+17. Actual safety-violation rate.
+18. Tests run.
+19. Files created/modified.
+20. Exact run commands.
+21. Best demo sequence.
+22. Known limitations.
+23. Submission assets created.
+24. Anything requiring my manual action.
+
+Do not stop after coding.
+
+Complete the full loop:
+
+AUDIT
+→ BUILD
+→ RUN
+→ FAIL
+→ DEBUG
+→ TEACH
+→ RETEST
+→ GENERALIZE
+→ MEASURE
+→ PACKAGE.
+
+The final idea should be immediately understandable:
+
+FORTIFIERS APPRENTICESHIP
+
+TEACH MACHINES THE WAY YOU TEACH PEOPLE.
+
+And the demonstration should leave one image in the judge's head:
+
+The robot makes a mistake.
+
+A person tells it why.
+
+It never makes the same mistake again.

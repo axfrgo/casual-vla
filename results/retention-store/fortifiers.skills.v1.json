@@ -1,0 +1,84 @@
+[
+  {
+    "skillId": "isolation_procedure",
+    "version": "1.0",
+    "description": "Quarantine contaminated objects and prepare protected clean samples.",
+    "goals": [
+      {
+        "selector": {
+          "kind": "object",
+          "state": "CONTAMINATED"
+        },
+        "zone": "quarantine"
+      },
+      {
+        "selector": {
+          "kind": "object",
+          "protected": true
+        },
+        "zone": "clean_area"
+      }
+    ],
+    "rules": [],
+    "teachingHistory": [],
+    "validationHistory": []
+  },
+  {
+    "skillId": "isolation_procedure",
+    "version": "1.1",
+    "description": "Quarantine contaminated objects and prepare protected clean samples.",
+    "goals": [
+      {
+        "selector": {
+          "kind": "object",
+          "state": "CONTAMINATED"
+        },
+        "zone": "quarantine"
+      },
+      {
+        "selector": {
+          "kind": "object",
+          "protected": true
+        },
+        "zone": "clean_area"
+      }
+    ],
+    "rules": [
+      {
+        "id": "contamination_transfer",
+        "type": "transition",
+        "event": "CONTACT",
+        "actor": {},
+        "target": {
+          "state": "CONTAMINATED"
+        },
+        "effect": "CONTAMINATED"
+      },
+      {
+        "id": "protect_clean",
+        "type": "forbid",
+        "event": "CONTACT",
+        "actor": {
+          "state": "CONTAMINATED"
+        },
+        "target": {
+          "state": "CLEAN",
+          "protected": true
+        }
+      }
+    ],
+    "teachingHistory": [
+      {
+        "text": "Once an arm touches contaminated material, treat that arm as contaminated too. Don't let it touch clean material until it has been cleared.",
+        "rules": [
+          "contamination_transfer",
+          "protect_clean"
+        ],
+        "source": "text",
+        "previousVersion": "1.0",
+        "at": "2026-09-09T21:57:16.944Z"
+      }
+    ],
+    "validationHistory": []
+  }
+]
