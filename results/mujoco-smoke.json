@@ -1,0 +1,206 @@
+{
+  "environment": "mujoco-dual-arm-dinner-table",
+  "episodes": [
+    {
+      "seed": 1001,
+      "objects": [
+        "cup",
+        "fork",
+        "plate",
+        "spoon"
+      ],
+      "drawer": 0.1970227828567882,
+      "contacts": 22,
+      "perturbation": {
+        "placement_jitter": 0.08,
+        "mass_scale": 1.0,
+        "friction_scale": 0.9,
+        "object_scale": 1.0,
+        "lighting_scale": 0.8,
+        "background": "neutral"
+      },
+      "camera": false
+    },
+    {
+      "seed": 1002,
+      "objects": [
+        "cup",
+        "fork",
+        "plate",
+        "spoon"
+      ],
+      "drawer": 0.14139707827594783,
+      "contacts": 12,
+      "perturbation": {
+        "placement_jitter": 0.12,
+        "mass_scale": 1.1,
+        "friction_scale": 0.98,
+        "object_scale": 1.03,
+        "lighting_scale": 0.9500000000000001,
+        "background": "warm"
+      },
+      "camera": false
+    },
+    {
+      "seed": 1003,
+      "objects": [
+        "cup",
+        "fork",
+        "plate",
+        "spoon"
+      ],
+      "drawer": 0.09506176838447203,
+      "contacts": 14,
+      "perturbation": {
+        "placement_jitter": 0.16,
+        "mass_scale": 1.0,
+        "friction_scale": 1.06,
+        "object_scale": 1.06,
+        "lighting_scale": 1.1,
+        "background": "cool"
+      },
+      "camera": false
+    },
+    {
+      "seed": 1004,
+      "objects": [
+        "cup",
+        "fork",
+        "plate",
+        "spoon"
+      ],
+      "drawer": 0.05021130865777161,
+      "contacts": 33,
+      "perturbation": {
+        "placement_jitter": 0.08,
+        "mass_scale": 1.1,
+        "friction_scale": 1.1400000000000001,
+        "object_scale": 1.0,
+        "lighting_scale": 0.8,
+        "background": "neutral"
+      },
+      "camera": false
+    },
+    {
+      "seed": 1005,
+      "objects": [
+        "cup",
+        "fork",
+        "plate",
+        "spoon"
+      ],
+      "drawer": 0.0697326015362945,
+      "contacts": 26,
+      "perturbation": {
+        "placement_jitter": 0.12,
+        "mass_scale": 1.0,
+        "friction_scale": 0.9,
+        "object_scale": 1.03,
+        "lighting_scale": 0.9500000000000001,
+        "background": "warm"
+      },
+      "camera": false
+    },
+    {
+      "seed": 1006,
+      "objects": [
+        "cup",
+        "fork",
+        "plate",
+        "spoon"
+      ],
+      "drawer": 0.13086114405747787,
+      "contacts": 28,
+      "perturbation": {
+        "placement_jitter": 0.16,
+        "mass_scale": 1.1,
+        "friction_scale": 0.98,
+        "object_scale": 1.06,
+        "lighting_scale": 1.1,
+        "background": "cool"
+      },
+      "camera": false
+    },
+    {
+      "seed": 1007,
+      "objects": [
+        "cup",
+        "fork",
+        "plate",
+        "spoon"
+      ],
+      "drawer": 0.06709398499061259,
+      "contacts": 31,
+      "perturbation": {
+        "placement_jitter": 0.08,
+        "mass_scale": 1.0,
+        "friction_scale": 1.06,
+        "object_scale": 1.0,
+        "lighting_scale": 0.8,
+        "background": "neutral"
+      },
+      "camera": false
+    },
+    {
+      "seed": 1008,
+      "objects": [
+        "cup",
+        "fork",
+        "plate",
+        "spoon"
+      ],
+      "drawer": 0.0901406597731085,
+      "contacts": 13,
+      "perturbation": {
+        "placement_jitter": 0.12,
+        "mass_scale": 1.1,
+        "friction_scale": 1.1400000000000001,
+        "object_scale": 1.03,
+        "lighting_scale": 0.9500000000000001,
+        "background": "warm"
+      },
+      "camera": false
+    },
+    {
+      "seed": 1009,
+      "objects": [
+        "cup",
+        "fork",
+        "plate",
+        "spoon"
+      ],
+      "drawer": 0.06356011089282543,
+      "contacts": 21,
+      "perturbation": {
+        "placement_jitter": 0.16,
+        "mass_scale": 1.0,
+        "friction_scale": 0.9,
+        "object_scale": 1.06,
+        "lighting_scale": 1.1,
+        "background": "cool"
+      },
+      "camera": false
+    },
+    {
+      "seed": 1010,
+      "objects": [
+        "cup",
+        "fork",
+        "plate",
+        "spoon"
+      ],
+      "drawer": 0.07279814791077735,
+      "contacts": 31,
+      "perturbation": {
+        "placement_jitter": 0.08,
+        "mass_scale": 1.1,
+        "friction_scale": 0.98,
+        "object_scale": 1.0,
+        "lighting_scale": 0.8,
+        "background": "neutral"
+      },
+      "camera": false
+    }
+  ],
+  "note": "Scene-load and randomization smoke test only; no policy success score yet."
+}

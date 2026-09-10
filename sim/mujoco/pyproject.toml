@@ -1,0 +1,27 @@
+[build-system]
+requires = ["hatchling>=1.27"]
+build-backend = "hatchling.build"
+
+[project]
+name = "fortifiers-mujoco"
+version = "0.1.0"
+description = "MuJoCo dinner-table environment for the Fortifiers apprenticeship"
+requires-python = ">=3.11,<3.15"
+dependencies = [
+  "mujoco==3.13.0",
+  "numpy>=2.0,<3",
+]
+
+[project.optional-dependencies]
+dev = [
+  "pytest>=8,<9",
+]
+edge = [
+  "openvino>=2025,<2027",
+]
+
+[project.scripts]
+fortifiers-mujoco-eval = "fortifiers_mujoco.smoke_eval:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["fortifiers_mujoco"]

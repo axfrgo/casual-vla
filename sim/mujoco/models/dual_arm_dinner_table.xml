@@ -1,0 +1,150 @@
+<mujoco model="fortifiers_dual_arm_dinner_table">
+  <compiler angle="radian" autolimits="true"/>
+  <option timestep="0.005" gravity="0 0 -9.81" integrator="implicitfast"/>
+  <size njmax="1200" nconmax="800"/>
+
+  <visual>
+    <global offwidth="640" offheight="480"/>
+    <headlight ambient="0.35 0.35 0.35" diffuse="0.75 0.75 0.75" specular="0.2 0.2 0.2"/>
+    <rgba haze="0.15 0.18 0.22 1"/>
+  </visual>
+
+  <default>
+    <joint damping="1" armature="0.02"/>
+    <geom condim="3" friction="0.8 0.05 0.01" solref="0.02 1" solimp="0.9 0.95 0.01"/>
+    <position kp="35" forcerange="-8 8"/>
+  </default>
+
+  <asset>
+    <material name="floor_mat" rgba="0.12 0.15 0.18 1"/>
+    <material name="table_mat" rgba="0.46 0.30 0.16 1"/>
+    <material name="drawer_mat" rgba="0.31 0.20 0.11 1"/>
+    <material name="metal_mat" rgba="0.48 0.52 0.56 1" specular="0.7" shininess="0.5"/>
+    <material name="ceramic_mat" rgba="0.88 0.90 0.92 1" specular="0.5"/>
+    <material name="cup_mat" rgba="0.80 0.86 0.94 1" specular="0.4"/>
+    <material name="zone_clean_mat" rgba="0.15 0.65 0.42 0.22"/>
+    <material name="zone_place_mat" rgba="0.18 0.45 0.78 0.22"/>
+  </asset>
+
+  <worldbody>
+    <geom name="floor" type="plane" size="4 4 0.1" material="floor_mat"/>
+    <light name="key" pos="0 -1.5 3.6" dir="0 0 -1" diffuse="0.9 0.9 0.9"/>
+    <light name="fill" pos="-2 1 2" dir="0 0 -1" diffuse="0.35 0.42 0.5"/>
+    <camera name="overview" pos="0 -3.7 3.2" xyaxes="1 0 0 0 0.65 0.76"/>
+
+    <body name="table" pos="0 0 0.72">
+      <geom name="table_top" type="box" size="1.55 0.90 0.06" material="table_mat" mass="12"/>
+      <geom name="table_leg_left" type="box" pos="-1.35 0  -0.62" size="0.08 0.08 0.62" material="table_mat"/>
+      <geom name="table_leg_right" type="box" pos="1.35 0  -0.62" size="0.08 0.08 0.62" material="table_mat"/>
+      <body name="drawer" pos="0 -0.76 0.02">
+        <joint name="drawer_slide" type="slide" axis="0 1 0" range="0 0.30"/>
+        <geom name="drawer_box" type="box" size="0.72 0.28 0.12" material="drawer_mat" mass="2"/>
+        <geom name="drawer_handle" type="box" pos="0 0.29 0.02" size="0.18 0.025 0.025" material="metal_mat"/>
+        <site name="drawer_handle_site" pos="0 0.34 0.02" size="0.025" rgba="0.95 0.6 0.1 1"/>
+      </body>
+    </body>
+
+    <body name="clean_area" pos="-0.95 0.38 0.81">
+      <geom name="clean_area_geom" type="box" size="0.34 0.32 0.012" material="zone_clean_mat" contype="0" conaffinity="0"/>
+      <site name="clean_area_site" size="0.03" rgba="0.2 0.9 0.5 1"/>
+    </body>
+    <body name="place_area" pos="0.95 0.38 0.81">
+      <geom name="place_area_geom" type="box" size="0.34 0.32 0.012" material="zone_place_mat" contype="0" conaffinity="0"/>
+      <site name="place_area_site" size="0.03" rgba="0.3 0.65 1 1"/>
+    </body>
+
+    <body name="plate" pos="0 0 0.86">
+      <freejoint name="plate_free"/>
+      <geom name="plate_geom" type="cylinder" size="0.16 0.025" material="ceramic_mat" mass="0.22"/>
+      <geom type="cylinder" pos="0 0 0.035" size="0.11 0.01" material="ceramic_mat" mass="0.02"/>
+      <site name="plate_grasp_site" pos="0 0 0.05" size="0.025"/>
+    </body>
+    <body name="cup" pos="0.35 0.05 0.88">
+      <freejoint name="cup_free"/>
+      <geom name="cup_geom" type="cylinder" size="0.075 0.10" material="cup_mat" mass="0.18"/>
+      <geom type="cylinder" pos="0 0 0.10" size="0.078 0.012" material="ceramic_mat"/>
+      <site name="cup_grasp_site" pos="0 0 0.11" size="0.025"/>
+    </body>
+    <body name="fork" pos="-0.32 0.03 0.84">
+      <freejoint name="fork_free"/>
+      <geom name="fork_geom" type="box" size="0.018 0.12 0.012" material="metal_mat" mass="0.05"/>
+      <geom type="box" pos="0 0.15 0" size="0.035 0.08 0.008" material="metal_mat"/>
+      <site name="fork_grasp_site" pos="0 0 0.025" size="0.018"/>
+    </body>
+    <body name="spoon" pos="0.08 0.36 0.84">
+      <freejoint name="spoon_free"/>
+      <geom name="spoon_geom" type="box" size="0.018 0.13 0.012" material="metal_mat" mass="0.05"/>
+      <geom type="ellipsoid" pos="0 0.15 0" size="0.06 0.07 0.012" material="metal_mat"/>
+      <site name="spoon_grasp_site" pos="0 0 0.025" size="0.018"/>
+    </body>
+
+    <!-- SO-101-compatible visual/control proxies. Replace with the official model asset before final submission. -->
+    <body name="left_arm" pos="-1.25 -0.78 0.80">
+      <geom name="left_base_geom" type="cylinder" size="0.18 0.08" material="metal_mat" mass="1"/>
+      <body name="left_shoulder" pos="0 0 0.15">
+        <joint name="left_shoulder_pan" type="hinge" axis="0 0 1" range="-2.8 2.8"/>
+        <geom type="capsule" fromto="0 0 0 0 0 0.22" size="0.07" material="metal_mat" mass="0.5"/>
+        <body name="left_upper_link" pos="0 0 0.22">
+          <joint name="left_shoulder_lift" type="hinge" axis="0 1 0" range="-1.6 1.6"/>
+          <geom type="capsule" fromto="0 0 0 0 0 0.38" size="0.055" material="metal_mat" mass="0.45"/>
+          <body name="left_forearm" pos="0 0 0.38">
+            <joint name="left_elbow" type="hinge" axis="0 1 0" range="-2.2 0.2"/>
+            <geom type="capsule" fromto="0 0 0 0 0 0.34" size="0.05" material="metal_mat" mass="0.35"/>
+            <body name="left_wrist" pos="0 0 0.34">
+              <joint name="left_wrist_roll" type="hinge" axis="0 0 1" range="-3.1 3.1"/>
+              <joint name="left_wrist_pitch" type="hinge" axis="0 1 0" range="-1.7 1.7"/>
+              <geom type="capsule" fromto="0 0 0 0 0 0.14" size="0.04" material="metal_mat" mass="0.18"/>
+              <body name="left_hand" pos="0 0 0.14">
+                <joint name="left_gripper" type="slide" axis="0 0 1" range="0 0.045"/>
+                <geom type="box" size="0.07 0.055 0.035" material="metal_mat" mass="0.12"/>
+                <site name="left_grasp_site" pos="0 0 0.07" size="0.025" rgba="0.2 0.9 0.5 1"/>
+              </body>
+            </body>
+          </body>
+        </body>
+      </body>
+    </body>
+
+    <body name="right_arm" pos="1.25 -0.78 0.80">
+      <geom name="right_base_geom" type="cylinder" size="0.18 0.08" material="metal_mat" mass="1"/>
+      <body name="right_shoulder" pos="0 0 0.15">
+        <joint name="right_shoulder_pan" type="hinge" axis="0 0 1" range="-2.8 2.8"/>
+        <geom type="capsule" fromto="0 0 0 0 0 0.22" size="0.07" material="metal_mat" mass="0.5"/>
+        <body name="right_upper_link" pos="0 0 0.22">
+          <joint name="right_shoulder_lift" type="hinge" axis="0 1 0" range="-1.6 1.6"/>
+          <geom type="capsule" fromto="0 0 0 0 0 0.38" size="0.055" material="metal_mat" mass="0.45"/>
+          <body name="right_forearm" pos="0 0 0.38">
+            <joint name="right_elbow" type="hinge" axis="0 1 0" range="-2.2 0.2"/>
+            <geom type="capsule" fromto="0 0 0 0 0 0.34" size="0.05" material="metal_mat" mass="0.35"/>
+            <body name="right_wrist" pos="0 0 0.34">
+              <joint name="right_wrist_roll" type="hinge" axis="0 0 1" range="-3.1 3.1"/>
+              <joint name="right_wrist_pitch" type="hinge" axis="0 1 0" range="-1.7 1.7"/>
+              <geom type="capsule" fromto="0 0 0 0 0 0.14" size="0.04" material="metal_mat" mass="0.18"/>
+              <body name="right_hand" pos="0 0 0.14">
+                <joint name="right_gripper" type="slide" axis="0 0 1" range="0 0.045"/>
+                <geom type="box" size="0.07 0.055 0.035" material="metal_mat" mass="0.12"/>
+                <site name="right_grasp_site" pos="0 0 0.07" size="0.025" rgba="0.95 0.6 0.1 1"/>
+              </body>
+            </body>
+          </body>
+        </body>
+      </body>
+    </body>
+  </worldbody>
+
+  <actuator>
+    <position name="drawer_position" joint="drawer_slide" ctrlrange="0 0.30"/>
+    <position name="left_shoulder_pan_motor" joint="left_shoulder_pan" ctrlrange="-2.8 2.8"/>
+    <position name="left_shoulder_lift_motor" joint="left_shoulder_lift" ctrlrange="-1.6 1.6"/>
+    <position name="left_elbow_motor" joint="left_elbow" ctrlrange="-2.2 0.2"/>
+    <position name="left_wrist_roll_motor" joint="left_wrist_roll" ctrlrange="-3.1 3.1"/>
+    <position name="left_wrist_pitch_motor" joint="left_wrist_pitch" ctrlrange="-1.7 1.7"/>
+    <position name="left_gripper_motor" joint="left_gripper" ctrlrange="0 0.045"/>
+    <position name="right_shoulder_pan_motor" joint="right_shoulder_pan" ctrlrange="-2.8 2.8"/>
+    <position name="right_shoulder_lift_motor" joint="right_shoulder_lift" ctrlrange="-1.6 1.6"/>
+    <position name="right_elbow_motor" joint="right_elbow" ctrlrange="-2.2 0.2"/>
+    <position name="right_wrist_roll_motor" joint="right_wrist_roll" ctrlrange="-3.1 3.1"/>
+    <position name="right_wrist_pitch_motor" joint="right_wrist_pitch" ctrlrange="-1.7 1.7"/>
+    <position name="right_gripper_motor" joint="right_gripper" ctrlrange="0 0.045"/>
+  </actuator>
+</mujoco>
