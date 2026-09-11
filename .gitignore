@@ -48,3 +48,4 @@ __pycache__/
 *.py[cod]
 .pytest_cache/
 .uv-cache/
+sim/mujoco/results/

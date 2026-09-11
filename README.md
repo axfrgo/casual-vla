@@ -14,13 +14,22 @@ or Intel benchmark results.
 
 The physics-backed environment lives in [`sim/mujoco`](sim/mujoco/README.md).
 It currently provides a reproducible dinner-table scene, two official SO-101
-arms, camera rendering, drawer motion, structured observations, and scene
-perturbation controls. Policy integration, grasp/place task execution, and
-OpenVINO benchmarking remain open work.
+arms, camera rendering, drawer motion, structured observations, scene
+perturbation controls, a closed-loop deterministic task policy, runtime grasp
+constraints, placement verification, and a bimanual cup hand-off. The policy is
+an executable baseline, not a VLA; challenge SDK binding, literal drawer
+retrieval, validated hardware contact, and OpenVINO benchmarking remain open.
 
 ```powershell
 uv sync --project sim/mujoco
 uv run --project sim/mujoco fortifiers-mujoco-eval --episodes 10
+```
+
+Run the connected MuJoCo policy and write a reproducible trace:
+
+```powershell
+uv run --project sim/mujoco python -m fortifiers_mujoco.evaluate_policy --episodes 10 --output sim/mujoco/results/mujoco-policy-eval.json
+uv run --project sim/mujoco python -m fortifiers_mujoco.apprenticeship
 ```
 
 ## Browser app

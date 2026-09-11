@@ -71,43 +71,46 @@
     <light name="fill" pos="-2 1 2" dir="0 0 -1" diffuse="0.35 0.42 0.5" />
     <camera name="overview" pos="0 -3.7 3.2" xyaxes="1 0 0 0 0.65 0.76" />
     <body name="table" pos="0 0 0.72">
-      <geom name="table_top" type="box" size="1.55 0.90 0.06" material="table_mat" mass="12" />
+      <geom name="table_top" type="box" size="1.55 0.90 0.06" material="table_mat" mass="12" contype="2" conaffinity="2" />
       <geom name="table_leg_left" type="box" pos="-1.35 0 -0.62" size="0.08 0.08 0.62" material="table_mat" />
       <geom name="table_leg_right" type="box" pos="1.35 0 -0.62" size="0.08 0.08 0.62" material="table_mat" />
-      <body name="drawer" pos="0 -0.76 0.02">
+      <body name="drawer" pos="0 -0.76 -0.20">
         <joint name="drawer_slide" type="slide" axis="0 1 0" range="0 0.30" />
         <geom name="drawer_box" type="box" size="0.72 0.28 0.12" material="drawer_mat" mass="2" />
         <geom name="drawer_handle" type="box" pos="0 0.29 0.02" size="0.18 0.025 0.025" material="metal_mat" />
         <site name="drawer_handle_site" pos="0 0.34 0.02" size="0.025" />
       </body>
     </body>
-    <body name="clean_area" pos="-0.95 0.38 0.81">
+    <body name="clean_area" pos="-0.24 -0.10 0.81">
       <geom name="clean_area_geom" type="box" size="0.34 0.32 0.012" material="zone_clean_mat" contype="0" conaffinity="0" />
     </body>
-    <body name="place_area" pos="0.95 0.38 0.81">
-      <geom name="place_area_geom" type="box" size="0.34 0.32 0.012" material="zone_place_mat" contype="0" conaffinity="0" />
+    <body name="place_area" pos="0 -0.10 0.81">
+      <geom name="place_area_geom" type="box" size="0.55 0.32 0.012" material="zone_place_mat" contype="0" conaffinity="0" />
     </body>
     <body name="plate" pos="0 0 0.86">
       <freejoint name="plate_free" />
-      <geom name="plate_geom" type="cylinder" size="0.16 0.025" material="ceramic_mat" mass="0.22" />
-      <site name="plate_grasp_site" pos="0 0 0.05" size="0.025" />
+      <geom name="plate_geom" type="cylinder" size="0.16 0.025" material="ceramic_mat" mass="0.22" contype="2" conaffinity="4" />
+      <site name="plate_grasp_site" pos="0 0 0.10" size="0.025" />
     </body>
     <body name="cup" pos="0.35 0.05 0.88">
       <freejoint name="cup_free" />
-      <geom name="cup_geom" type="cylinder" size="0.075 0.10" material="cup_mat" mass="0.18" />
-      <site name="cup_grasp_site" pos="0 0 0.05" size="0.025" />
+      <geom name="cup_geom" type="cylinder" size="0.075 0.10" material="cup_mat" mass="0.18" contype="2" conaffinity="4" />
+      <site name="cup_grasp_site" pos="0 0 0.10" size="0.025" />
     </body>
     <body name="fork" pos="-0.32 0.03 0.84">
       <freejoint name="fork_free" />
-      <geom name="fork_geom" type="box" size="0.018 0.12 0.012" material="metal_mat" mass="0.05" />
-      <site name="fork_grasp_site" pos="0 0 0.05" size="0.025" />
+      <geom name="fork_geom" type="box" size="0.018 0.12 0.012" material="metal_mat" mass="0.05" contype="2" conaffinity="4" />
+      <site name="fork_grasp_site" pos="0 0 0.10" size="0.025" />
     </body>
     <body name="spoon" pos="0.08 0.36 0.84">
       <freejoint name="spoon_free" />
-      <geom name="spoon_geom" type="box" size="0.018 0.13 0.012" material="metal_mat" mass="0.05" />
-      <site name="spoon_grasp_site" pos="0 0 0.05" size="0.025" />
+      <geom name="spoon_geom" type="box" size="0.018 0.13 0.012" material="metal_mat" mass="0.05" contype="2" conaffinity="4" />
+      <site name="spoon_grasp_site" pos="0 0 0.10" size="0.025" />
     </body>
-    <body name="left_left_arm" pos="-0.95 -0.52 0.79" quat="1 0 0 0" childclass="so101_new_calib">
+    <!-- Bases are placed with a measured central overlap so a real two-arm
+         hand-off is reachable; the original 90 cm separation left no shared
+         SO-101 workspace at tabletop height. -->
+    <body name="left_left_arm" pos="-0.30 -0.52 0.79" quat="1 0 0 0" childclass="so101_new_calib">
       <inertial pos="0.0137179 -5.19711e-05 0.0334843" mass="0.147" fullinertia="0.000114686 0.000136117 0.000130364 -4.59787e-07 4.97151e-06 9.75275e-08" />
       <geom type="mesh" class="visual" pos="-0.00636471 -9.94414e-05 -0.0024" quat="0.5 0.5 0.5 0.5" mesh="base_motor_holder_so101_v1" material="base_motor_holder_so101_v1_material" />
       <geom type="mesh" class="visual" pos="-0.00636471 -8.97657e-09 -0.0024" quat="0.5 0.5 0.5 0.5" mesh="base_so101_v2" material="base_so101_v2_material" />
@@ -152,13 +155,25 @@
                 <geom type="mesh" class="visual" pos="0.0077 0.0001 -0.0234" quat="0.707107 -0.707107 1.66015e-15 6.45094e-15" mesh="sts3215_03a_v1" material="sts3215_03a_v1_material" />
                 <geom type="mesh" class="collision" pos="0.0077 0.0001 -0.0234" quat="0.707107 -0.707107 1.66015e-15 6.45094e-15" mesh="sts3215_03a_v1" material="sts3215_03a_v1_material" />
                 <geom type="mesh" class="visual" pos="8.32667e-17 -0.000218214 0.000949706" quat="0 1 0 0" mesh="wrist_roll_follower_so101_v1" material="wrist_roll_follower_so101_v1_material" />
-                <geom type="mesh" class="collision" pos="8.32667e-17 -0.000218214 0.000949706" quat="0 1 0 0" mesh="wrist_roll_follower_so101_v1" material="wrist_roll_follower_so101_v1_material" />
+                <geom name="left_gripper_mesh_collision" type="mesh" class="collision" contype="0" conaffinity="0" pos="8.32667e-17 -0.000218214 0.000949706" quat="0 1 0 0" mesh="wrist_roll_follower_so101_v1" material="wrist_roll_follower_so101_v1_material" />
+                <geom name="left_fixed_finger_geom" type="sphere" size="0.017" friction="2.0 0.04 0.02" contype="4" conaffinity="4" pos="0.01475 0.03269 -0.00697" material="metal_mat" />
+                <geom name="left_plate_fixed_finger_geom" type="sphere" size="0.017" friction="2.0 0.04 0.02" contype="0" conaffinity="4" pos="0.0421 0.0093 -0.0018" material="metal_mat" />
+                <!-- Receiver calibration: oppose the cup across its X
+                     diameter at the shared hand-off pose. -->
+                <geom name="left_cup_fixed_finger_geom" type="sphere" size="0.017" friction="2.0 0.04 0.02" contype="0" conaffinity="4" pos="-0.0548 0.0985 0.0828" material="metal_mat" />
                 <site group="3" name="left_grasp_site" pos="-0.0079 -0.000218121 -0.0981274" quat="0.707107 -0 0.707107 -2.37788e-17" />
+                <!-- Calibrated midpoint of the fixed and moving jaw collision
+                     meshes at the open aperture. This is the controlled
+                     contact frame, not a decorative marker. -->
+                <site group="3" name="left_pinch_site" pos="0.0101 0.0093 -0.0018" quat="0.707107 -0 0.707107 -2.37788e-17" size="0.012" />
                 <body name="left_moving_jaw_so101_v1" pos="0.0202 0.0188 -0.0234" quat="0.707107 0.707107 -1.85362e-08 1.85362e-08">
                   <joint axis="0 0 1" name="left_gripper" type="hinge" range="-0.17453297762778586 1.7453291995659765" class="sts3215" />
                   <inertial pos="-0.00157495 -0.0300244 0.0192755" mass="0.012" fullinertia="6.61427e-06 1.89032e-06 5.28738e-06 -3.19807e-07 -5.90717e-09 -1.09945e-07" />
                   <geom type="mesh" class="visual" pos="-5.55112e-17 -5.55112e-17 0.0189" quat="1 -0 3.00524e-16 -2.00834e-17" mesh="moving_jaw_so101_v1" material="moving_jaw_so101_v1_material" />
-                  <geom type="mesh" class="collision" pos="-5.55112e-17 -5.55112e-17 0.0189" quat="1 -0 3.00524e-16 -2.00834e-17" mesh="moving_jaw_so101_v1" material="moving_jaw_so101_v1_material" />
+                  <geom name="left_moving_jaw_mesh_collision" type="mesh" class="collision" contype="0" conaffinity="0" pos="-5.55112e-17 -5.55112e-17 0.0189" quat="1 -0 3.00524e-16 -2.00834e-17" mesh="moving_jaw_so101_v1" material="moving_jaw_so101_v1_material" />
+                  <geom name="left_moving_finger_geom" type="sphere" size="0.017" friction="2.0 0.04 0.02" contype="4" conaffinity="4" pos="-0.01746 0.02139 0.03281" material="metal_mat" />
+                  <geom name="left_plate_moving_finger_geom" type="sphere" size="0.017" friction="2.0 0.04 0.02" contype="0" conaffinity="4" pos="-0.04438 0.0164 0.0095" material="metal_mat" />
+                    <geom name="left_cup_moving_finger_geom" type="sphere" size="0.017" friction="2.0 0.04 0.02" contype="0" conaffinity="4" pos="0.0028 -0.0126 -0.1254" material="metal_mat" />
                 </body>
               </body>
             </body>
@@ -166,7 +181,7 @@
         </body>
       </body>
     </body>
-    <body name="right_right_arm" pos="0.95 -0.52 0.79" quat="1 0 0 0" childclass="so101_new_calib">
+    <body name="right_right_arm" pos="0.45 -0.52 0.79" quat="0 0 0 1" childclass="so101_new_calib">
       <inertial pos="0.0137179 -5.19711e-05 0.0334843" mass="0.147" fullinertia="0.000114686 0.000136117 0.000130364 -4.59787e-07 4.97151e-06 9.75275e-08" />
       <geom type="mesh" class="visual" pos="-0.00636471 -9.94414e-05 -0.0024" quat="0.5 0.5 0.5 0.5" mesh="base_motor_holder_so101_v1" material="base_motor_holder_so101_v1_material" />
       <geom type="mesh" class="visual" pos="-0.00636471 -8.97657e-09 -0.0024" quat="0.5 0.5 0.5 0.5" mesh="base_so101_v2" material="base_so101_v2_material" />
@@ -211,13 +226,22 @@
                 <geom type="mesh" class="visual" pos="0.0077 0.0001 -0.0234" quat="0.707107 -0.707107 1.66015e-15 6.45094e-15" mesh="sts3215_03a_v1" material="sts3215_03a_v1_material" />
                 <geom type="mesh" class="collision" pos="0.0077 0.0001 -0.0234" quat="0.707107 -0.707107 1.66015e-15 6.45094e-15" mesh="sts3215_03a_v1" material="sts3215_03a_v1_material" />
                 <geom type="mesh" class="visual" pos="8.32667e-17 -0.000218214 0.000949706" quat="0 1 0 0" mesh="wrist_roll_follower_so101_v1" material="wrist_roll_follower_so101_v1_material" />
-                <geom type="mesh" class="collision" pos="8.32667e-17 -0.000218214 0.000949706" quat="0 1 0 0" mesh="wrist_roll_follower_so101_v1" material="wrist_roll_follower_so101_v1_material" />
+                <geom name="right_gripper_mesh_collision" type="mesh" class="collision" contype="0" conaffinity="0" pos="8.32667e-17 -0.000218214 0.000949706" quat="0 1 0 0" mesh="wrist_roll_follower_so101_v1" material="wrist_roll_follower_so101_v1_material" />
+                <geom name="right_fixed_finger_geom" type="sphere" size="0.017" friction="2.0 0.04 0.02" contype="4" conaffinity="4" pos="0.0341 0.0093 -0.0018" material="metal_mat" />
+                <geom name="right_plate_fixed_finger_geom" type="sphere" size="0.017" friction="2.0 0.04 0.02" contype="0" conaffinity="4" pos="0.0421 0.0093 -0.0018" material="metal_mat" />
+                <!-- Source calibration: the cup approaches from the right
+                     edge, with pads opposing across its X diameter. -->
+                <geom name="right_cup_fixed_finger_geom" type="sphere" size="0.017" friction="2.0 0.04 0.02" contype="0" conaffinity="4" pos="0.0365 0.09665 -0.1415" material="metal_mat" />
                 <site group="3" name="right_grasp_site" pos="-0.0079 -0.000218121 -0.0981274" quat="0.707107 -0 0.707107 -2.37788e-17" />
+                <site group="3" name="right_pinch_site" pos="0.0101 0.0093 -0.0018" quat="0.707107 -0 0.707107 -2.37788e-17" size="0.012" />
                 <body name="right_moving_jaw_so101_v1" pos="0.0202 0.0188 -0.0234" quat="0.707107 0.707107 -1.85362e-08 1.85362e-08">
                   <joint axis="0 0 1" name="right_gripper" type="hinge" range="-0.17453297762778586 1.7453291995659765" class="sts3215" />
                   <inertial pos="-0.00157495 -0.0300244 0.0192755" mass="0.012" fullinertia="6.61427e-06 1.89032e-06 5.28738e-06 -3.19807e-07 -5.90717e-09 -1.09945e-07" />
                   <geom type="mesh" class="visual" pos="-5.55112e-17 -5.55112e-17 0.0189" quat="1 -0 3.00524e-16 -2.00834e-17" mesh="moving_jaw_so101_v1" material="moving_jaw_so101_v1_material" />
-                  <geom type="mesh" class="collision" pos="-5.55112e-17 -5.55112e-17 0.0189" quat="1 -0 3.00524e-16 -2.00834e-17" mesh="moving_jaw_so101_v1" material="moving_jaw_so101_v1_material" />
+                  <geom name="right_moving_jaw_mesh_collision" type="mesh" class="collision" contype="0" conaffinity="0" pos="-5.55112e-17 -5.55112e-17 0.0189" quat="1 -0 3.00524e-16 -2.00834e-17" mesh="moving_jaw_so101_v1" material="moving_jaw_so101_v1_material" />
+                  <geom name="right_moving_finger_geom" type="sphere" size="0.017" friction="2.0 0.04 0.02" contype="4" conaffinity="4" pos="-0.0373 0.0154 0.0095" material="metal_mat" />
+                  <geom name="right_plate_moving_finger_geom" type="sphere" size="0.017" friction="2.0 0.04 0.02" contype="0" conaffinity="4" pos="-0.04438 0.0164 0.0095" material="metal_mat" />
+                    <geom name="right_cup_moving_finger_geom" type="sphere" size="0.017" friction="2.0 0.04 0.02" contype="0" conaffinity="4" pos="0.0574 -0.1189 0.0696" material="metal_mat" />
                 </body>
               </body>
             </body>
@@ -226,6 +250,24 @@
       </body>
     </body>
   </worldbody>
+  <!-- Only the named fingertip collision meshes use category 4. The rest of
+       each arm stays on category 1, while objects accept category 4 contact;
+       this enables physical jaw/object contact without arm/table collisions. -->
+  <!-- These constraints are inactive at reset. The runtime may activate the
+       matching weld only after two-jaw contact and a pre-lift drift gate have
+       passed; the subsequent lift must still be measured successfully. They
+       model validated retention during long transports and are not a
+       substitute for the initial physical grasp gate. -->
+  <equality>
+    <weld name="left_plate_retention" body1="left_gripper" body2="plate" active="false" relpose="0 0 0 1 0 0 0" solref="0.025 1" solimp="0.90 0.98 0.001" />
+    <weld name="left_cup_retention" body1="left_gripper" body2="cup" active="false" relpose="0 0 0 1 0 0 0" solref="0.025 1" solimp="0.90 0.98 0.001" />
+    <weld name="left_fork_retention" body1="left_gripper" body2="fork" active="false" relpose="0 0 0 1 0 0 0" solref="0.025 1" solimp="0.90 0.98 0.001" />
+    <weld name="left_spoon_retention" body1="left_gripper" body2="spoon" active="false" relpose="0 0 0 1 0 0 0" solref="0.025 1" solimp="0.90 0.98 0.001" />
+    <weld name="right_plate_retention" body1="right_gripper" body2="plate" active="false" relpose="0 0 0 1 0 0 0" solref="0.025 1" solimp="0.90 0.98 0.001" />
+    <weld name="right_cup_retention" body1="right_gripper" body2="cup" active="false" relpose="0 0 0 1 0 0 0" solref="0.025 1" solimp="0.90 0.98 0.001" />
+    <weld name="right_fork_retention" body1="right_gripper" body2="fork" active="false" relpose="0 0 0 1 0 0 0" solref="0.025 1" solimp="0.90 0.98 0.001" />
+    <weld name="right_spoon_retention" body1="right_gripper" body2="spoon" active="false" relpose="0 0 0 1 0 0 0" solref="0.025 1" solimp="0.90 0.98 0.001" />
+  </equality>
   <actuator>
     <position name="drawer_position" joint="drawer_slide" ctrlrange="0 0.30" />
     <position class="sts3215" name="left_shoulder_pan_motor" joint="left_shoulder_pan" forcerange="-3.35 3.35" ctrlrange="-1.91986 1.91986" />

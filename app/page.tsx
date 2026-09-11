@@ -1,60 +1,295 @@
 'use client';
-/* oxlint-disable react/react-compiler -- The imperative simulation controller and skill store intentionally live in refs; revision state snapshots their mutations into React renders. */
-import { useEffect, useRef, useState } from 'react';
-import { Shield, Play, Pause, RotateCcw, Mic, ArrowUpRight, Download, BookOpen, GitBranch, Activity, Check, X, ChevronRight, Square, FlaskConical, Settings2, Volume2, VolumeX } from 'lucide-react';
-import { Controller } from '../src/execution/controller';
-import { ContactTestbed } from '../src/embodiment/contact-testbed';
-import { SkillLibrary } from '../src/skills/library';
-import { compile, SAFETY_LESSON, PREFERENCE_LESSON, protection } from '../src/teaching/compiler';
-import type { Contract } from '../src/teaching/schema';
-import type { World } from '../src/aegis/world';
-const label=(s:string)=>s.replaceAll('_',' ');
-const color=(s:string)=>s==='CLEAN'?'#72e4bd':s==='CONTAMINATED'?'#ff785e':s==='SUSPECT'?'#edc86d':'#a3afc2';
-function save(name:string,data:string){const url=URL.createObjectURL(new Blob([data],{type:'application/json'}));const a=document.createElement('a');a.href=url;a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);}
-function Scene({world}:{world:World}) {
-  const objects=Object.values(world.entities);
-  return <svg viewBox="0 0 760 460" aria-label="Symbolic contact scene showing observed object positions and inferred contamination states">
-    <title>Symbolic contact scene showing observed object positions and inferred contamination states</title>
-    <defs><pattern id="grid" width="32" height="32" patternUnits="userSpaceOnUse"><path d="M 32 0 L 0 0 0 32" fill="none" stroke="#273442" strokeWidth=".6"/></pattern></defs>
-    <rect x="0" y="0" width="760" height="460" fill="#101b25"/><rect x="24" y="24" width="712" height="412" fill="url(#grid)" stroke="#334452"/>
-    <text x="40" y="48" className="svgmeta">CONTACT TESTBED / TOP VIEW</text><text x="40" y="419" className="svgmeta">RELATIVE COORDINATES · NO PHYSICS</text>
-    {objects.filter(e=>e.kind==='zone').map(e=><g key={e.id}><rect x={e.pose[0]*660+48-74} y={e.pose[1]*330+52-29} width="148" height="62" rx="5" stroke={color(e.state)} fill={color(e.state)} fillOpacity=".07" strokeDasharray="5 4"/><text x={e.pose[0]*660+48} y={e.pose[1]*330+52+5} fill={color(e.state)} textAnchor="middle" fontSize="13">{label(e.id).toUpperCase()}</text></g>)}
-    {world.edges.filter(e=>e.relation==='CONTACT').slice(-4).map((e,i)=>{const a=world.entities[e.actor],b=world.entities[e.target];return <line key={e.id} x1={a.pose[0]*660+48} y1={a.pose[1]*330+52} x2={b.pose[0]*660+48} y2={b.pose[1]*330+52} stroke={color(a.state)} strokeDasharray="4 6" opacity={.2+i*.15}/>;})}
-    {objects.filter(e=>e.kind!=='zone').map(e=>{const x=e.pose[0]*660+48,y=e.pose[1]*330+52;return <g key={e.id} style={{transition:'transform .5s ease'}} transform={`translate(${x},${y})`}><circle r={e.kind==='gripper'?23:13} fill="#101b25" stroke={color(e.state)} strokeWidth={e.kind==='gripper'?3:2}/><text y="5" fill={color(e.state)} textAnchor="middle" fontSize="12">{e.kind==='gripper'?e.id[0].toUpperCase():e.protected?'S':e.kind==='tool'?'?':'C'}</text><text y={e.kind==='gripper'?42:-23} textAnchor="middle" fill="#e1eaf0" fontSize="12">{label(e.id)}</text>{e.heldBy&&<text y="31" textAnchor="middle" fill="#edc86d" fontSize="12">held</text>}</g>;})}
-  </svg>;
+
+import { useEffect, useMemo, useState } from 'react';
+import Link from 'next/link';
+import {
+  Activity,
+  ArrowRight,
+  Check,
+  ChevronRight,
+  Cpu,
+  Gauge,
+  Layers3,
+  Pause,
+  Play,
+  RotateCcw,
+  Shield,
+  Sparkles,
+  Target,
+  Zap,
+} from 'lucide-react';
+import './competition.css';
+
+const STEPS = [
+  { id: 'open_drawer', label: 'Open utensil drawer', arm: 'RIGHT', object: 'drawer', detail: 'Expose the tool set without disturbing the table.' },
+  { id: 'retrieve_fork', label: 'Retrieve fork', arm: 'LEFT', object: 'fork', detail: 'Left arm grounds the seeded fork state.' },
+  { id: 'retrieve_spoon', label: 'Retrieve spoon', arm: 'RIGHT', object: 'spoon', detail: 'Right arm completes the utensil pair.' },
+  { id: 'place_plate', label: 'Place plate', arm: 'LEFT', object: 'plate', detail: 'Plate moves into the marked place area.' },
+  { id: 'handoff_cup', label: 'Hand off cup', arm: 'BOTH', object: 'cup', detail: 'A coordinated right → left transfer keeps the plan moving.' },
+  { id: 'place_cup', label: 'Place cup', arm: 'LEFT', object: 'cup', detail: 'Left arm finishes the setting.' },
+] as const;
+
+const SEED_PRESETS = [
+  { seed: 1001, label: 'BASE', note: 'balanced layout' },
+  { seed: 2026, label: 'SHIFTED', note: 'cup + plate drift' },
+  { seed: 4120, label: 'TIGHT', note: 'compact reach' },
+] as const;
+
+function seeded(seed: number, offset: number) {
+  const value = Math.sin(seed * 12.9898 + offset * 78.233) * 43758.5453;
+  return value - Math.floor(value);
 }
-export default function Page(){
-  const library=useRef<SkillLibrary|null>(null),controller=useRef<Controller|null>(null),recorder=useRef<MediaRecorder|null>(null),stream=useRef<MediaStream|null>(null);
-  const [revision,setRevision]=useState(0),[skill,setSkill]=useState<Contract|null>(null),[running,setRunning]=useState(false),[seed,setSeed]=useState(2),[count,setCount]=useState(2),[transfer,setTransfer]=useState(false),[tab,setTab]=useState('Teach'),[text,setText]=useState(''),[message,setMessage]=useState('Teach a procedure. Observe an attempt. Make the correction stick.'),[error,setError]=useState(''),[clarification,setClarification]=useState(false),[recording,setRecording]=useState(false),[transcribing,setTranscribing]=useState(false),[voiceReady,setVoiceReady]=useState(false),[readAloud,setReadAloud]=useState(true),[voiceMuted,setVoiceMuted]=useState(true),[voices,setVoices]=useState<SpeechSynthesisVoice[]>([]),[voiceName,setVoiceName]=useState(''),[speechRate,setSpeechRate]=useState(1.04),[speechPitch,setSpeechPitch]=useState(.98),[speechVolume,setSpeechVolume]=useState(.85),[lastLesson,setLastLesson]=useState(''),[previousVersion,setPreviousVersion]=useState(''),[bench,setBench]=useState<{passed:number;total:number;violations:number}|null>(null);
-  const refresh=()=>setRevision(x=>x+1);
-  useEffect(()=>{try{library.current=new SkillLibrary(localStorage);const current=library.current.current();setSkill(current);controller.current=new Controller(new ContactTestbed(2),current);refresh();}catch(e){setError(`Skill storage could not be loaded: ${String(e)}. Export or repair storage before continuing.`);}fetch('/api/speech').then(r=>r.json() as Promise<{configured:boolean}>).then(r=>setVoiceReady(r.configured)).catch(()=>setVoiceReady(false));return()=>{stream.current?.getTracks().forEach(t=>t.stop());};},[]);
-  useEffect(()=>{if(!running)return;const timer=setInterval(()=>{try{const c=controller.current!;c.step();refresh();if(c.finished){setRunning(false);const result=c.result();library.current!.validate({at:new Date().toISOString(),episode:result.episode,passed:result.passed,environment:result.environment,violations:result.violations});setSkill(library.current!.current());setMessage(result.passed?'Verified: goals achieved, protected entities stayed clean.':result.failure??'Episode failed verification.');}}catch(e){setRunning(false);setError(String(e));}},650);return()=>clearInterval(timer);},[running]);
-  useEffect(()=>{if(!readAloud||voiceMuted||typeof window==='undefined'||!('speechSynthesis' in window)||!message)return;window.speechSynthesis.cancel();const utterance=new SpeechSynthesisUtterance(message);utterance.rate=speechRate;utterance.pitch=speechPitch;utterance.volume=speechVolume;utterance.voice=voices.find(v=>v.name===voiceName)||null;window.speechSynthesis.speak(utterance);return()=>window.speechSynthesis.cancel();},[message,readAloud,voiceMuted,speechRate,speechPitch,speechVolume,voiceName,voices]);
-  useEffect(()=>{if(typeof window==='undefined'||!('speechSynthesis' in window))return;const load=()=>setVoices(window.speechSynthesis.getVoices());load();window.speechSynthesis.addEventListener('voiceschanged',load);return()=>window.speechSynthesis.removeEventListener('voiceschanged',load);},[]);
-  const speak=(value=message)=>{if(voiceMuted||!readAloud||typeof window==='undefined'||!('speechSynthesis' in window)||!value)return;window.speechSynthesis.cancel();const utterance=new SpeechSynthesisUtterance(value);utterance.rate=speechRate;utterance.pitch=speechPitch;utterance.volume=speechVolume;utterance.voice=voices.find(v=>v.name===voiceName)||null;window.speechSynthesis.speak(utterance);};
-  const reset=(baseline=false)=>{try{setRunning(false);const current=baseline?library.current!.versions()[0]:library.current!.current();controller.current=new Controller(new ContactTestbed(seed,count,transfer),current);setMessage(baseline?'Baseline episode uses v1.0. Your learned library is preserved.':`Scene reset. Remembered skill v${current.version} loaded.`);setError('');refresh();}catch(e){setError(String(e));}};
-  const run=()=>{const c=controller.current;if(!c)return;if(c.finished){setMessage('Reset the scene to begin another episode.');return;}c.resume();setRunning(true);};
-  const teach=(input:string,source:'text'|'speechmatics'='text')=>{try{setError('');const result=compile(input);setLastLesson(input);if(result.status==='command'){if(result.command==='run'||result.command==='continue')run();if(result.command==='stop'){controller.current!.stop();setRunning(false);setMessage('Paused. No further actions will be issued.');}if(result.command==='why')setMessage(controller.current!.explain());return;}if(result.status==='clarify'){setMessage(result.question);setClarification(result.question.startsWith('Should contaminated'));return;}const old=library.current!.current();const updated=library.current!.teach(input,result.rules,source);controller.current!.teach(updated);setPreviousVersion(old.version);setSkill(updated);setMessage(result.explanation);setClarification(false);setText('');refresh();}catch(e){setError(String(e));}};
-  const confirm=()=>{try{const old=library.current!.current();const updated=library.current!.teach(`${lastLesson}\nClarified: prohibit contaminated contact with protected clean objects.`,[protection]);setPreviousVersion(old.version);setSkill(updated);controller.current!.teach(updated);setClarification(false);setMessage('Clarification recorded. Protection rule compiled and stored.');refresh();}catch(e){setError(String(e));}};
-  const record=async()=>{if(recording){recorder.current?.stop();return;}try{setError('');if(!navigator.mediaDevices||!window.MediaRecorder)throw Error('Microphone recording is unavailable in this browser.');stream.current=await navigator.mediaDevices.getUserMedia({audio:true});const r=new MediaRecorder(stream.current);recorder.current=r;const parts:BlobPart[]=[];r.ondataavailable=e=>{if(e.data.size)parts.push(e.data);};r.onstop=async()=>{stream.current?.getTracks().forEach(t=>t.stop());setRecording(false);setTranscribing(true);try{const response=await fetch('/api/speech',{method:'POST',headers:{'Content-Type':r.mimeType||'audio/webm'},body:new Blob(parts,{type:r.mimeType||'audio/webm'})});const result=await response.json() as {text?:string;error?:string;latencyMs?:number};if(!response.ok||!result.text)throw Error(result.error??'Transcription failed');teach(result.text,'speechmatics');}catch(e){setError(String(e));}finally{setTranscribing(false);}};r.start();setRecording(true);setTimeout(()=>{if(r.state==='recording')r.stop();},30000);}catch(e){stream.current?.getTracks().forEach(t=>t.stop());setError(String(e));}};
-  const benchmark=()=>{try{let passed=0,violations=0;for(let i=1001;i<=1050;i++){const r=new Controller(new ContactTestbed(i,5,true),library.current!.current()).run();passed+=Number(r.passed);violations+=Number(r.violations>0);}setBench({passed,total:50,violations});}catch(e){setError(String(e));}};
-  const c=controller.current;void revision;
-  return <div className="shell"><aside className="rail"><div className="brandmark"><Shield size={26}/></div><span className="rail-word">FORTIFIERS</span><div className="rail-bottom">F/A<br/>01</div></aside><div className="workspace"><header><div className="wordmark">FORTIFIERS <span>APPRENTICESHIP</span></div><div className="header-right"><span className="status-dot"/> RESEARCH WORKSPACE <span className="badge">AEGIS / 01</span></div></header>
-    <main><section className="intro"><div><p className="eyebrow">PERSISTENT OPERATIONAL TEACHING · INTEL PHYSICAL AI</p><h1>Teach machines the way<br/>you teach people<span>.</span></h1></div><div className="intro-note"><span className="outline-icon"><FlaskConical size={23}/></span><div><strong>Aegis</strong><p>Scientific contamination-control apprentice</p><small>Challenge track: dual-arm MuJoCo adapter pending</small></div></div></section>
-    {error&&<div className="error" role="alert">{error}</div>}
-    <div className="workgrid"><section className="scene-panel"><div className="panel-heading"><div><span className="eyebrow">01 / OBSERVE</span><h2>The practice bench</h2></div><span className={`pill ${running?'live':''}`}>{running?'RUNNING':c?.finished?'EPISODE FINISHED':'READY'}</span></div>
-      <div className="scene">{c?<Scene world={c.world}/>:<div className="loading">Loading skill library…</div>}</div><div className="scene-legend"><span><i style={{background:color('CLEAN')}}/>Clean</span><span><i style={{background:color('CONTAMINATED')}}/>Contaminated</span><span><i style={{background:color('UNKNOWN')}}/>Unknown</span><span className="scene-step">{c?.actions??0} actions observed</span></div>
-      <div className="runbar"><button className="primary" disabled={!c||running} onClick={run}><Play size={16}/> Practice</button><button disabled={!c} onClick={()=>{c!.stop();setRunning(false);setMessage('Paused.');}}><Pause size={16}/> Stop</button><button disabled={!c||running||c.finished} onClick={()=>{try{c!.resume();c!.step();refresh();}catch(e){setError(String(e));}}}>Step <ChevronRight size={15}/></button><button disabled={!c} onClick={()=>reset()}><RotateCcw size={16}/> Reset scene</button></div>
-      <details className="scene-settings"><summary><Settings2 size={15}/> Scene and fault controls</summary><div className="settings-row"><label>Seed<input type="number" value={seed} onChange={e=>setSeed(Number(e.target.value))}/></label><label>Samples<input type="number" min="1" max="12" value={count} onChange={e=>setCount(Number(e.target.value))}/></label><label className="checklabel"><input type="checkbox" checked={transfer} onChange={e=>setTransfer(e.target.checked)}/> New object identity</label></div><div className="button-row"><button onClick={()=>reset(true)} disabled={!c}>Run baseline v1.0</button><button disabled={!c||running} onClick={()=>{(c!.adapter as ContactTestbed).faults=['grasp'];setMessage('One failed grasp scheduled in the testbed.');}}>Inject failed grasp</button></div></details>
-      <div className="mission"><div className="panel-heading"><div><span className="eyebrow">02 / ATTEMPT</span><h2>Isolation procedure</h2></div><span className="muted">Episode v{c?.contract.version??'1.0'}</span></div>{c?.tasks.map((task,i)=><div className="task" key={`${task.target}-${task.zone}`}><span className="task-number">{String(i+1).padStart(2,'0')}</span><span>Move <strong>{label(task.target)}</strong> to {label(task.zone)}</span>{c.world.entities[task.target]?.zone===task.zone?<Check size={17} className="green"/>:<span className="task-pending"/>}</div>)}<div className="decision-list">{c?.lastCandidates.map(d=><div className={d.safe?'decision':'decision blocked'} key={d.action.actor}>{d.safe?<Check size={14}/>:<X size={14}/>}<span>{label(d.action.actor)} → {label(d.action.target)}</span><small>{d.safe?`cost ${d.cost.toFixed(2)}`:d.reasons.join(', ')}</small></div>)}</div></div>
-    </section><section className="teaching-panel"><div className="panel-heading"><div><span className="eyebrow">03 / TEACH & REMEMBER</span><h2>What Aegis knows</h2></div><BookOpen size={22}/></div><nav className="tabs" aria-label="Knowledge views">{['Teach','Skill','Provenance','History'].map(t=><button key={t} onClick={()=>setTab(t)} aria-current={tab===t?'page':undefined} className={tab===t?'active':''}>{t}</button>)}</nav>
-    {tab==='Teach'&&<><div className="teaching-copy"><h3>A correction becomes knowledge.</h3><p>Explain what went wrong. Aegis compiles supported teaching into rules it can check on the next attempt.</p></div><form onSubmit={e=>{e.preventDefault();teach(text);}}><label className="eyebrow" htmlFor="lesson">YOUR INSTRUCTION OR CORRECTION</label><textarea id="lesson" value={text} onChange={e=>setText(e.target.value)} placeholder="Once an arm touches contaminated material, treat that arm as contaminated too…" rows={5} maxLength={4000}/><div className="teach-actions"><button className="primary" disabled={!skill||!text.trim()} type="submit">Teach Aegis <ArrowUpRight size={17}/></button><button type="button" disabled={!voiceReady||transcribing||!skill} className={recording?'recording':''} onClick={record}>{recording?<Square size={16}/>:<Mic size={16}/>} {recording?'Finish':transcribing?'Transcribing…':'Speak'}</button></div></form><p className="voice-note">{voiceReady?'Speechmatics connected. Record up to 30 seconds.': 'Speechmatics needs a server API key. Text teaching is ready.'}</p><div className="lesson-suggestions"><span className="eyebrow">TRY A LESSON</span><button onClick={()=>setText(SAFETY_LESSON)}>Teach contamination transfer <ArrowUpRight size={15}/></button><button onClick={()=>setText(PREFERENCE_LESSON)}>Reserve the left arm for clean work <ArrowUpRight size={15}/></button><button onClick={()=>setText('From now on, unknown objects should be treated as suspect.')}>Classify unknown objects as suspect <ArrowUpRight size={15}/></button></div></>}
-    {tab==='Skill'&&<div className="tab-content"><p className="muted">Rules are persistent. Gripper states belong to the current episode.</p>{skill?.rules.length===0&&<p>No taught rules yet. Run a baseline, then explain contamination transfer.</p>}{skill?.rules.map(r=><article className="rule" key={r.id}><span className="eyebrow">{r.type.toUpperCase()} / {r.event}</span><h3>{label(r.id)}</h3><pre>{JSON.stringify({actor:r.actor,target:r.target,...(r.effect?{set_state:r.effect}:{cost:r.cost})},null,2)}</pre></article>)}<button onClick={()=>save('skill-library.json',library.current!.export())}><Download size={16}/> Export skill library</button><label className="import-label">Import a saved library<input type="file" accept="application/json,.json" onChange={async e=>{try{const file=e.target.files?.[0];if(!file)return;if(file.size>2*1024*1024)throw Error('Library too large');library.current!.import(await file.text());setSkill(library.current!.current());reset();}catch(err){setError(String(err));}}}/></label></div>}
-    {tab==='Provenance'&&<div className="tab-content"><p className="muted">Actual discrete events from this testbed episode. Contact is not inferred from the animation.</p>{!c?.world.edges.length&&<p>No contacts recorded yet.</p>}{c?.world.edges.slice().reverse().map(edge=><article className="edge" key={edge.id}><span className="eyebrow">{edge.relation} · #{edge.sequence}</span><p>{label(edge.actor)} <span className="green">→</span> {label(edge.target)}</p><small>{edge.before.join(' / ')} → {edge.after.join(' / ')}</small></article>)}<button disabled={!c} onClick={()=>save('episode-ledger.json',JSON.stringify({world:c!.world,decisions:c!.decisions,result:c!.result()},null,2))}><Download size={16}/> Export episode ledger</button></div>}
-    {tab==='History'&&<div className="tab-content">{library.current?.versions().slice().reverse().map(v=><article className="history" key={v.version}><div><GitBranch size={16}/><strong>Isolation procedure · v{v.version}</strong></div><p>{v.teachingHistory.at(-1)?.text??'Initial procedure. No contamination doctrine taught.'}</p><small>{v.validationHistory.length?`${v.validationHistory.filter(x=>x.passed).length}/${v.validationHistory.length} recorded episode validations`:'Not validated in this browser'}</small>{v.version!==skill?.version&&<button disabled={running} onClick={()=>{try{const next=library.current!.rollback(v.version);setSkill(next);c!.teach(next);setMessage(`Restored v${v.version} as new version v${next.version}.`);refresh();}catch(e){setError(String(e));}}}>Restore as new version</button>}</article>)}</div>}
-    <div className="feedback" aria-live="polite"><div className="feedback-top"><span className="status-dot"/><span className="eyebrow">{lastLesson?'TEACHING RECEIVED':'APPRENTICE STATUS'}</span>{previousVersion&&<span className="version-change">v{previousVersion} → v{skill?.version}</span>}<button type="button" className="audio-toggle" aria-label={voiceMuted?'Unmute read aloud':'Mute read aloud'} onClick={()=>{setVoiceMuted(v=>!v);if(!voiceMuted)window.speechSynthesis?.cancel();}}>{voiceMuted?<VolumeX size={15}/>:<Volume2 size={15}/>} {voiceMuted?'Muted':'Mute'}</button><button type="button" className="audio-toggle" onClick={()=>setReadAloud(v=>!v)}>{readAloud?'Auto-play on':'Auto-play off'}</button><button type="button" className="audio-toggle" onClick={()=>speak()} disabled={voiceMuted}><Volume2 size={15}/> Replay</button></div>{lastLesson&&<blockquote>“{lastLesson}”</blockquote>}<p>{message}</p>{clarification&&<button onClick={confirm}>Yes, prohibit that contact</button>}<details className="voice-studio"><summary>Voice studio</summary><div className="voice-controls"><label>Voice<select value={voiceName} onChange={e=>setVoiceName(e.target.value)}><option value="">System default</option>{voices.map(v=><option key={`${v.name}-${v.lang}`} value={v.name}>{v.name} · {v.lang}</option>)}</select></label><label>Speed <output>{speechRate.toFixed(2)}×</output><input type="range" min="0.6" max="1.8" step="0.02" value={speechRate} onChange={e=>setSpeechRate(Number(e.target.value))}/></label><label>Pitch <output>{speechPitch.toFixed(2)}</output><input type="range" min="0.5" max="1.5" step="0.01" value={speechPitch} onChange={e=>setSpeechPitch(Number(e.target.value))}/></label><label>Volume <output>{Math.round(speechVolume*100)}%</output><input type="range" min="0" max="1" step="0.01" value={speechVolume} onChange={e=>setSpeechVolume(Number(e.target.value))}/></label></div></details></div>
-    <div className="memory"><div><span className="eyebrow">SKILL CONTRACT</span><h3>Isolation procedure <span>v{skill?.version??'1.0'}</span></h3></div><div className="memory-stats"><span><strong>{skill?.rules.length??0}</strong> learned rules</span><span><strong>{skill?.teachingHistory.length??0}</strong> lessons</span></div></div>
-    </section></div>
-    <section className="evidence"><div><span className="eyebrow">04 / VERIFY</span><h2>Remember. Reset. Try again.</h2><p>Test the current skill on 50 unseen scenes with five clean samples and a different contaminated object.</p><button onClick={benchmark} disabled={!skill||running}><Activity size={16}/> Test generalization</button></div><div className="evidence-stat"><strong>{bench?`${bench.passed}/${bench.total}`:'—'}</strong><span>verified testbed episodes</span></div><div className="evidence-stat"><strong>{bench?.violations??'—'}</strong><span>episodes with safety violations</span></div><div className="evidence-note">Current evidence covers the symbolic contact testbed. MuJoCo, camera VLA inference, SO-101 coordination, and OpenVINO Intel benchmarks remain explicit integration work.</div></section>
-    <footer><span>FORTIFIERS / TEACH MACHINES THE WAY YOU TEACH PEOPLE.</span><span>Deterministic knowledge. Auditable corrections.</span></footer></main></div></div>;
+
+function formatTime(seconds: number) {
+  return `${seconds.toFixed(1).padStart(4, '0')}s`;
+}
+
+function RobotArm({
+  side,
+  base,
+  target,
+  active,
+}: {
+  side: 'left' | 'right';
+  base: number[];
+  target: number[];
+  active: boolean;
+}) {
+  const direction = side === 'left' ? 1 : -1;
+  const elbow = [base[0] + direction * 58, base[1] - 52];
+  const wrist = active ? target : [base[0] + direction * 105, base[1] - 15];
+  const path = `M${base[0]} ${base[1]}L${elbow[0]} ${elbow[1]}L${wrist[0]} ${wrist[1]}`;
+
+  return (
+    <g className={`robot-arm ${active ? 'active' : ''}`}>
+      <circle cx={base[0]} cy={base[1]} r="33" fill="#17242c" stroke="#8df0c9" strokeWidth="3" />
+      <path d={path} fill="none" stroke="#aab9c2" strokeWidth="17" strokeLinecap="round" strokeLinejoin="round" />
+      <path d={path} fill="none" stroke="#263742" strokeWidth="10" strokeLinecap="round" strokeLinejoin="round" />
+      <circle cx={elbow[0]} cy={elbow[1]} r="10" fill="#0b141a" stroke="#8df0c9" />
+      <g transform={`translate(${wrist[0]},${wrist[1]})`}>
+        <circle r="10" fill="#0b141a" stroke="#8df0c9" />
+        <path d="M-4-4L-13-14M4-4L13-14" stroke="#8df0c9" strokeWidth="4" strokeLinecap="round" />
+      </g>
+      <text x={base[0]} y={base[1] + 56} textAnchor="middle" className="scene-label green-fill">
+        {side.toUpperCase()} SO-101
+      </text>
+    </g>
+  );
+}
+
+function TableScene({ seed, step }: { seed: number; step: number }) {
+  const objects = useMemo(
+    () => ({
+      plate: [315 + seeded(seed, 1) * 60, 222 + seeded(seed, 2) * 35],
+      cup: [445 + seeded(seed, 3) * 55, 205 + seeded(seed, 4) * 45],
+      fork: [280 + seeded(seed, 5) * 45, 355],
+      spoon: [430 + seeded(seed, 6) * 45, 355],
+    }),
+    [seed],
+  );
+
+  const plateDone = step > 3;
+  const cupHeld = step === 5;
+  const cupDone = step > 5;
+  const forkDone = step > 1;
+  const spoonDone = step > 2;
+  const drawerOpen = step > 0;
+  const leftTarget = step === 2 ? objects.fork : step === 4 ? objects.plate : step >= 5 ? (cupDone ? [585, 250] : [385, 190]) : [175, 250];
+  const rightTarget = step === 1 ? [385, 350] : step === 3 ? objects.spoon : step === 5 ? [385, 190] : [595, 250];
+  const activeStep = STEPS[Math.min(Math.max(step - 1, 0), STEPS.length - 1)];
+  const leftActive = step > 0 && activeStep.arm !== 'RIGHT';
+  const rightActive = step > 0 && activeStep.arm !== 'LEFT';
+  const showTarget = step > 0 && step < STEPS.length;
+
+  return (
+    <svg className="table-scene" viewBox="0 0 760 470" aria-labelledby="scene-title">
+      <title id="scene-title">Browser-rendered dual SO-101 dinner-table task</title>
+      <defs>
+        <linearGradient id="table" x1="0" y1="0" x2="1" y2="1">
+          <stop stopColor="#27343e" />
+          <stop offset="1" stopColor="#131d25" />
+        </linearGradient>
+        <linearGradient id="place-glow" x1="0" y1="0" x2="1" y2="1">
+          <stop stopColor="#8df0c91f" />
+          <stop offset="1" stopColor="#8df0c902" />
+        </linearGradient>
+        <filter id="glow">
+          <feGaussianBlur stdDeviation="5" result="b" />
+          <feMerge>
+            <feMergeNode in="b" />
+            <feMergeNode in="SourceGraphic" />
+          </feMerge>
+        </filter>
+      </defs>
+      <rect width="760" height="470" rx="20" fill="#091016" />
+      <rect x="18" y="18" width="176" height="31" rx="8" fill="#101b23" stroke="#31414a" />
+      <circle cx="34" cy="34" r="4" fill="#8df0c9" />
+      <text x="47" y="38" className="scene-hud">EPISODE 01 · TASK MODEL</text>
+      <rect x="566" y="18" width="176" height="31" rx="8" fill="#101b23" stroke="#31414a" />
+      <text x="654" y="38" textAnchor="middle" className="scene-hud">SEED {seed}</text>
+      <path d="M84 104Q84 70 118 70H642Q676 70 676 104V405H84Z" fill="url(#table)" stroke="#41515e" strokeWidth="2" />
+      <rect x="115" y="104" width="530" height="225" rx="16" fill="#18242d" stroke="#536470" />
+      <rect x="475" y="120" width="135" height="88" rx="12" fill="url(#place-glow)" stroke="#65d9b1" strokeDasharray="7 6" />
+      <text x="542" y="146" textAnchor="middle" className="scene-label green-fill">PLACE AREA</text>
+      <path className={`handoff-arc ${step === 5 ? 'visible' : ''}`} d="M355 207 Q385 158 415 207" />
+      {showTarget && (
+        <>
+          <circle className="target-ring" cx={(leftActive ? leftTarget : rightTarget)[0]} cy={(leftActive ? leftTarget : rightTarget)[1]} r="24" />
+          <text className="target-label" x={(leftActive ? leftTarget : rightTarget)[0]} y={(leftActive ? leftTarget : rightTarget)[1] - 31} textAnchor="middle">
+            {activeStep.arm === 'BOTH' ? 'SYNC' : `${activeStep.arm} TARGET`}
+          </text>
+        </>
+      )}
+      <g className={drawerOpen ? 'drawer open' : 'drawer'}>
+        <rect x="245" y="329" width="270" height="80" rx="8" fill="#0e171e" stroke="#6d7f8c" />
+        <path d="M260 347H500" stroke="#54636e" />
+        <circle cx="380" cy="345" r="4" fill="#8df0c9" />
+        <text x="380" y="385" textAnchor="middle" className="scene-label">UTENSIL DRAWER</text>
+      </g>
+      <g className="object" transform={`translate(${forkDone ? 520 : objects.fork[0]},${forkDone ? 170 : objects.fork[1]})`}>
+        <path d="M-3-18V17M3-18V17M-7-18V-7M7-18V-7" stroke="#c7d2d9" strokeWidth="3" />
+        <text y="34" className="scene-label">FORK</text>
+      </g>
+      <g className="object" transform={`translate(${spoonDone ? 565 : objects.spoon[0]},${spoonDone ? 170 : objects.spoon[1]})`}>
+        <ellipse cy="-11" rx="8" ry="11" fill="none" stroke="#c7d2d9" strokeWidth="3" />
+        <path d="M0 0V20" stroke="#c7d2d9" strokeWidth="3" />
+        <text y="38" className="scene-label">SPOON</text>
+      </g>
+      <g className="object" transform={`translate(${plateDone ? 535 : objects.plate[0]},${plateDone ? 265 : objects.plate[1]})`}>
+        <circle r="32" fill="#dce8ed" fillOpacity=".12" stroke="#dce8ed" strokeWidth="3" />
+        <circle r="22" fill="none" stroke="#7d909d" />
+        <text y="48" className="scene-label">PLATE</text>
+      </g>
+      <g className="object" filter={cupHeld ? 'url(#glow)' : undefined} transform={`translate(${cupDone ? 585 : cupHeld ? 385 : objects.cup[0]},${cupDone ? 250 : cupHeld ? 190 : objects.cup[1]})`}>
+        <circle r="17" fill="#edc86d22" stroke="#edc86d" strokeWidth="3" />
+        <path d="M17-8Q33-8 31 4Q29 14 17 12" fill="none" stroke="#edc86d" strokeWidth="3" />
+        <text y="37" className="scene-label amber-fill">CUP</text>
+      </g>
+      <RobotArm side="left" base={[142, 250]} target={leftTarget} active={leftActive} />
+      <RobotArm side="right" base={[618, 250]} target={rightTarget} active={rightActive} />
+      <text x="110" y="442" className="scene-meta">SO-101 × 2 · BROWSER VISUALIZER</text>
+      <text x="650" y="442" textAnchor="end" className="scene-meta">NO PHYSICS CLAIMED IN BROWSER</text>
+    </svg>
+  );
+}
+
+export default function CompetitionPage() {
+  const [seed, setSeed] = useState(1001);
+  const [step, setStep] = useState(0);
+  const [running, setRunning] = useState(false);
+  const [elapsed, setElapsed] = useState(0);
+
+  useEffect(() => {
+    if (!running) return;
+    const timer = setInterval(() => setStep((current) => {
+      if (current >= STEPS.length - 1) {
+        setRunning(false);
+        return STEPS.length;
+      }
+      return current + 1;
+    }), 1150);
+    return () => clearInterval(timer);
+  }, [running]);
+
+  useEffect(() => {
+    if (!running) return;
+    const timer = setInterval(() => setElapsed((current) => current + 0.1), 100);
+    return () => clearInterval(timer);
+  }, [running]);
+
+  const reset = () => {
+    setRunning(false);
+    setStep(0);
+    setElapsed(0);
+  };
+
+  const chooseSeed = (nextSeed: number) => {
+    setSeed(nextSeed);
+    reset();
+  };
+
+  const advance = () => {
+    setStep((current) => Math.min(STEPS.length, current + 1));
+    setElapsed((current) => Math.max(current, (step + 1) * 1.15));
+  };
+
+  const progress = Math.round((step / STEPS.length) * 100);
+  const currentStep = STEPS[Math.min(step, STEPS.length - 1)];
+  const missionState = step === STEPS.length ? 'COMPLETE' : running ? 'EXECUTING' : step > 0 ? 'PAUSED' : 'READY';
+  const phaseLabel = step === 0 ? 'Ready for a reproducible run' : step === STEPS.length ? 'All task goals reached' : currentStep.detail;
+
+  return (
+    <div className="competition-shell">
+      <header className="competition-header">
+        <div className="competition-brand"><Shield size={23} /><span>FORTIFIERS</span><b>AEGIS / 01</b></div>
+        <nav aria-label="Competition navigation"><a href="#mission">Mission</a><a href="#evidence">Evidence</a><Link href="/aegis">Teaching workspace</Link></nav>
+        <span className="competition-badge"><i /> BROWSER READY</span>
+      </header>
+
+      <main className="competition-main">
+        <section className="competition-intro">
+          <div className="hero-copy">
+            <span className="competition-kicker">INTEL PHYSICAL AI · DUAL-ARM MANIPULATION · MISSION 01</span>
+            <h1>Dinner-table intelligence,<br /><em>taught to adapt.</em></h1>
+            <p>Aegis turns a human correction into a safer next attempt. This competition surface makes the loop legible: inspect the task, perturb the scene, watch the hand-off, then follow the evidence to the teaching workspace.</p>
+            <div className="hero-actions"><a className="hero-link" href="#mission">Run the mission <ArrowRight size={16} /></a><Link className="hero-link quiet" href="/aegis">See the learning loop <ArrowRight size={16} /></Link></div>
+          </div>
+          <div className="hero-proof"><div className="proof-orbit"><span className="orbit-dot" /><span className="orbit-dot second" /><Layers3 size={27} /></div><span>COMPETITION BUILD</span><strong>SO-101 × 2</strong><small>Browser visualizer / native evidence separate</small></div>
+        </section>
+
+        <section className="challenge-strip" aria-label="Competition claims">
+          <div><Check size={15} /><span><b>DETERMINISTIC</b> seeded resets</span></div>
+          <div><Target size={15} /><span><b>BIMANUAL</b> complementary actions</span></div>
+          <div><Shield size={15} /><span><b>AUDITABLE</b> versioned corrections</span></div>
+          <div className="strip-pending"><Activity size={15} /><span><b>SEPARATE</b> native physics proof</span></div>
+        </section>
+
+        <section className="competition-grid" id="mission">
+          <div className="sim-panel">
+            <div className="sim-heading">
+              <div><span className="competition-kicker">01 / LIVE TASK MODEL</span><h2>Set the dinner table</h2><p>Portable visualizer for the dual-arm challenge sequence.</p></div>
+              <div className={`sim-state ${running ? 'is-running' : ''}`} aria-live="polite"><i />{missionState}</div>
+            </div>
+            <div className="sim-canvas-wrap"><TableScene seed={seed} step={step} /><div className="canvas-caption"><span><Zap size={13} /> Motion is deterministic</span><span><Cpu size={13} /> Physics runs natively</span></div></div>
+            <div className="sim-controls">
+              <button className="competition-primary" onClick={() => setRunning((value) => !value)} disabled={step === STEPS.length}>{running ? <Pause size={16} /> : <Play size={16} />}{running ? 'Pause mission' : step > 0 ? 'Resume mission' : 'Run mission'}</button>
+              <button onClick={advance} disabled={running || step === STEPS.length}>Step <ChevronRight size={15} /></button>
+              <button onClick={reset}><RotateCcw size={15} /> Reset</button>
+              <div className="run-readout"><span>EPISODE TIME</span><strong>{formatTime(elapsed)}</strong></div>
+            </div>
+            <div className="seed-lab">
+              <div><span className="competition-kicker">SEE THE ADAPTATION</span><p>Same task contract. New deterministic scene.</p></div>
+              <div className="seed-pills">{SEED_PRESETS.map((preset) => <button key={preset.seed} className={seed === preset.seed ? 'selected' : ''} onClick={() => chooseSeed(preset.seed)}><strong>{preset.label}</strong><small>{preset.seed} · {preset.note}</small></button>)}</div>
+              <label>Custom seed<input type="number" value={seed} onChange={(event) => { const next = Number(event.target.value); setSeed(Number.isFinite(next) ? next : 0); reset(); }} /></label>
+            </div>
+          </div>
+
+          <aside className="mission-panel">
+            <div className="mission-title"><div><span className="competition-kicker">02 / TASK GRAPH</span><h2>Bimanual sequence</h2></div><div className="progress-readout"><strong>{progress}%</strong><span>mission</span></div></div>
+            <div className="progress-track"><span style={{ width: `${progress}%` }} /></div>
+            <div className="phase-card"><div className="phase-icon"><Gauge size={18} /></div><div><span className="competition-kicker">CURRENT PHASE</span><strong>{step === STEPS.length ? 'Mission complete' : step === 0 ? 'Awaiting run' : currentStep.label}</strong><p>{phaseLabel}</p></div></div>
+            <div className="step-list">{STEPS.map((item, index) => <div className={`competition-step ${index < step ? 'done' : index === step ? 'next' : ''}`} key={item.id}><span>{index < step ? <Check size={14} /> : String(index + 1).padStart(2, '0')}</span><div><strong>{item.label}</strong><small>{item.arm} ARM · {item.object.toUpperCase()}</small></div>{index === step && step < STEPS.length && <Zap size={14} className="step-live" />}</div>)}</div>
+            <div className={`handoff-note ${step === 5 ? 'active' : ''}`}><Sparkles size={17} /><p><strong>Complementary action</strong>{step === 5 ? 'Both arms are synchronized on the cup.' : 'The cup transfers right → left before final placement.'}</p></div>
+            <Link className="mission-link" href="/aegis">Open the teaching workspace <ArrowRight size={15} /></Link>
+          </aside>
+        </section>
+
+        <section className="evidence-grid" id="evidence">
+          <article><div className="evidence-icon"><Activity /></div><span>VISUAL LAYER</span><strong>Deterministic resets</strong><p>Seeded placement and perturbation controls make the demo reproducible for a judge, teammate, or future regression run.</p><em className="evidence-status ready">VERIFIABLE IN BROWSER</em></article>
+          <article><div className="evidence-icon"><Cpu /></div><span>PHYSICS LAYER</span><strong>Native MuJoCo</strong><p>The six-step task, measured two-jaw grasps and lifts, post-contact retention, releases, and hand-off are verified in the native harness; this page never disguises animation as simulation.</p><em className="evidence-status separate">EVIDENCE TRACK SEPARATE</em></article>
+          <article><div className="evidence-icon"><Gauge /></div><span>BASELINE RUN</span><strong>10 / 10 seeded scenes</strong><p>A deterministic observation-driven controller completes the current MuJoCo task across ten perturbation seeds. This is a baseline result, not a VLA claim.</p><em className="evidence-status ready">REPRODUCIBLE LOCALLY</em></article>
+          <article><div className="evidence-icon"><Shield /></div><span>LEARNING LAYER</span><strong>Aegis memory</strong><p>Human corrections become versioned rules in the teaching workspace, where provenance and generalization can be inspected.</p><em className="evidence-status ready">OPEN TEACHING WORKSPACE</em></article>
+        </section>
+
+        <section className="readiness">
+          <div className="readiness-heading"><span className="competition-kicker">03 / SUBMISSION READINESS</span><h2>A demo with a point of view.</h2><p>The browser proves the interaction model. Native runs prove the physical claim.</p></div>
+          <div className="readiness-board"><div className="readiness-score"><strong>4<span>/6</span></strong><small>surface claims ready</small></div><div className="readiness-items"><span className="complete"><Check /> Dual SO-101 scene</span><span className="complete"><Check /> Browser task visualization</span><span className="complete"><Check /> Seeded perturbations</span><span className="complete"><Check /> MuJoCo baseline loop</span><span className="partial"><Activity /> VLA / challenge adapter</span><span className="partial"><Activity /> Intel benchmark</span></div></div>
+        </section>
+
+        <section className="demo-route"><div><span className="competition-kicker">THE JUDGE PATH</span><h2>Run it. Change it. Explain it.</h2></div><div className="route-steps"><span><b>01</b> Run mission</span><ArrowRight size={16} /><span><b>02</b> Shift seed</span><ArrowRight size={16} /><span><b>03</b> Teach Aegis</span><ArrowRight size={16} /><span><b>04</b> Inspect evidence</span></div></section>
+
+        <footer><span>FORTIFIERS / TEACH MACHINES THE WAY YOU TEACH PEOPLE.</span><span>DETERMINISTIC KNOWLEDGE · AUDITABLE CORRECTIONS · HONEST EVIDENCE</span></footer>
+      </main>
+    </div>
+  );
 }

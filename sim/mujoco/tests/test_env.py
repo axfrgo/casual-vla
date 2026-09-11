@@ -14,6 +14,8 @@ def test_model_path_is_repo_local() -> None:
     with FortifiersMuJoCoEnv() as env:
         assert Path(env.model_path).name == "official_dual_so101_dinner_table.xml"
         assert env.model.nu == 13
+        assert env.model.neq == 8
+        assert not any(env.data.eq_active)
 
 
 def test_official_so101_mjcf_asset_is_available() -> None:
@@ -46,6 +48,7 @@ def test_observation_contains_camera_and_physics_state() -> None:
         observation = env.reset(3)
         assert len(observation["qpos"]) == env.model.nq
         assert set(observation["objects"]) == {"plate", "cup", "fork", "spoon"}
+        assert set(observation["objects"]["cup"]["grasp_target_by_arm"]) == {"left", "right"}
         env.step({"type": "open_drawer"})
         assert env.observe()["drawer"] > 0
         frame = env.render()
