@@ -1,0 +1,158 @@
+{
+  "report_schema": "fortifiers.mujoco.evaluation.summary.v1",
+  "report_kind": "compact projection of the native evaluator output",
+  "generated_from": "fortifiers_mujoco.evaluate_policy",
+  "source_command": "uv run --offline --project sim/mujoco python -m fortifiers_mujoco.evaluate_policy --episodes 10 --start-seed 1001 --max-actions 180 --output public/evidence/mujoco-policy-eval.json",
+  "environment": "mujoco-dual-arm-dinner-table",
+  "policy": "closed-loop-dinner-policy-v1",
+  "policy_kind": "deterministic observation-driven baseline; not a VLA",
+  "instruction": "Set the dinner table: open the drawer, retrieve the fork and spoon, place the plate, hand the cup from right to left, and place the cup.",
+  "successes": 10,
+  "total": 10,
+  "success_rate": 1.0,
+  "failed_task_actions": 0,
+  "total_motion_retries": 10,
+  "seeds": [
+    {
+      "seed": 1001,
+      "passed": true,
+      "task_index": 6,
+      "actions": 23,
+      "failed_actions": 0,
+      "motion_retries": 1,
+      "placed": [
+        "cup",
+        "fork",
+        "plate",
+        "spoon"
+      ]
+    },
+    {
+      "seed": 1002,
+      "passed": true,
+      "task_index": 6,
+      "actions": 23,
+      "failed_actions": 0,
+      "motion_retries": 1,
+      "placed": [
+        "cup",
+        "fork",
+        "plate",
+        "spoon"
+      ]
+    },
+    {
+      "seed": 1003,
+      "passed": true,
+      "task_index": 6,
+      "actions": 24,
+      "failed_actions": 0,
+      "motion_retries": 1,
+      "placed": [
+        "cup",
+        "fork",
+        "plate",
+        "spoon"
+      ]
+    },
+    {
+      "seed": 1004,
+      "passed": true,
+      "task_index": 6,
+      "actions": 24,
+      "failed_actions": 0,
+      "motion_retries": 1,
+      "placed": [
+        "cup",
+        "fork",
+        "plate",
+        "spoon"
+      ]
+    },
+    {
+      "seed": 1005,
+      "passed": true,
+      "task_index": 6,
+      "actions": 23,
+      "failed_actions": 0,
+      "motion_retries": 1,
+      "placed": [
+        "cup",
+        "fork",
+        "plate",
+        "spoon"
+      ]
+    },
+    {
+      "seed": 1006,
+      "passed": true,
+      "task_index": 6,
+      "actions": 23,
+      "failed_actions": 0,
+      "motion_retries": 1,
+      "placed": [
+        "cup",
+        "fork",
+        "plate",
+        "spoon"
+      ]
+    },
+    {
+      "seed": 1007,
+      "passed": true,
+      "task_index": 6,
+      "actions": 23,
+      "failed_actions": 0,
+      "motion_retries": 1,
+      "placed": [
+        "cup",
+        "fork",
+        "plate",
+        "spoon"
+      ]
+    },
+    {
+      "seed": 1008,
+      "passed": true,
+      "task_index": 6,
+      "actions": 23,
+      "failed_actions": 0,
+      "motion_retries": 1,
+      "placed": [
+        "cup",
+        "fork",
+        "plate",
+        "spoon"
+      ]
+    },
+    {
+      "seed": 1009,
+      "passed": true,
+      "task_index": 6,
+      "actions": 23,
+      "failed_actions": 0,
+      "motion_retries": 1,
+      "placed": [
+        "cup",
+        "fork",
+        "plate",
+        "spoon"
+      ]
+    },
+    {
+      "seed": 1010,
+      "passed": true,
+      "task_index": 6,
+      "actions": 23,
+      "failed_actions": 0,
+      "motion_retries": 1,
+      "placed": [
+        "cup",
+        "fork",
+        "plate",
+        "spoon"
+      ]
+    }
+  ],
+  "evidence_boundary": "Live MuJoCo baseline evidence only; not VLA, hardware, Intel Core Ultra, OpenVINO task success, or video evidence."
+}

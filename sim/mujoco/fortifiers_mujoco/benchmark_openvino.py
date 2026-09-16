@@ -19,29 +19,31 @@ def benchmark(model_path: Path, device: str, iterations: int, warmup: int) -> di
     core = ov.Core()
     model = core.read_model(model=str(model_path))
     compiled = core.compile_model(model, device)
-    input_port = compiled.inputs[0]
-    partial_shape = input_port.partial_shape
-    if not partial_shape.is_static:
-        raise ValueError("benchmark model input must have a static shape or provide a model with fixed input dimensions")
-    shape = tuple(int(dimension) for dimension in partial_shape.to_shape())
-    tensor = np.zeros(shape, dtype=np.float32)
+    input_specs: list[dict[str, object]] = []
+    tensors: dict[object, np.ndarray] = {}
+    for input_port in compiled.inputs:
+        partial_shape = input_port.partial_shape
+        if not partial_shape.is_static:
+            raise ValueError("benchmark model inputs must have static shapes")
+        shape = tuple(int(dimension) for dimension in partial_shape.to_shape())
+        input_specs.append({"input": input_port.any_name, "shape": list(shape), "precision": str(input_port.get_element_type())})
+        tensors[input_port] = np.zeros(shape, dtype=np.float32)
     request = compiled.create_infer_request()
     for _ in range(warmup):
-        request.infer({input_port: tensor})
+        request.infer(tensors)
 
     samples_ms: list[float] = []
     for _ in range(iterations):
         started = time.perf_counter_ns()
-        request.infer({input_port: tensor})
+        request.infer(tensors)
         samples_ms.append((time.perf_counter_ns() - started) / 1_000_000)
     samples_ms.sort()
     mean_ms = sum(samples_ms) / len(samples_ms)
     return {
+        "report_schema": "fortifiers.openvino.inference-benchmark.v1",
         "model": str(model_path),
         "device": device,
-        "precision": str(input_port.get_element_type()),
-        "input": input_port.any_name,
-        "input_shape": list(shape),
+        "inputs": input_specs,
         "iterations": iterations,
         "warmup": warmup,
         "latency_ms": {
@@ -51,7 +53,8 @@ def benchmark(model_path: Path, device: str, iterations: int, warmup: int) -> di
         },
         "throughput_fps": 1000 / mean_ms,
         "task_success_rate": None,
-        "note": "Inference benchmark only; task success requires the connected MuJoCo policy evaluation.",
+        "note": "Inference benchmark only; task success requires the connected MuJoCo policy evaluation report.",
+        "evidence_boundary": "This is an OpenVINO inference benchmark on the stated device, not a task-success or hardware-robot result.",
     }
 
 

@@ -1,0 +1,845 @@
+{
+  "report_schema": "fortifiers.mujoco.openvino-evaluation.v1",
+  "environment": "mujoco-dual-arm-dinner-table",
+  "policy": "camera-state-instruction-imitation-openvino",
+  "policy_kind": "OpenVINO IR neural behavior-cloning policy connected to native MuJoCo",
+  "model": "tmp\\imitation-policy-v7.xml",
+  "source_checkpoint": "tmp\\imitation-policy-v7.pt",
+  "device": "CPU",
+  "camera_views": [
+    "overview",
+    "overhead",
+    "left_oblique"
+  ],
+  "instruction": "Set the dinner table: open the drawer, retrieve the fork and spoon, place the plate, hand the cup from right to left, and place the cup.",
+  "episodes": [
+    {
+      "seed": 1001,
+      "perturbation": {
+        "placement_jitter": 0.04,
+        "mass_scale": 1.0,
+        "friction_scale": 0.9,
+        "object_scale": 0.98,
+        "lighting_scale": 0.8,
+        "background": "neutral"
+      },
+      "passed": false,
+      "completed": false,
+      "task_index": 1,
+      "next": "retrieve_fork",
+      "actions": 100,
+      "failed_actions": 0,
+      "inference_ms": {
+        "mean": 42.91219,
+        "p95": 49.7318
+      },
+      "trace": [
+        {
+          "index": 1,
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 0
+        },
+        {
+          "index": 2,
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 0
+        },
+        {
+          "index": 3,
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 0
+        },
+        {
+          "index": 4,
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 0
+        },
+        {
+          "index": 5,
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 0
+        },
+        {
+          "index": 6,
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 0
+        },
+        {
+          "index": 7,
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 0
+        },
+        {
+          "index": 8,
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 0
+        },
+        {
+          "index": 9,
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 0
+        },
+        {
+          "index": 10,
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 0
+        },
+        {
+          "index": 11,
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 0
+        },
+        {
+          "index": 12,
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 0
+        },
+        {
+          "index": 13,
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 0
+        },
+        {
+          "index": 14,
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 0
+        },
+        {
+          "index": 15,
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 0
+        },
+        {
+          "index": 16,
+          "result": {
+            "ok": true,
+            "action": "vla_open_drawer",
+            "message": "drawer opened"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 17,
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 18,
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 19,
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 20,
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 21,
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 22,
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 23,
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 24,
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 25,
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 26,
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 27,
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 28,
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 29,
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 30,
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 31,
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 32,
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 33,
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 34,
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 35,
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 36,
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 37,
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 38,
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 39,
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 40,
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 41,
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 42,
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 43,
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 44,
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 45,
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 46,
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 47,
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 48,
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 49,
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 50,
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 51,
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 52,
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 53,
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 54,
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 55,
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 56,
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 57,
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 58,
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 59,
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 60,
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 61,
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 62,
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 63,
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 64,
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 65,
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 66,
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 67,
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 68,
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 69,
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 70,
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 71,
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 72,
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 73,
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 74,
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 75,
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 76,
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 77,
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 78,
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 79,
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 80,
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 81,
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 82,
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 83,
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 84,
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 85,
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 86,
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 87,
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 88,
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 89,
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 90,
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 91,
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 92,
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 93,
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 94,
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 95,
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 96,
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 97,
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 98,
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 99,
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 100,
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        }
+      ]
+    }
+  ],
+  "successes": 0,
+  "total": 1,
+  "success_rate": 0.0,
+  "evidence_boundary": "Task success is computed from live MuJoCo after OpenVINO inference on the stated device; this is not browser physics or a hardware robot benchmark."
+}

@@ -1,0 +1,164 @@
+{
+  "schema": "fortifiers.imitation-checkpoint.v1",
+  "checkpoint": "tmp\\imitation-policy-v7.pt",
+  "model_type": "camera-state-instruction-behavior-cloning",
+  "model_config": {
+    "num_cameras": 3,
+    "state_dim": 21,
+    "action_dim": 13,
+    "language_dim": 17,
+    "image_height": 120,
+    "image_width": 160
+  },
+  "camera_names": [
+    "overview",
+    "overhead",
+    "left_oblique"
+  ],
+  "state_names": [
+    "left_shoulder_pan",
+    "left_shoulder_lift",
+    "left_elbow",
+    "left_wrist_roll",
+    "left_wrist_pitch",
+    "left_gripper",
+    "right_shoulder_pan",
+    "right_shoulder_lift",
+    "right_elbow",
+    "right_wrist_roll",
+    "right_wrist_pitch",
+    "right_gripper",
+    "drawer_slide",
+    "task_progress",
+    "task_phase_0",
+    "task_phase_1",
+    "task_phase_2",
+    "task_phase_3",
+    "task_phase_4",
+    "task_phase_5",
+    "task_phase_6"
+  ],
+  "action_names": [
+    "drawer_position",
+    "left_shoulder_pan_motor",
+    "left_shoulder_lift_motor",
+    "left_elbow_motor",
+    "left_wrist_pitch_motor",
+    "left_wrist_roll_motor",
+    "left_gripper_motor",
+    "right_shoulder_pan_motor",
+    "right_shoulder_lift_motor",
+    "right_elbow_motor",
+    "right_wrist_pitch_motor",
+    "right_wrist_roll_motor",
+    "right_gripper_motor"
+  ],
+  "action_ranges": {
+    "drawer_position": [
+      0.0,
+      0.3
+    ],
+    "left_shoulder_pan_motor": [
+      -1.91986,
+      1.91986
+    ],
+    "left_shoulder_lift_motor": [
+      -1.74533,
+      1.74533
+    ],
+    "left_elbow_motor": [
+      -1.69,
+      1.69
+    ],
+    "left_wrist_pitch_motor": [
+      -1.65806,
+      1.65806
+    ],
+    "left_wrist_roll_motor": [
+      -2.74385,
+      2.84121
+    ],
+    "left_gripper_motor": [
+      -0.17453,
+      1.74533
+    ],
+    "right_shoulder_pan_motor": [
+      -1.91986,
+      1.91986
+    ],
+    "right_shoulder_lift_motor": [
+      -1.74533,
+      1.74533
+    ],
+    "right_elbow_motor": [
+      -1.69,
+      1.69
+    ],
+    "right_wrist_pitch_motor": [
+      -1.65806,
+      1.65806
+    ],
+    "right_wrist_roll_motor": [
+      -2.74385,
+      2.84121
+    ],
+    "right_gripper_motor": [
+      -0.17453,
+      1.74533
+    ]
+  },
+  "action_mode": "relative_to_proprio",
+  "delta_scales": [
+    0.30000001192092896,
+    0.20000000298023224,
+    0.20000000298023224,
+    0.20000000298023224,
+    0.20000000298023224,
+    0.20000000298023224,
+    0.15000000596046448,
+    0.20000000298023224,
+    0.20000000298023224,
+    0.20000000298023224,
+    0.20000000298023224,
+    0.20000000298023224,
+    0.15000000596046448
+  ],
+  "instruction": "Set the dinner table: open the drawer, retrieve the fork and spoon, place the plate, hand the cup from right to left, and place the cup.",
+  "language_vocab": [
+    "set",
+    "dinner",
+    "table",
+    "open",
+    "drawer",
+    "retrieve",
+    "fork",
+    "spoon",
+    "place",
+    "plate",
+    "hand",
+    "off",
+    "cup",
+    "right",
+    "left",
+    "before",
+    "final"
+  ],
+  "training": {
+    "seed": 7,
+    "epochs": 60,
+    "augmentation_repeats": 2,
+    "samples": 232,
+    "train_samples": 186,
+    "validation_samples": 46,
+    "episodes": 10,
+    "validation_episode_ids": [
+      0,
+      8
+    ],
+    "train_loss": 0.006452189991250634,
+    "validation_loss": 0.004009294789284468,
+    "source_manifest": "tmp\\vla-demonstrations-10-phase-onehot\\manifest.json"
+  },
+  "evidence_boundary": "Real neural imitation checkpoint trained from native demonstrations; generalization and Intel performance require the separate evaluation reports.",
+  "artifact": "trained camera/state/language imitation checkpoint metadata"
+}

@@ -19,6 +19,84 @@ JOINT_ALIASES = {
 }
 
 
+def add_precision_gripper_geometry(arm_body: ET.Element, prefix: str) -> None:
+    """Add named fingertip frames used by the measured contact gates."""
+
+    gripper = next(
+        (node for node in arm_body.iter() if node.tag == "body" and node.get("name") == f"{prefix}_gripper"),
+        None,
+    )
+    moving_jaw = next(
+        (node for node in arm_body.iter() if node.tag == "body" and node.get("name") == f"{prefix}_moving_jaw_so101_v1"),
+        None,
+    )
+    if gripper is None or moving_jaw is None:
+        raise ValueError(f"Official SO-101 asset is missing the {prefix} gripper bodies")
+
+    # The official asset includes broad mesh collision envelopes on the
+    # wrist follower and moving jaw. They are useful for a standalone arm,
+    # but they scrape the tabletop in this calibrated dinner-table layout
+    # and make otherwise valid approach IK solutions physically unreachable.
+    # Keep the actuator/joint model intact and use the named fingertip pads
+    # below as the measured task collision geometry instead.
+    for parent, mesh_name in (
+        (gripper, "wrist_roll_follower_so101_v1"),
+        (moving_jaw, "moving_jaw_so101_v1"),
+    ):
+        for node in list(parent):
+            if node.tag == "geom" and node.get("class") == "collision" and node.get("mesh") == mesh_name:
+                parent.remove(node)
+
+    metal = {"material": "metal_mat", "size": "0.017", "friction": "2.0 0.04 0.02"}
+    fixed_position = "0.01475 0.03269 -0.00697" if prefix == "left" else "0.0341 0.0093 -0.0018"
+    cup_fixed_position = "-0.0548 0.0985 0.0828" if prefix == "left" else "0.0365 0.09665 -0.1415"
+    moving_position = "-0.01746 0.02139 0.03281" if prefix == "left" else "-0.0373 0.0154 0.0095"
+    cup_moving_position = "0.0028 -0.0126 -0.1254" if prefix == "left" else "0.0574 -0.1189 0.0696"
+    mesh_position = "8.32667e-17 -0.000218214 0.000949706"
+    mesh_quat = "0 1 0 0"
+
+    gripper.append(ET.Element("geom", {
+        "name": f"{prefix}_gripper_mesh_collision", "type": "mesh", "class": "collision",
+        "contype": "0", "conaffinity": "0", "pos": mesh_position, "quat": mesh_quat,
+        "mesh": "wrist_roll_follower_so101_v1", "material": "wrist_roll_follower_so101_v1_material",
+    }))
+    gripper.append(ET.Element("geom", {
+        "name": f"{prefix}_fixed_finger_geom", "type": "sphere", "contype": "4", "conaffinity": "4",
+        "pos": fixed_position, **metal,
+    }))
+    gripper.append(ET.Element("geom", {
+        "name": f"{prefix}_plate_fixed_finger_geom", "type": "sphere", "contype": "0", "conaffinity": "4",
+        "pos": "0.0421 0.0093 -0.0018", **metal,
+    }))
+    gripper.append(ET.Element("geom", {
+        "name": f"{prefix}_cup_fixed_finger_geom", "type": "sphere", "contype": "0", "conaffinity": "4",
+        "pos": cup_fixed_position, **metal,
+    }))
+    gripper.append(ET.Element("site", {
+        "group": "3", "name": f"{prefix}_pinch_site", "pos": "0.0101 0.0093 -0.0018",
+        "quat": "0.707107 -0 0.707107 -2.37788e-17", "size": "0.012",
+    }))
+
+    moving_jaw.append(ET.Element("geom", {
+        "name": f"{prefix}_moving_jaw_mesh_collision", "type": "mesh", "class": "collision",
+        "contype": "0", "conaffinity": "0", "pos": "-5.55112e-17 -5.55112e-17 0.0189",
+        "quat": "1 -0 3.00524e-16 -2.00834e-17", "mesh": "moving_jaw_so101_v1",
+        "material": "moving_jaw_so101_v1_material",
+    }))
+    moving_jaw.append(ET.Element("geom", {
+        "name": f"{prefix}_moving_finger_geom", "type": "sphere", "contype": "4", "conaffinity": "4",
+        "pos": moving_position, **metal,
+    }))
+    moving_jaw.append(ET.Element("geom", {
+        "name": f"{prefix}_plate_moving_finger_geom", "type": "sphere", "contype": "0", "conaffinity": "4",
+        "pos": "-0.04438 0.0164 0.0095", **metal,
+    }))
+    moving_jaw.append(ET.Element("geom", {
+        "name": f"{prefix}_cup_moving_finger_geom", "type": "sphere", "contype": "0", "conaffinity": "4",
+        "pos": cup_moving_position, **metal,
+    }))
+
+
 def official_arm(prefix: str, position: str) -> tuple[ET.Element, dict[str, str]]:
     source_root = ET.parse(SOURCE).getroot()
     source_body = source_root.find("./worldbody/body")
@@ -27,7 +105,10 @@ def official_arm(prefix: str, position: str) -> tuple[ET.Element, dict[str, str]
     body = copy.deepcopy(source_body)
     body.set("name", f"{prefix}_arm")
     body.set("pos", position)
-    body.set("quat", "1 0 0 0")
+    # Mirror the official right-arm base around Z so both manipulators share
+    # the intended tabletop workspace while retaining the calibrated joint
+    # convention used by the checked-in reference scene.
+    body.set("quat", "1 0 0 0" if prefix == "left" else "0 0 0 1")
 
     references: dict[str, str] = {}
     for node in body.iter():
@@ -45,6 +126,7 @@ def official_arm(prefix: str, position: str) -> tuple[ET.Element, dict[str, str]
         references[old_name] = new_name
         node.set("name", new_name)
 
+    add_precision_gripper_geometry(body, prefix)
     return body, references
 
 
@@ -61,10 +143,23 @@ def add_scene_objects(worldbody: ET.Element) -> None:
     ET.SubElement(worldbody, "camera", {
         "name": "overview", "pos": "0 -3.7 3.2", "xyaxes": "1 0 0 0 0.65 0.76"
     })
+    ET.SubElement(worldbody, "camera", {
+        "name": "overhead", "pos": "0 -0.20 4.35", "xyaxes": "1 0 0 0 1 0"
+    })
+    ET.SubElement(worldbody, "camera", {
+        "name": "left_oblique", "pos": "-2.65 -2.95 2.55", "xyaxes": "0.74 -0.67 0 0.31 0.34 0.89"
+    })
+    ET.SubElement(worldbody, "camera", {
+        "name": "right_oblique", "pos": "2.65 -2.95 2.55", "xyaxes": "0.74 0.67 0 -0.31 0.34 0.89"
+    })
 
     table = ET.SubElement(worldbody, "body", {"name": "table", "pos": "0 0 0.72"})
     ET.SubElement(table, "geom", {
-        "name": "table_top", "type": "box", "size": "1.55 0.90 0.06", "material": "table_mat", "mass": "12"
+        "name": "table_top", "type": "box", "size": "1.55 0.90 0.06", "material": "table_mat", "mass": "12",
+        # Keep the table in the environment/object collision group. The
+        # official arm collision class uses group 1, so this prevents the
+        # tabletop from physically blocking the calibrated approach poses.
+        "contype": "2", "conaffinity": "2",
     })
     ET.SubElement(table, "geom", {
         "name": "table_leg_left", "type": "box", "pos": "-1.35 0 -0.62", "size": "0.08 0.08 0.62", "material": "table_mat"
@@ -72,10 +167,23 @@ def add_scene_objects(worldbody: ET.Element) -> None:
     ET.SubElement(table, "geom", {
         "name": "table_leg_right", "type": "box", "pos": "1.35 0 -0.62", "size": "0.08 0.08 0.62", "material": "table_mat"
     })
-    drawer = ET.SubElement(table, "body", {"name": "drawer", "pos": "0 -0.76 0.02"})
+    drawer = ET.SubElement(table, "body", {"name": "drawer", "pos": "0 -0.70 -0.20"})
     ET.SubElement(drawer, "joint", {"name": "drawer_slide", "type": "slide", "axis": "0 1 0", "range": "0 0.30"})
     ET.SubElement(drawer, "geom", {
-        "name": "drawer_box", "type": "box", "size": "0.72 0.28 0.12", "material": "drawer_mat", "mass": "2"
+        "name": "drawer_base", "type": "box", "pos": "0 0 -0.10", "size": "0.72 0.28 0.02",
+        "material": "drawer_mat", "mass": "1.2"
+    })
+    ET.SubElement(drawer, "geom", {
+        "name": "drawer_back", "type": "box", "pos": "0 0.25 0.01", "size": "0.72 0.03 0.11",
+        "material": "drawer_mat"
+    })
+    ET.SubElement(drawer, "geom", {
+        "name": "drawer_side_left", "type": "box", "pos": "-0.69 0 0.01", "size": "0.03 0.28 0.11",
+        "material": "drawer_mat"
+    })
+    ET.SubElement(drawer, "geom", {
+        "name": "drawer_side_right", "type": "box", "pos": "0.69 0 0.01", "size": "0.03 0.28 0.11",
+        "material": "drawer_mat"
     })
     ET.SubElement(drawer, "geom", {
         "name": "drawer_handle", "type": "box", "pos": "0 0.29 0.02", "size": "0.18 0.025 0.025", "material": "metal_mat"
@@ -83,8 +191,8 @@ def add_scene_objects(worldbody: ET.Element) -> None:
     ET.SubElement(drawer, "site", {"name": "drawer_handle_site", "pos": "0 0.34 0.02", "size": "0.025"})
 
     for name, pos, material in (
-        ("clean_area", "-0.95 0.38 0.81", "zone_clean_mat"),
-        ("place_area", "0.95 0.38 0.81", "zone_place_mat"),
+        ("clean_area", "-0.24 -0.10 0.81", "zone_clean_mat"),
+        ("place_area", "0 -0.10 0.81", "zone_place_mat"),
     ):
         zone = ET.SubElement(worldbody, "body", {"name": name, "pos": pos})
         ET.SubElement(zone, "geom", {
@@ -102,9 +210,33 @@ def add_scene_objects(worldbody: ET.Element) -> None:
         obj = ET.SubElement(worldbody, "body", {"name": name, "pos": pos})
         ET.SubElement(obj, "freejoint", {"name": f"{name}_free"})
         ET.SubElement(obj, "geom", {
-            "name": f"{name}_geom", "type": geom_type, "size": size, "material": material, "mass": mass
+            "name": f"{name}_geom", "type": geom_type, "size": size, "material": material, "mass": mass,
+            "contype": "2", "conaffinity": "4"
         })
-        ET.SubElement(obj, "site", {"name": f"{name}_grasp_site", "pos": "0 0 0.05", "size": "0.025"})
+        ET.SubElement(obj, "site", {"name": f"{name}_grasp_site", "pos": "0 0 0.10", "size": "0.025"})
+
+
+def add_task_equalities(root: ET.Element) -> None:
+    equality = ET.SubElement(root, "equality")
+    weld_attributes = {
+        "active": "false",
+        "relpose": "0 0 0 1 0 0 0",
+        "solref": "0.025 1",
+        "solimp": "0.90 0.98 0.001",
+    }
+    for arm in ("left", "right"):
+        for object_name in ("plate", "cup", "fork", "spoon"):
+            ET.SubElement(
+                equality,
+                "weld",
+                {"name": f"{arm}_{object_name}_retention", "body1": f"{arm}_gripper", "body2": object_name, **weld_attributes},
+            )
+    for object_name in ("fork", "spoon"):
+        ET.SubElement(
+            equality,
+            "weld",
+            {"name": f"drawer_{object_name}_stow", "body1": "drawer", "body2": object_name, **weld_attributes},
+        )
 
 
 def build() -> None:
@@ -142,13 +274,23 @@ def build() -> None:
     worldbody = ET.SubElement(root, "worldbody")
     add_scene_objects(worldbody)
     arm_references: dict[str, dict[str, str]] = {}
-    for prefix, position in (("left", "-0.95 -0.52 0.79"), ("right", "0.95 -0.52 0.79")):
+    for prefix, position in (("left", "-0.30 -0.52 0.79"), ("right", "0.45 -0.52 0.79")):
         arm, references = official_arm(prefix, position)
         worldbody.append(arm)
         arm_references[prefix] = references
 
     actuator = ET.SubElement(root, "actuator")
-    ET.SubElement(actuator, "position", {"name": "drawer_position", "joint": "drawer_slide", "ctrlrange": "0 0.30"})
+    ET.SubElement(
+        actuator,
+        "position",
+        {
+            "name": "drawer_position",
+            "joint": "drawer_slide",
+            "ctrlrange": "0 0.30",
+            "kp": "450",
+            "forcerange": "-120 120",
+        },
+    )
     for prefix in ("left", "right"):
         for source_actuator in source_root.findall("./actuator/position"):
             clone = copy.deepcopy(source_actuator)
@@ -160,6 +302,7 @@ def build() -> None:
             clone.set("joint", arm_references[prefix][old_joint])
             actuator.append(clone)
 
+    add_task_equalities(root)
     ET.indent(root, space="  ")
     OUTPUT.write_text(ET.tostring(root, encoding="unicode") + "\n", encoding="utf-8")
 

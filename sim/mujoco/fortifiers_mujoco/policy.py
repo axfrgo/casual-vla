@@ -180,13 +180,12 @@ class DinnerTablePolicy:
         object_position = np.asarray(object_state["position"], dtype=np.float64)
         if object_name not in self._placement_destinations:
             if object_name in {"fork", "spoon"}:
-                # Both utensils only require a verified tabletop placement.
-                # Keep their observed XY fixed for the whole placement phase;
-                # recomputing it after every contact step would chase slip.
-                destination = np.array(
-                    [object_position[0], object_position[1], PLACEMENT_TARGETS[object_name][2] + 0.02],
-                    dtype=np.float64,
-                )
+                # Retrieval starts in the drawer, so utensils must travel to
+                # their actual tabletop targets rather than being released at
+                # their observed drawer coordinates. Keep this target fixed
+                # for the whole placement phase; recomputing it after every
+                # contact step would chase slip.
+                destination = PLACEMENT_TARGETS[object_name].copy()
             else:
                 destination = PLACEMENT_TARGETS[object_name].copy()
             self._placement_destinations[object_name] = (

@@ -1,0 +1,3870 @@
+{
+  "report_schema": "fortifiers.mujoco.imitation-evaluation.v1",
+  "environment": "mujoco-dual-arm-dinner-table",
+  "policy": "camera-state-instruction-imitation",
+  "policy_kind": "camera/state/language-conditioned neural behavior-cloning policy",
+  "checkpoint": "tmp\\imitation-policy-v7.pt",
+  "device": "cpu",
+  "camera_views": [
+    "overview",
+    "overhead",
+    "left_oblique"
+  ],
+  "instruction": "Set the dinner table: open the drawer, retrieve the fork and spoon, place the plate, hand the cup from right to left, and place the cup.",
+  "episodes": [
+    {
+      "seed": 1001,
+      "perturbation": {
+        "placement_jitter": 0.04,
+        "mass_scale": 1.0,
+        "friction_scale": 0.9,
+        "object_scale": 0.98,
+        "lighting_scale": 0.8,
+        "background": "neutral"
+      },
+      "passed": false,
+      "completed": false,
+      "task_index": 1,
+      "next": "retrieve_fork",
+      "actions": 40,
+      "failed_actions": 0,
+      "stop_reason": "no_task_progress",
+      "inference_ms": {
+        "mean": 54.006915000000006,
+        "p95": 81.0578
+      },
+      "trace": [
+        {
+          "index": 1,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 0
+        },
+        {
+          "index": 2,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 0
+        },
+        {
+          "index": 3,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 0
+        },
+        {
+          "index": 4,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 0
+        },
+        {
+          "index": 5,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 0
+        },
+        {
+          "index": 6,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 0
+        },
+        {
+          "index": 7,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 0
+        },
+        {
+          "index": 8,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 0
+        },
+        {
+          "index": 9,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 0
+        },
+        {
+          "index": 10,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 0
+        },
+        {
+          "index": 11,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 0
+        },
+        {
+          "index": 12,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 0
+        },
+        {
+          "index": 13,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 0
+        },
+        {
+          "index": 14,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 0
+        },
+        {
+          "index": 15,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 0
+        },
+        {
+          "index": 16,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "vla_open_drawer",
+            "message": "drawer opened"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 17,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 18,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 19,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 20,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 21,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 22,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 23,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 24,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 25,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 26,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 27,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 28,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 29,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 30,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 31,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 32,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 33,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 34,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 35,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 36,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 37,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 38,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 39,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 40,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        }
+      ]
+    },
+    {
+      "seed": 1002,
+      "perturbation": {
+        "placement_jitter": 0.065,
+        "mass_scale": 1.08,
+        "friction_scale": 0.97,
+        "object_scale": 1.01,
+        "lighting_scale": 0.92,
+        "background": "warm"
+      },
+      "passed": false,
+      "completed": false,
+      "task_index": 1,
+      "next": "retrieve_fork",
+      "actions": 40,
+      "failed_actions": 0,
+      "stop_reason": "no_task_progress",
+      "inference_ms": {
+        "mean": 63.956342500000005,
+        "p95": 84.6573
+      },
+      "trace": [
+        {
+          "index": 1,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 0
+        },
+        {
+          "index": 2,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 0
+        },
+        {
+          "index": 3,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 0
+        },
+        {
+          "index": 4,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 0
+        },
+        {
+          "index": 5,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 0
+        },
+        {
+          "index": 6,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 0
+        },
+        {
+          "index": 7,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 0
+        },
+        {
+          "index": 8,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 0
+        },
+        {
+          "index": 9,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 0
+        },
+        {
+          "index": 10,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 0
+        },
+        {
+          "index": 11,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 0
+        },
+        {
+          "index": 12,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 0
+        },
+        {
+          "index": 13,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 0
+        },
+        {
+          "index": 14,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 0
+        },
+        {
+          "index": 15,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 0
+        },
+        {
+          "index": 16,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "vla_open_drawer",
+            "message": "drawer opened"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 17,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 18,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 19,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 20,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 21,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 22,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 23,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 24,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 25,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 26,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 27,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 28,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 29,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 30,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 31,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 32,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 33,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 34,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 35,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 36,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 37,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 38,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 39,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 40,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        }
+      ]
+    },
+    {
+      "seed": 1003,
+      "perturbation": {
+        "placement_jitter": 0.09,
+        "mass_scale": 1.16,
+        "friction_scale": 1.04,
+        "object_scale": 1.04,
+        "lighting_scale": 1.04,
+        "background": "cool"
+      },
+      "passed": false,
+      "completed": false,
+      "task_index": 1,
+      "next": "retrieve_fork",
+      "actions": 40,
+      "failed_actions": 0,
+      "stop_reason": "no_task_progress",
+      "inference_ms": {
+        "mean": 61.01323,
+        "p95": 83.1176
+      },
+      "trace": [
+        {
+          "index": 1,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 0
+        },
+        {
+          "index": 2,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 0
+        },
+        {
+          "index": 3,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 0
+        },
+        {
+          "index": 4,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 0
+        },
+        {
+          "index": 5,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 0
+        },
+        {
+          "index": 6,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 0
+        },
+        {
+          "index": 7,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 0
+        },
+        {
+          "index": 8,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 0
+        },
+        {
+          "index": 9,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 0
+        },
+        {
+          "index": 10,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 0
+        },
+        {
+          "index": 11,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 0
+        },
+        {
+          "index": 12,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 0
+        },
+        {
+          "index": 13,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 0
+        },
+        {
+          "index": 14,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 0
+        },
+        {
+          "index": 15,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 0
+        },
+        {
+          "index": 16,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "vla_open_drawer",
+            "message": "drawer opened"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 17,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 18,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 19,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 20,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 21,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 22,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 23,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 24,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 25,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 26,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 27,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 28,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 29,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 30,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 31,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 32,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 33,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 34,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 35,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 36,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 37,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 38,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 39,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 40,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        }
+      ]
+    },
+    {
+      "seed": 1004,
+      "perturbation": {
+        "placement_jitter": 0.11500000000000002,
+        "mass_scale": 1.0,
+        "friction_scale": 1.11,
+        "object_scale": 0.98,
+        "lighting_scale": 1.1600000000000001,
+        "background": "neutral"
+      },
+      "passed": false,
+      "completed": false,
+      "task_index": 1,
+      "next": "retrieve_fork",
+      "actions": 40,
+      "failed_actions": 0,
+      "stop_reason": "no_task_progress",
+      "inference_ms": {
+        "mean": 61.5665475,
+        "p95": 80.6148
+      },
+      "trace": [
+        {
+          "index": 1,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 0
+        },
+        {
+          "index": 2,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 0
+        },
+        {
+          "index": 3,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 0
+        },
+        {
+          "index": 4,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 0
+        },
+        {
+          "index": 5,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 0
+        },
+        {
+          "index": 6,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 0
+        },
+        {
+          "index": 7,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 0
+        },
+        {
+          "index": 8,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 0
+        },
+        {
+          "index": 9,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 0
+        },
+        {
+          "index": 10,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 0
+        },
+        {
+          "index": 11,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 0
+        },
+        {
+          "index": 12,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 0
+        },
+        {
+          "index": 13,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 0
+        },
+        {
+          "index": 14,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 0
+        },
+        {
+          "index": 15,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 0
+        },
+        {
+          "index": 16,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "vla_open_drawer",
+            "message": "drawer opened"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 17,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 18,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 19,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 20,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 21,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 22,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 23,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 24,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 25,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 26,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 27,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 28,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 29,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 30,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 31,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 32,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 33,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 34,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 35,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 36,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 37,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 38,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 39,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 40,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        }
+      ]
+    },
+    {
+      "seed": 1005,
+      "perturbation": {
+        "placement_jitter": 0.04,
+        "mass_scale": 1.08,
+        "friction_scale": 1.1800000000000002,
+        "object_scale": 1.01,
+        "lighting_scale": 0.8,
+        "background": "warm"
+      },
+      "passed": false,
+      "completed": false,
+      "task_index": 1,
+      "next": "retrieve_fork",
+      "actions": 40,
+      "failed_actions": 0,
+      "stop_reason": "no_task_progress",
+      "inference_ms": {
+        "mean": 62.613005,
+        "p95": 79.5687
+      },
+      "trace": [
+        {
+          "index": 1,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 0
+        },
+        {
+          "index": 2,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 0
+        },
+        {
+          "index": 3,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 0
+        },
+        {
+          "index": 4,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 0
+        },
+        {
+          "index": 5,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 0
+        },
+        {
+          "index": 6,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 0
+        },
+        {
+          "index": 7,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 0
+        },
+        {
+          "index": 8,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 0
+        },
+        {
+          "index": 9,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 0
+        },
+        {
+          "index": 10,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 0
+        },
+        {
+          "index": 11,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 0
+        },
+        {
+          "index": 12,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 0
+        },
+        {
+          "index": 13,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 0
+        },
+        {
+          "index": 14,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 0
+        },
+        {
+          "index": 15,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 0
+        },
+        {
+          "index": 16,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "vla_open_drawer",
+            "message": "drawer opened"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 17,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 18,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 19,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 20,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 21,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 22,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 23,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 24,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 25,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 26,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 27,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 28,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 29,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 30,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 31,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 32,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 33,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 34,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 35,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 36,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 37,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 38,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 39,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 40,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        }
+      ]
+    },
+    {
+      "seed": 1006,
+      "perturbation": {
+        "placement_jitter": 0.065,
+        "mass_scale": 1.16,
+        "friction_scale": 0.9,
+        "object_scale": 1.04,
+        "lighting_scale": 0.92,
+        "background": "cool"
+      },
+      "passed": false,
+      "completed": false,
+      "task_index": 1,
+      "next": "retrieve_fork",
+      "actions": 40,
+      "failed_actions": 0,
+      "stop_reason": "no_task_progress",
+      "inference_ms": {
+        "mean": 62.621555,
+        "p95": 79.4922
+      },
+      "trace": [
+        {
+          "index": 1,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 0
+        },
+        {
+          "index": 2,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 0
+        },
+        {
+          "index": 3,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 0
+        },
+        {
+          "index": 4,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 0
+        },
+        {
+          "index": 5,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 0
+        },
+        {
+          "index": 6,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 0
+        },
+        {
+          "index": 7,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 0
+        },
+        {
+          "index": 8,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 0
+        },
+        {
+          "index": 9,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 0
+        },
+        {
+          "index": 10,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 0
+        },
+        {
+          "index": 11,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 0
+        },
+        {
+          "index": 12,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 0
+        },
+        {
+          "index": 13,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 0
+        },
+        {
+          "index": 14,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 0
+        },
+        {
+          "index": 15,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 0
+        },
+        {
+          "index": 16,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "vla_open_drawer",
+            "message": "drawer opened"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 17,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 18,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 19,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 20,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 21,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 22,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 23,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 24,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 25,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 26,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 27,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 28,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 29,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 30,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 31,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 32,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 33,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 34,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 35,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 36,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 37,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 38,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 39,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 40,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        }
+      ]
+    },
+    {
+      "seed": 1007,
+      "perturbation": {
+        "placement_jitter": 0.09,
+        "mass_scale": 1.0,
+        "friction_scale": 0.97,
+        "object_scale": 0.98,
+        "lighting_scale": 1.04,
+        "background": "neutral"
+      },
+      "passed": false,
+      "completed": false,
+      "task_index": 1,
+      "next": "retrieve_fork",
+      "actions": 40,
+      "failed_actions": 0,
+      "stop_reason": "no_task_progress",
+      "inference_ms": {
+        "mean": 60.40511,
+        "p95": 81.5316
+      },
+      "trace": [
+        {
+          "index": 1,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 0
+        },
+        {
+          "index": 2,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 0
+        },
+        {
+          "index": 3,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 0
+        },
+        {
+          "index": 4,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 0
+        },
+        {
+          "index": 5,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 0
+        },
+        {
+          "index": 6,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 0
+        },
+        {
+          "index": 7,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 0
+        },
+        {
+          "index": 8,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 0
+        },
+        {
+          "index": 9,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 0
+        },
+        {
+          "index": 10,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 0
+        },
+        {
+          "index": 11,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 0
+        },
+        {
+          "index": 12,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 0
+        },
+        {
+          "index": 13,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 0
+        },
+        {
+          "index": 14,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 0
+        },
+        {
+          "index": 15,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 0
+        },
+        {
+          "index": 16,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "vla_open_drawer",
+            "message": "drawer opened"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 17,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 18,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 19,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 20,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 21,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 22,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 23,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 24,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 25,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 26,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 27,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 28,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 29,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 30,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 31,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 32,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 33,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 34,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 35,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 36,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 37,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 38,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 39,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 40,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        }
+      ]
+    },
+    {
+      "seed": 1008,
+      "perturbation": {
+        "placement_jitter": 0.11500000000000002,
+        "mass_scale": 1.08,
+        "friction_scale": 1.04,
+        "object_scale": 1.01,
+        "lighting_scale": 1.1600000000000001,
+        "background": "warm"
+      },
+      "passed": false,
+      "completed": false,
+      "task_index": 1,
+      "next": "retrieve_fork",
+      "actions": 40,
+      "failed_actions": 0,
+      "stop_reason": "no_task_progress",
+      "inference_ms": {
+        "mean": 64.8456275,
+        "p95": 85.1564
+      },
+      "trace": [
+        {
+          "index": 1,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 0
+        },
+        {
+          "index": 2,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 0
+        },
+        {
+          "index": 3,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 0
+        },
+        {
+          "index": 4,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 0
+        },
+        {
+          "index": 5,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 0
+        },
+        {
+          "index": 6,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 0
+        },
+        {
+          "index": 7,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 0
+        },
+        {
+          "index": 8,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 0
+        },
+        {
+          "index": 9,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 0
+        },
+        {
+          "index": 10,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 0
+        },
+        {
+          "index": 11,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 0
+        },
+        {
+          "index": 12,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 0
+        },
+        {
+          "index": 13,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 0
+        },
+        {
+          "index": 14,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 0
+        },
+        {
+          "index": 15,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 0
+        },
+        {
+          "index": 16,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "vla_open_drawer",
+            "message": "drawer opened"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 17,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 18,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 19,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 20,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 21,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 22,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 23,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 24,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 25,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 26,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 27,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 28,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 29,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 30,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 31,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 32,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 33,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 34,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 35,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 36,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 37,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 38,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 39,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 40,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        }
+      ]
+    },
+    {
+      "seed": 1009,
+      "perturbation": {
+        "placement_jitter": 0.04,
+        "mass_scale": 1.16,
+        "friction_scale": 1.11,
+        "object_scale": 1.04,
+        "lighting_scale": 0.8,
+        "background": "cool"
+      },
+      "passed": false,
+      "completed": false,
+      "task_index": 1,
+      "next": "retrieve_fork",
+      "actions": 40,
+      "failed_actions": 0,
+      "stop_reason": "no_task_progress",
+      "inference_ms": {
+        "mean": 60.907320000000006,
+        "p95": 82.2907
+      },
+      "trace": [
+        {
+          "index": 1,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 0
+        },
+        {
+          "index": 2,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 0
+        },
+        {
+          "index": 3,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 0
+        },
+        {
+          "index": 4,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 0
+        },
+        {
+          "index": 5,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 0
+        },
+        {
+          "index": 6,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 0
+        },
+        {
+          "index": 7,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 0
+        },
+        {
+          "index": 8,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 0
+        },
+        {
+          "index": 9,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 0
+        },
+        {
+          "index": 10,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 0
+        },
+        {
+          "index": 11,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 0
+        },
+        {
+          "index": 12,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 0
+        },
+        {
+          "index": 13,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 0
+        },
+        {
+          "index": 14,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 0
+        },
+        {
+          "index": 15,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 0
+        },
+        {
+          "index": 16,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "vla_open_drawer",
+            "message": "drawer opened"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 17,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 18,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 19,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 20,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 21,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 22,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 23,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 24,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 25,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 26,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 27,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 28,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 29,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 30,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 31,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 32,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 33,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 34,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 35,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 36,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 37,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 38,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 39,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 40,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        }
+      ]
+    },
+    {
+      "seed": 1010,
+      "perturbation": {
+        "placement_jitter": 0.065,
+        "mass_scale": 1.0,
+        "friction_scale": 1.1800000000000002,
+        "object_scale": 0.98,
+        "lighting_scale": 0.92,
+        "background": "neutral"
+      },
+      "passed": false,
+      "completed": false,
+      "task_index": 1,
+      "next": "retrieve_fork",
+      "actions": 40,
+      "failed_actions": 0,
+      "stop_reason": "no_task_progress",
+      "inference_ms": {
+        "mean": 61.9115325,
+        "p95": 81.1704
+      },
+      "trace": [
+        {
+          "index": 1,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 0
+        },
+        {
+          "index": 2,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 0
+        },
+        {
+          "index": 3,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 0
+        },
+        {
+          "index": 4,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 0
+        },
+        {
+          "index": 5,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 0
+        },
+        {
+          "index": 6,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 0
+        },
+        {
+          "index": 7,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 0
+        },
+        {
+          "index": 8,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 0
+        },
+        {
+          "index": 9,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 0
+        },
+        {
+          "index": 10,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 0
+        },
+        {
+          "index": 11,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 0
+        },
+        {
+          "index": 12,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 0
+        },
+        {
+          "index": 13,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 0
+        },
+        {
+          "index": 14,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 0
+        },
+        {
+          "index": 15,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 0
+        },
+        {
+          "index": 16,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "vla_open_drawer",
+            "message": "drawer opened"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 17,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 18,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 19,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 20,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 21,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 22,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 23,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 24,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 25,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 26,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 27,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 28,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 29,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 30,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 31,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 32,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 33,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 34,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 35,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 36,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 37,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 38,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 39,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        },
+        {
+          "index": 40,
+          "action_type": "imitation_joint_targets",
+          "result": {
+            "ok": true,
+            "action": "joint_targets"
+          },
+          "task_index": 1
+        }
+      ]
+    }
+  ],
+  "successes": 0,
+  "total": 10,
+  "success_rate": 0.0,
+  "evidence_boundary": "Success is computed from live MuJoCo actuator stepping and measured task gates for this real neural checkpoint; it is not browser animation, a deterministic baseline, or hardware evidence."
+}

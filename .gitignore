@@ -49,3 +49,4 @@ __pycache__/
 .pytest_cache/
 .uv-cache/
 sim/mujoco/results/
+/tmp/

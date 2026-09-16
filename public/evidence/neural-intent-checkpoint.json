@@ -1,0 +1,60 @@
+{
+  "schema": "fortifiers.neural-intent-checkpoint.v1",
+  "checkpoint": "tmp\\neural-intent-v1.pt",
+  "model_type": "camera-state-language-task-intent-classifier",
+  "model_config": {
+    "num_cameras": 3,
+    "state_dim": 21,
+    "num_steps": 6,
+    "language_dim": 17,
+    "image_height": 120,
+    "image_width": 160
+  },
+  "camera_names": [
+    "overview",
+    "overhead",
+    "left_oblique"
+  ],
+  "state_names": [
+    "left_shoulder_pan",
+    "left_shoulder_lift",
+    "left_elbow",
+    "left_wrist_roll",
+    "left_wrist_pitch",
+    "left_gripper",
+    "right_shoulder_pan",
+    "right_shoulder_lift",
+    "right_elbow",
+    "right_wrist_roll",
+    "right_wrist_pitch",
+    "right_gripper",
+    "drawer_slide",
+    "task_progress",
+    "task_phase_0",
+    "task_phase_1",
+    "task_phase_2",
+    "task_phase_3",
+    "task_phase_4",
+    "task_phase_5",
+    "task_phase_6"
+  ],
+  "task_step_ids": [
+    "open_drawer",
+    "retrieve_fork",
+    "retrieve_spoon",
+    "place_plate",
+    "handoff_cup",
+    "place_cup"
+  ],
+  "training": {
+    "seed": 11,
+    "epochs": 50,
+    "samples": 232,
+    "episodes": 10,
+    "validation_accuracy": 1.0,
+    "validation_loss": 0.001879546674899757,
+    "source_manifest": "tmp\\vla-demonstrations-10-phase-onehot\\manifest.json"
+  },
+  "artifact": "trained neural task-intent checkpoint metadata; model weights remain local",
+  "evidence_boundary": "The checkpoint is a real RGB/state/language neural intent model. Completion is reported separately through the neural gate plus measured controller evaluation."
+}

@@ -6,7 +6,7 @@ build-backend = "hatchling.build"
 name = "fortifiers-mujoco"
 version = "0.1.0"
 description = "MuJoCo dinner-table environment for the Fortifiers apprenticeship"
-requires-python = ">=3.11,<3.15"
+requires-python = ">=3.11,<3.14"
 dependencies = [
   "mujoco==3.13.0",
   "numpy>=2.0,<3",
@@ -19,9 +19,31 @@ dev = [
 edge = [
   "openvino>=2025,<2027",
 ]
+vla = [
+  "lerobot>=0.4,<1",
+  "torch>=2.6,<3",
+  "transformers>=4.50,<6",
+  "pillow>=10,<13",
+]
+video = [
+  "imageio>=2.34,<3",
+  "imageio-ffmpeg>=0.5,<1",
+  "opencv-python>=4.9,<5",
+]
 
 [project.scripts]
 fortifiers-mujoco-eval = "fortifiers_mujoco.smoke_eval:main"
+fortifiers-mujoco-eval-vla = "fortifiers_mujoco.evaluate_vla:main"
+fortifiers-mujoco-collect-vla = "fortifiers_mujoco.collect_vla_demos:main"
+fortifiers-mujoco-export-lerobot = "fortifiers_mujoco.export_lerobot:main"
+fortifiers-mujoco-train-imitation = "fortifiers_mujoco.train_imitation:main"
+fortifiers-mujoco-train-neural-intent = "fortifiers_mujoco.train_intent:main"
+fortifiers-mujoco-eval-imitation = "fortifiers_mujoco.evaluate_imitation:main"
+fortifiers-mujoco-eval-neural-guided = "fortifiers_mujoco.evaluate_neural_guided:main"
+fortifiers-mujoco-export-imitation-openvino = "fortifiers_mujoco.export_imitation_openvino:main"
+fortifiers-mujoco-eval-openvino = "fortifiers_mujoco.evaluate_openvino:main"
+fortifiers-mujoco-benchmark-openvino = "fortifiers_mujoco.benchmark_openvino:main"
+fortifiers-mujoco-record-video = "fortifiers_mujoco.record_video:main"
 
 [tool.hatch.build.targets.wheel]
 packages = ["fortifiers_mujoco"]

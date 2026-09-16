@@ -14,8 +14,9 @@ def test_model_path_is_repo_local() -> None:
     with FortifiersMuJoCoEnv() as env:
         assert Path(env.model_path).name == "official_dual_so101_dinner_table.xml"
         assert env.model.nu == 13
-        assert env.model.neq == 8
-        assert not any(env.data.eq_active)
+        assert env.model.neq == 10
+        assert not any(env.data.eq_active[equality_id] for equality_id in env._retention_equality_ids.values())
+        assert all(env.data.eq_active[equality_id] for equality_id in env._drawer_stow_equality_ids.values())
 
 
 def test_official_so101_mjcf_asset_is_available() -> None:
@@ -54,6 +55,50 @@ def test_observation_contains_camera_and_physics_state() -> None:
         frame = env.render()
         assert isinstance(frame, np.ndarray)
         assert frame.shape == (120, 160, 3)
+        camera_observation = env.observe(include_camera=True)
+        assert set(camera_observation["camera_rgb_views"]) == {
+            "overview",
+            "overhead",
+            "left_oblique",
+            "right_oblique",
+        }
+        assert np.asarray(camera_observation["camera_rgb_views"]["overhead"]).shape == (120, 160, 3)
+        assert len(env.control_spec()["names"]) == env.model.nu
+        assert env.control_vector().shape == (env.model.nu,)
+
+
+def test_drawer_stow_carries_utensil_until_measured_grasp() -> None:
+    with FortifiersMuJoCoEnv() as env:
+        reset = env.reset(1001)
+        fork_before = np.asarray(reset["objects"]["fork"]["position"])
+        spoon_before = np.asarray(reset["objects"]["spoon"]["position"])
+        assert all(env.data.eq_active[equality_id] for equality_id in env._drawer_stow_equality_ids.values())
+
+        opened = env.step({"type": "open_drawer"})
+        fork_open = np.asarray(opened["objects"]["fork"]["position"])
+        spoon_open = np.asarray(opened["objects"]["spoon"]["position"])
+        assert opened["task"]["next"] == "retrieve_fork"
+        assert fork_open[1] < fork_before[1] - 0.20
+        assert spoon_open[1] < spoon_before[1] - 0.20
+
+        target = opened["objects"]["fork"]["grasp_target_by_arm"]["left"]
+        moved = env.step(
+            {
+                "type": "move_to",
+                "arm": "left",
+                "target": target,
+                "frame": "pinch",
+                "orientation": "auto",
+                "approach": True,
+                "gripper": "open",
+            }
+        )
+        assert moved["task"]["last_action"]["ok"]
+        grasped = env.step({"type": "grasp", "arm": "left", "object": "fork"})
+        assert grasped["task"]["last_action"]["ok"]
+        assert grasped["task"]["held_by"]["fork"] == "left"
+        assert not env._drawer_stow_is_active("fork")
+        assert env._retention_is_active("left", "fork")
 
 
 def test_task_graph_requires_bimanual_handoff() -> None:

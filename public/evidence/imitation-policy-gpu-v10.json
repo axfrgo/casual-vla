@@ -1,0 +1,60 @@
+{
+  "schema": "fortifiers.imitation-gpu-training-evidence.v1",
+  "author": "Alexander Ferguson",
+  "handle": "axfrgo",
+  "roles": ["researcher", "scientist", "developer"],
+  "cloud": {
+    "provider": "Google Cloud",
+    "project": "casualdat",
+    "zone": "us-central1-a",
+    "machine_type": "g2-standard-8",
+    "gpu": "NVIDIA L4",
+    "gpu_memory_mib": 23034,
+    "driver": "580.173.02",
+    "provisioning": "SPOT",
+    "instance_lifecycle": "one-shot; deleted after artifact retrieval",
+    "instance_label_owner": "axfrgo",
+    "instance_label_purpose": "vla-training"
+  },
+  "software": {
+    "mujoco": "3.13.0",
+    "torch": "2.10.0",
+    "lerobot": "0.4.4",
+    "transformers": "4.57.6",
+    "cuda_training": true
+  },
+  "dataset": {
+    "episodes": 10,
+    "seed_range": [3001, 3010],
+    "frames": 230,
+    "camera_views": ["overview", "overhead", "left_oblique"],
+    "state_dim": 21,
+    "action_dim": 13,
+    "source": "tmp/vla-demonstrations-10-fresh/manifest.json"
+  },
+  "training": {
+    "checkpoint": "imitation-policy-gpu-v10.pt",
+    "model_type": "camera-state-instruction-behavior-cloning",
+    "seed": 13,
+    "epochs": 80,
+    "augmentation_repeats": 1,
+    "device": "cuda",
+    "cuda_available": true,
+    "train_loss": 0.0038634553008402386,
+    "validation_loss": 0.0034654459450393915
+  },
+  "native_validation": {
+    "report": "tmp/imitation-evaluation-gpu-v10-local-smoke.json",
+    "device": "cpu",
+    "seed": 4001,
+    "successes": 0,
+    "total": 1,
+    "success_rate": 0.0,
+    "task_index": 1,
+    "next": "retrieve_fork",
+    "actions": 40,
+    "failed_actions": 0,
+    "stop_reason": "no_task_progress",
+    "evidence_boundary": "The checkpoint was trained with CUDA and validated through native MuJoCo locally; this is not Core Ultra hardware evidence and is not a direct-policy task pass."
+  }
+}

@@ -1,0 +1,170 @@
+{
+  "report_schema": "fortifiers.mujoco.video-evidence.v1",
+  "video": "public\\evidence\\dinner-table-10-seed-demo.mp4",
+  "video_format": "H.264 MP4",
+  "environment": "mujoco-dual-arm-dinner-table",
+  "controller": "closed-loop-dinner-policy-v1",
+  "instruction": "Set the dinner table: open the drawer, retrieve the fork and spoon, place the plate, hand the cup from right to left, and place the cup.",
+  "camera": "overview",
+  "resolution": [
+    320,
+    240
+  ],
+  "fps": 8,
+  "episodes": [
+    {
+      "seed": 1001,
+      "passed": true,
+      "actions": 23,
+      "failed_actions": 1,
+      "frames": 46,
+      "perturbation": {
+        "placement_jitter": 0.04,
+        "mass_scale": 1.0,
+        "friction_scale": 0.9,
+        "object_scale": 0.98,
+        "lighting_scale": 0.8,
+        "background": "neutral"
+      }
+    },
+    {
+      "seed": 1002,
+      "passed": true,
+      "actions": 23,
+      "failed_actions": 1,
+      "frames": 46,
+      "perturbation": {
+        "placement_jitter": 0.065,
+        "mass_scale": 1.08,
+        "friction_scale": 0.97,
+        "object_scale": 1.01,
+        "lighting_scale": 0.92,
+        "background": "warm"
+      }
+    },
+    {
+      "seed": 1003,
+      "passed": true,
+      "actions": 24,
+      "failed_actions": 1,
+      "frames": 48,
+      "perturbation": {
+        "placement_jitter": 0.09,
+        "mass_scale": 1.16,
+        "friction_scale": 1.04,
+        "object_scale": 1.04,
+        "lighting_scale": 1.04,
+        "background": "cool"
+      }
+    },
+    {
+      "seed": 1004,
+      "passed": true,
+      "actions": 24,
+      "failed_actions": 1,
+      "frames": 48,
+      "perturbation": {
+        "placement_jitter": 0.11500000000000002,
+        "mass_scale": 1.0,
+        "friction_scale": 1.11,
+        "object_scale": 0.98,
+        "lighting_scale": 1.1600000000000001,
+        "background": "neutral"
+      }
+    },
+    {
+      "seed": 1005,
+      "passed": true,
+      "actions": 23,
+      "failed_actions": 1,
+      "frames": 46,
+      "perturbation": {
+        "placement_jitter": 0.04,
+        "mass_scale": 1.08,
+        "friction_scale": 1.1800000000000002,
+        "object_scale": 1.01,
+        "lighting_scale": 0.8,
+        "background": "warm"
+      }
+    },
+    {
+      "seed": 1006,
+      "passed": true,
+      "actions": 23,
+      "failed_actions": 1,
+      "frames": 46,
+      "perturbation": {
+        "placement_jitter": 0.065,
+        "mass_scale": 1.16,
+        "friction_scale": 0.9,
+        "object_scale": 1.04,
+        "lighting_scale": 0.92,
+        "background": "cool"
+      }
+    },
+    {
+      "seed": 1007,
+      "passed": true,
+      "actions": 23,
+      "failed_actions": 1,
+      "frames": 46,
+      "perturbation": {
+        "placement_jitter": 0.09,
+        "mass_scale": 1.0,
+        "friction_scale": 0.97,
+        "object_scale": 0.98,
+        "lighting_scale": 1.04,
+        "background": "neutral"
+      }
+    },
+    {
+      "seed": 1008,
+      "passed": true,
+      "actions": 23,
+      "failed_actions": 1,
+      "frames": 46,
+      "perturbation": {
+        "placement_jitter": 0.11500000000000002,
+        "mass_scale": 1.08,
+        "friction_scale": 1.04,
+        "object_scale": 1.01,
+        "lighting_scale": 1.1600000000000001,
+        "background": "warm"
+      }
+    },
+    {
+      "seed": 1009,
+      "passed": true,
+      "actions": 23,
+      "failed_actions": 1,
+      "frames": 46,
+      "perturbation": {
+        "placement_jitter": 0.04,
+        "mass_scale": 1.16,
+        "friction_scale": 1.11,
+        "object_scale": 1.04,
+        "lighting_scale": 0.8,
+        "background": "cool"
+      }
+    },
+    {
+      "seed": 1010,
+      "passed": true,
+      "actions": 23,
+      "failed_actions": 1,
+      "frames": 46,
+      "perturbation": {
+        "placement_jitter": 0.065,
+        "mass_scale": 1.0,
+        "friction_scale": 1.1800000000000002,
+        "object_scale": 0.98,
+        "lighting_scale": 0.92,
+        "background": "neutral"
+      }
+    }
+  ],
+  "successes": 10,
+  "total": 10,
+  "success_rate": 1.0,
+  "evidence_boundary": "Native MuJoCo visualization of the deterministic baseline; this video is not browser physics, neural-policy evidence, or a hardware-robot recording."
+}

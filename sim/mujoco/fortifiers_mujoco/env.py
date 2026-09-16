@@ -24,6 +24,7 @@ OFFICIAL_SO101_MJCF_PATH = OFFICIAL_SO101_DIR / "so101_new_calib.xml"
 OBJECT_NAMES = ("plate", "cup", "fork", "spoon")
 ARM_NAMES = ("left", "right")
 ARM_JOINTS = ("shoulder_pan", "shoulder_lift", "elbow", "wrist_roll", "wrist_pitch")
+CAMERA_NAMES = ("overview", "overhead", "left_oblique", "right_oblique")
 # The official SO-101 gripper joint closes toward the negative end of its
 # calibrated range. The previous demo used the opposite sign, which made the
 # jaw motion look like a grasp while the runtime equality hid the mistake.
@@ -205,6 +206,7 @@ class FortifiersMuJoCoEnv:
     _plate_jaw_geom_ids: dict[str, list[int]] = field(init=False, default_factory=dict, repr=False)
     _cup_jaw_geom_ids: dict[str, list[int]] = field(init=False, default_factory=dict, repr=False)
     _retention_equality_ids: dict[tuple[str, str], int] = field(init=False, default_factory=dict, repr=False)
+    _drawer_stow_equality_ids: dict[str, int] = field(init=False, default_factory=dict, repr=False)
     _pinch_base_quaternion: dict[str, np.ndarray] = field(init=False, default_factory=dict, repr=False)
     _task_index: int = field(init=False, default=0, repr=False)
     _held_by: dict[str, str | None] = field(init=False, default_factory=dict, repr=False)
@@ -271,6 +273,13 @@ class FortifiersMuJoCoEnv:
                 self._retention_equality_ids[(arm, object_name)] = mujoco.mj_name2id(
                     self.model, mujoco.mjtObj.mjOBJ_EQUALITY, equality_name
                 )
+        for object_name in ("fork", "spoon"):
+            equality_name = f"drawer_{object_name}_stow"
+            if equality_name not in equality_names:
+                raise ValueError(f"Model is missing required drawer stow constraint {equality_name}")
+            self._drawer_stow_equality_ids[object_name] = mujoco.mj_name2id(
+                self.model, mujoco.mjtObj.mjOBJ_EQUALITY, equality_name
+            )
         for arm in ARM_NAMES:
             self._jaw_geom_ids[arm] = [
                 self._geom_ids[f"{arm}_fixed_finger_geom"],
@@ -331,10 +340,12 @@ class FortifiersMuJoCoEnv:
         self._last_safe_joint_targets = {}
 
         drawer_joint = self._joint_ids["drawer_slide"]
-        self.data.qpos[self.model.jnt_qposadr[drawer_joint]] = 0.05 + 0.24 * self._rng.random()
+        # The drawer is closed under the table at the rear of its travel;
+        # opening moves it toward the operator/front edge (qpos -> 0).
+        self.data.qpos[self.model.jnt_qposadr[drawer_joint]] = 0.30
 
-        # Keep all objects on the tabletop while ensuring each reset changes
-        # the visual arrangement.  Orientation is randomized around z.
+        # Plate and cup start on the tabletop, while the utensils start in the
+        # closed drawer tray. Orientation is randomized around z.
         positions = self._sample_object_positions()
         for object_name, position in positions.items():
             joint_id = self._object_joint_ids[object_name]
@@ -352,12 +363,36 @@ class FortifiersMuJoCoEnv:
 
         self._apply_perturbations()
         mujoco.mj_forward(self.model, self.data)
+        self._configure_drawer_stow()
         self._set_jaw_collision_enabled(None, False)
         return self.observe(include_camera=False)
 
     def _sample_object_positions(self) -> dict[str, tuple[float, float, float]]:
         positions: dict[str, tuple[float, float, float]] = {}
         for object_name in OBJECT_NAMES:
+            if object_name in {"fork", "spoon"}:
+                # The drawer body starts at y=-0.70 and slides along +y.
+                # Keep each utensil on the native tray floor, within the side
+                # walls, and add a small deterministic placement perturbation.
+                drawer_qpos = self.data.qpos[self.model.jnt_qposadr[self._joint_ids["drawer_slide"]]]
+                drawer_y = -0.70 + float(drawer_qpos)
+                slot_x = -0.24 if object_name == "fork" else 0.24
+                slot_y = drawer_y + (-0.06 if object_name == "fork" else 0.06)
+                jitter = self._rng.uniform(
+                    -self.perturbation.placement_jitter,
+                    self.perturbation.placement_jitter,
+                    size=2,
+                ) * 0.12
+                positions[object_name] = (
+                    float(np.clip(slot_x + jitter[0], -0.55, 0.55)),
+                    float(np.clip(slot_y + jitter[1], drawer_y - 0.20, drawer_y + 0.20)),
+                    # The front tray sits immediately below the tabletop.
+                    # This keeps the utensil inside the SO-101 grasp envelope
+                    # while the drawer stow weld carries it until the
+                    # retrieval contact gate begins.
+                    0.72,
+                )
+                continue
             anchor = INITIAL_OBJECT_TARGETS[object_name][:2]
             jitter = self._rng.uniform(
                 -self.perturbation.placement_jitter,
@@ -441,6 +476,110 @@ class FortifiersMuJoCoEnv:
             self._advance_physics()
         return self.observe(include_camera=False)
 
+    def control_spec(self) -> dict[str, Any]:
+        """Return the ordered actuator contract used by neural policies."""
+
+        names = tuple(self._names(mujoco.mjtObj.mjOBJ_ACTUATOR))
+        return {
+            "names": list(names),
+            "ranges": {
+                name: self.model.actuator_ctrlrange[self._actuator_ids[name]].astype(float).tolist()
+                for name in names
+            },
+            "nu": int(self.model.nu),
+        }
+
+    def control_vector(self) -> np.ndarray:
+        """Return the last commanded absolute target in contract order."""
+
+        names = self.control_spec()["names"]
+        return np.asarray(
+            [self.data.ctrl[self._actuator_ids[name]] for name in names],
+            dtype=np.float32,
+        )
+
+    def step_vla(self, action: Mapping[str, Any] | Sequence[float]) -> dict[str, Any]:
+        """Execute a low-level policy action with physical task event gates.
+
+        A VLA emits continuous actuator targets, not symbolic ``grasp`` or
+        ``release`` commands. This method runs those targets through MuJoCo,
+        then asks the existing measured-contact task gates whether a semantic
+        event should occur. It never marks progress from a model token alone.
+        """
+
+        spec = self.control_spec()
+        names = spec["names"]
+        ranges = spec["ranges"]
+        if isinstance(action, Mapping):
+            raw_targets = action.get("targets")
+            if not isinstance(raw_targets, Mapping):
+                raise ValueError("VLA action mapping requires a targets mapping")
+            values = [raw_targets.get(name) for name in names]
+        else:
+            values = np.asarray(action, dtype=np.float64).reshape(-1).tolist()
+        if len(values) != len(names):
+            raise ValueError(f"VLA action must contain {len(names)} actuator targets")
+        targets = {
+            name: float(np.clip(float(value), ranges[name][0], ranges[name][1]))
+            for name, value in zip(names, values)
+        }
+        observation = self.step({"type": "joint_targets", "targets": targets})
+        self._advance_vla_task_events()
+        return self.observe(include_camera=False)
+
+    def _advance_vla_task_events(self) -> None:
+        """Translate physical low-level state into guarded task events."""
+
+        step_id = self._current_step_id()
+        if step_id is None:
+            return
+        if step_id == "open_drawer":
+            drawer_id = self._joint_ids["drawer_slide"]
+            drawer_position = float(self.data.qpos[self.model.jnt_qposadr[drawer_id]])
+            if drawer_position <= 0.06:
+                self._task_index += 1
+                self._last_action_result = {"ok": True, "action": "vla_open_drawer", "message": "drawer opened"}
+            return
+
+        event_by_step = {
+            "retrieve_fork": ("left", "fork"),
+            "retrieve_spoon": ("right", "spoon"),
+            "place_plate": ("left", "plate"),
+            "place_cup": ("left", "cup"),
+        }
+        if step_id in event_by_step:
+            arm, object_name = event_by_step[step_id]
+            object_state = self._held_by[object_name]
+            gripper = self._gripper_position(arm)
+            closed = gripper <= (GRIPPER_OPEN + GRIPPER_CLOSED) / 2
+            if object_state is None and closed and self._near_grasp_target(arm, object_name, 0.035):
+                self._apply_grasp({"type": "grasp", "arm": arm, "object": object_name})
+            elif object_state == arm and not closed:
+                self._apply_release({"type": "release", "arm": arm, "object": object_name})
+            return
+
+        if step_id != "handoff_cup":
+            return
+        held_by = self._held_by["cup"]
+        if held_by is None:
+            if self._gripper_is_closed("right") and self._near_grasp_target("right", "cup", 0.035):
+                self._apply_grasp({"type": "grasp", "arm": "right", "object": "cup"})
+            return
+        if held_by == "right" and self._gripper_is_closed("left") and self._near_grasp_target("left", "cup", 0.035):
+            self._apply_handoff({"type": "handoff", "object": "cup", "from": "right", "to": "left"})
+
+    def _gripper_position(self, arm: str) -> float:
+        joint_id = self._joint_ids[f"{arm}_gripper"]
+        return float(self.data.qpos[self.model.jnt_qposadr[joint_id]])
+
+    def _gripper_is_closed(self, arm: str) -> bool:
+        return self._gripper_position(arm) <= (GRIPPER_OPEN + GRIPPER_CLOSED) / 2
+
+    def _near_grasp_target(self, arm: str, object_name: str, tolerance: float) -> bool:
+        target, _ = self._object_grasp_pose(object_name, arm)
+        pinch = self.data.site_xpos[self._pinch_site(arm)]
+        return bool(np.linalg.norm(pinch - target) <= tolerance)
+
     def _apply_mapping_action(self, action: Mapping[str, Any]) -> None:
         action_type = action.get("type")
         if action_type == "noop":
@@ -448,13 +587,14 @@ class FortifiersMuJoCoEnv:
             return
         if action_type in {"open_drawer", "close_drawer"}:
             actuator_id = self._actuator_ids["drawer_position"]
-            self.data.ctrl[actuator_id] = 0.30 if action_type == "open_drawer" else 0.0
+            target = 0.0 if action_type == "open_drawer" else 0.30
+            self.data.ctrl[actuator_id] = target
             # The drawer servo is deliberately low-gain, so hold its target
             # for a physically meaningful interval instead of treating a
             # single integrator tick as "open".
             self._advance_physics(steps=max(self.frame_skip, 360))
             self._physics_advanced_in_action = True
-            opened = self.observe()["drawer"] >= 0.24
+            opened = self.observe()["drawer"] <= 0.06
             ok = action_type != "open_drawer" or opened
             if ok and action_type == "open_drawer" and self._current_step_id() == "open_drawer":
                 self._task_index += 1
@@ -543,10 +683,49 @@ class FortifiersMuJoCoEnv:
             active_objects.add(object_name)
         for selected_object in OBJECT_NAMES:
             geom_id = self._geom_ids[f"{selected_object}_geom"]
-            self.model.geom_conaffinity[geom_id] = 4 if selected_object in active_objects else 0
+            active = selected_object in active_objects
+            stowed = selected_object in self._drawer_stow_equality_ids and self._drawer_stow_is_active(selected_object)
+            # Held/stowed objects contact only the calibrated jaw category;
+            # otherwise a utensil in the drawer could collide with the table
+            # top or tray before retrieval. Released objects restore normal
+            # table contact so gravity and placement remain physical.
+            self.model.geom_contype[geom_id] = 0 if active or stowed else 2
+            self.model.geom_conaffinity[geom_id] = 4 if active else 0 if stowed else 2
 
     def _retention_is_active(self, arm: str, object_name: str) -> bool:
         return bool(self.data.eq_active[self._retention_equality_ids[(arm, object_name)]])
+
+    def _drawer_stow_is_active(self, object_name: str) -> bool:
+        return bool(self.data.eq_active[self._drawer_stow_equality_ids[object_name]])
+
+    def _set_drawer_stow(self, object_name: str, enabled: bool, *, forward: bool = True) -> None:
+        """Carry a stowed utensil with the drawer until retrieval begins."""
+
+        equality_id = self._drawer_stow_equality_ids[object_name]
+        if enabled:
+            drawer_body = self._body_ids["drawer"]
+            object_body = self._body_ids[object_name]
+            drawer_rotation = self.data.xmat[drawer_body].reshape(3, 3)
+            object_rotation = self.data.xmat[object_body].reshape(3, 3)
+            # MuJoCo stores the body2-local anchor first and the body1-local
+            # anchor second. Attach the utensil center to its measured slot in
+            # the drawer frame, preserving the slot offset during motion.
+            object_anchor = np.zeros(3, dtype=np.float64)
+            drawer_anchor = drawer_rotation.T @ (self.data.xpos[object_body] - self.data.xpos[drawer_body])
+            relative_rotation = drawer_rotation.T @ object_rotation
+            self.model.eq_data[equality_id, 0:3] = object_anchor
+            self.model.eq_data[equality_id, 3:6] = drawer_anchor
+            self.model.eq_data[equality_id, 6:10] = _matrix_to_quaternion(relative_rotation)
+            self.data.eq_active[equality_id] = True
+        else:
+            self.data.eq_active[equality_id] = False
+        if forward:
+            mujoco.mj_forward(self.model, self.data)
+
+    def _configure_drawer_stow(self) -> None:
+        for object_name in ("fork", "spoon"):
+            self._set_drawer_stow(object_name, True, forward=False)
+        mujoco.mj_forward(self.model, self.data)
 
     def _set_retention(
         self,
@@ -1087,6 +1266,12 @@ class FortifiersMuJoCoEnv:
             contact_ok = bool(metrics["verified"] and metrics["jaw_count"] >= 2 and object_drift < 0.045)
             lift_metrics: dict[str, Any] | None = None
             if contact_ok:
+                # Keep the utensil fixed in its drawer slot while the jaws
+                # close and the contact gate is measured. Only after that
+                # gate passes do we switch from drawer stow to gripper
+                # retention, so gravity cannot turn retrieval into a drop.
+                if object_name in self._drawer_stow_equality_ids and self._drawer_stow_is_active(object_name):
+                    self._set_drawer_stow(object_name, False, forward=False)
                 self._held_by[object_name] = arm
                 # Activate only after two-jaw contact and the pre-lift drift
                 # gate. The native constraint stabilizes that measured
@@ -1350,7 +1535,19 @@ class FortifiersMuJoCoEnv:
             },
         }
         if include_camera:
-            result["camera_rgb"] = self.render().tolist()
+            available = {
+                mujoco.mj_id2name(self.model, mujoco.mjtObj.mjOBJ_CAMERA, index)
+                for index in range(self.model.ncam)
+            }
+            camera_views = {
+                name: self.render(name).tolist()
+                for name in CAMERA_NAMES
+                if name in available
+            }
+            if "overview" not in camera_views:
+                raise ValueError("MuJoCo scene must provide an overview camera for VLA observations")
+            result["camera_rgb"] = camera_views["overview"]
+            result["camera_rgb_views"] = camera_views
         return result
 
     def contacts(self) -> list[dict[str, Any]]:
@@ -1362,10 +1559,10 @@ class FortifiersMuJoCoEnv:
             contacts.append({"geom1": geom_a, "geom2": geom_b, "distance": float(contact.dist)})
         return contacts
 
-    def render(self) -> np.ndarray:
+    def render(self, camera_name: str = "overview") -> np.ndarray:
         if self._renderer is None:
             self._renderer = mujoco.Renderer(self.model, height=self.height, width=self.width)
-        self._renderer.update_scene(self.data, camera="overview")
+        self._renderer.update_scene(self.data, camera=camera_name)
         return self._renderer.render()
 
     def close(self) -> None:

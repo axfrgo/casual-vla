@@ -1,0 +1,44 @@
+{
+  "report_schema": "fortifiers.openvino.inference-benchmark.v1",
+  "model": "tmp\\imitation-policy-v7.xml",
+  "device": "CPU",
+  "inputs": [
+    {
+      "input": "images",
+      "shape": [
+        1,
+        9,
+        120,
+        160
+      ],
+      "precision": "<Type: 'float32'>"
+    },
+    {
+      "input": "state",
+      "shape": [
+        1,
+        21
+      ],
+      "precision": "<Type: 'float32'>"
+    },
+    {
+      "input": "language",
+      "shape": [
+        1,
+        17
+      ],
+      "precision": "<Type: 'float32'>"
+    }
+  ],
+  "iterations": 100,
+  "warmup": 10,
+  "latency_ms": {
+    "mean": 2.394326,
+    "p50": 2.3477,
+    "p95": 3.1779
+  },
+  "throughput_fps": 417.65407049833647,
+  "task_success_rate": null,
+  "note": "Inference benchmark only; task success requires the connected MuJoCo policy evaluation report.",
+  "evidence_boundary": "This is an OpenVINO inference benchmark on the stated device, not a task-success or hardware-robot result."
+}
