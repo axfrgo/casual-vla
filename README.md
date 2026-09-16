@@ -1,8 +1,14 @@
-# Fortifiers Apprenticeship
+# Casual VLA
 
-Fortifiers is a persistent operational-teaching system. Aegis compiles human
-corrections into versioned, auditable skill rules and applies them while an
-embodiment plans and executes actions.
+Casual VLA is Alexander Ferguson's (`axfrgo`) competition submission for a
+camera/state/language-conditioned dual-arm dinner-table policy. It packages a
+reproducible MuJoCo simulation, seeded evaluation, demonstration collection,
+LeRobot export, PyTorch training, native inference, and OpenVINO benchmarking.
+
+The browser surface is only the competition presentation layer. Native MuJoCo
+task gates, neural-policy reports, and Intel hardware measurements are kept as
+separate evidence tracks so no animation or inference benchmark is mislabeled
+as physical-robot success.
 
 ## Current validation
 
